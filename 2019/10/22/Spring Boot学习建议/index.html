@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>Spring Boot学习建议 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.18.1/styles/atom-one-dark-reasonable.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_ijqayz9ro8k.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              首页</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              归档</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              标签</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" false
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2019-10-22 15:28">
+                    2019 十月 22, 星期二 , 3:28 下午
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    1.1k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    25
+                     分钟
+                  </span>
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  <span id="busuanzi_container_page_pv" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>
+                
+              </div>
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-warning">
+                本文最后更新于：2020 四月 20, 星期一 , 1:45 凌晨
+              </p>
+            
+            <article class="markdown-body">
+              <h2 id="什么是Spring-Boot"><a class="header-anchor" href="#什么是Spring-Boot">⚡</a>什么是Spring Boot</h2>
+<a id="more"></a>
+<p>了解一下企业级开发从servlet，jsp，Java EE的MVC模式到Spring FrameWork，再在Spirng FrameWork的基础上Spring Boot的<a href="https://zhuanlan.zhihu.com/p/34985791" target="_blank" rel="noopener">发展历史</a>。</p>
+<p><a href="https://blog.csdn.net/weixin_39893958/article/details/84389384" target="_blank" rel="noopener">Java Web发展历史1</a></p>
+<p><a href="https://www.jianshu.com/p/bec6736dcc3d" target="_blank" rel="noopener">Java Web发展历史2</a></p>
+<p>至于具体Spring 框架的IOC、AOP、容器等等相关概念，现在可以暂时先不用学习太深，主要了解Spring Framework这个框架的来龙去脉之后，首先把后台写出来，项目完成之后再去看相关的重要原理实现。</p>
+<p>还是知乎上一个<a href="https://www.zhihu.com/question/318377502/answer/641205726" target="_blank" rel="noopener">回答</a>：</p>
+<blockquote>
+<p>spring boot给你使用20%的时间去解决80%的问题，剩下20%的问题需要你用200%的时间去弄懂。<br>
+——by：沃·兹基硕德</p>
+</blockquote>
+<ul>
+<li>
+<p><a href="https://www.zhihu.com/question/303235503/answer/537538561" target="_blank" rel="noopener">https://www.zhihu.com/question/303235503/answer/537538561</a> (可以关注一下陈龙这个作者)</p>
+</li>
+<li>
+<p><a href="https://www.zhihu.com/question/49649311/answer/364216794" target="_blank" rel="noopener">https://www.zhihu.com/question/49649311/answer/364216794</a></p>
+</li>
+<li>
+<p><a href="https://zhuanlan.zhihu.com/p/59117834" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/59117834</a></p>
+</li>
+</ul>
+<p>也要知道前后端分离是如何通信的<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods" target="_blank" rel="noopener">http请求</a></p>
+<p>当然数据库简单语法也得会 (没学过SQL的或者对SQL语法掌握不太牢固的可以看 <strong>《MySQL必知必会》</strong> 这本书)</p>
+<h2 id="官方资源"><a class="header-anchor" href="#官方资源">⚡</a>官方资源</h2>
+<ul>
+<li>
+<p><a href="https://spring.io/guides/gs/spring-boot/" target="_blank" rel="noopener">指南</a></p>
+</li>
+<li>
+<p><a href="https://www.springcloud.cc/spring-boot.html" target="_blank" rel="noopener">中文文档(第三方，非官方翻译)</a></p>
+</li>
+<li>
+<p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/" target="_blank" rel="noopener">文档</a></p>
+</li>
+</ul>
+<!-- more -->
+<h2 id="后台学习任务"><a class="header-anchor" href="#后台学习任务">⚡</a>后台学习任务</h2>
+<ul>
+<li>
+<p>实现类似<a href="http://suo.im/" target="_blank" rel="noopener"> 缩我 </a>的网站吗？</p>
+<p>它可以根据用户用户输入的长链接替换为一个短链接，之后，所有知道这个短链接的人都可以访问这个短链接来访问到原来的长链接。</p>
+</li>
+<li>
+<p>实现原理</p>
+<ol>
+<li>
+<p>首先，在网站上点击一键缩短按钮时，前端把用户输入的网址通过一个[http请求] (post请求)发送给后台。</p>
+<p>查看前端向后台发送的请求:F12 -&gt; network -&gt; XHR</p>
+<p><img src="https://raw.githubusercontent.com/Chao-Yin-Github/PersonalResourcePlan/master/picture/request1.png" srcset="/img/loading.gif" alt="request1"></p>
+<p><img src="https://raw.githubusercontent.com/Chao-Yin-Github/PersonalResourcePlan/master/picture/request2.png" srcset="/img/loading.gif" alt="request2"></p>
+</li>
+<li>
+<p>后台接收请求后，对应到具体的某一个接口，并获取到请求的参数，通过一个算法(自增数或者hash)来生成短链接，其样式为 <a href="http://127.0.0.1:8080/abcd123" target="_blank" rel="noopener">http://127.0.0.1:8080/abcd123</a></p>
+<p>并把这个链接返回给前端。(此时已经完成第一个接口:响应前端的请求，并生成短链)</p>
+<p>然后将用户输入的长链接和生成的短链接保存到数据库中。</p>
+<p>数据库中这张表类似这样:</p>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">source_URL</th>
+<th style="text-align:center">short_URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="https://www.baidu.com" target="_blank" rel="noopener">https://www.baidu.com</a></td>
+<td style="text-align:center">localhost:8080/123</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<blockquote>
+<p>注意本项目只是一个小demo，对生成短链接的算法不做要求。项目的目的主要是学习Spring Boot，生成算法是次要的。但是如果是以后想放到线上对外部提供服务，那就必须考虑算法的有效性和可靠性。对短链接生成算法感兴趣的同学可以看看这个<a href="https://www.zhihu.com/question/29270034/answer/46446911" target="_blank" rel="noopener">知乎回答</a></p>
+</blockquote>
+<blockquote>
+<p>还有第二个小瑕疵，那就是得考虑并发的问题了，这个目前也不做要求。</p>
+</blockquote>
+</li>
+<li>
+<p>还要写第二个接口:</p>
+<p>当用户输入你生成的短链时，你需要去数据库里查找其对应的原链接，如果找到了，那么就要重定向(redirect)到原网址。</p>
+<p>注意这个可能比较麻烦的一点是，这个必须在Headers里面设置302的重定向状态码。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>要用到的技术:</p>
+<p>Spring Boot 后台框架+ Spring Data JPA或者Mybatis 数据库框架</p>
+<ol>
+<li>
+<p>能够使用Spring FrameWork处理前端请求，实现请求基本的响应</p>
+</li>
+<li>
+<p>能够使用Spring Data JPA或者Mybatis完成数据库的基本增删改查</p>
+<p>JPA：实际上只是Java持久化规范: 全称为Java Persistence API</p>
+<p><a href="https://www.cnblogs.com/ityouknow/p/5891444.html" target="_blank" rel="noopener">Spring Data JPA学习博客例子</a></p>
+</li>
+<li>
+<p>对界面美观有要求者可以自学html、css和javaScript，这样就是一个完整的小项目了。</p>
+<p>当然也建议直接使用postman模拟前端发送请求更简单。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>要用到的工具</p>
+<ul>
+<li>
+<p><a href="https://chrome.google.com/webstore/detail/coohjcphdfgbiolnekdpbcijmhambjff" target="_blank" rel="noopener">postman:Chrome插件版</a></p>
+<p>chrome插件版足够使用 [<strong>需翻墙</strong>] [<strong>vpn或者谷歌访问助手</strong>]</p>
+<p>当然postman是一个跨平台的软件，也可以自行下载独立的软件。</p>
+<p>如果是直接使用chrome插件的话，还需要安装一个<a href="https://chrome.google.com/webstore/detail/postman-interceptor/aicmkgpgakddgnaphhhpliifpcfhicfo" target="_blank" rel="noopener">依赖插件。</a></p>
+</li>
+<li>
+<p>postman使用方法</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="中文Spring-Boot博客入门"><a class="header-anchor" href="#中文Spring-Boot博客入门">⚡</a>中文Spring Boot博客入门</h3>
+<ul>
+<li>
+<p><a href="http://www.ityouknow.com/spring-boot.html" target="_blank" rel="noopener">http://www.ityouknow.com/spring-boot.html</a></p>
+</li>
+<li>
+<p><a href="https://www.jianshu.com/p/9a08417e4e84" target="_blank" rel="noopener">https://www.jianshu.com/p/9a08417e4e84</a></p>
+</li>
+</ul>
+<h3 id="Spring-Boot学习视频"><a class="header-anchor" href="#Spring-Boot学习视频">⚡</a>Spring Boot学习视频</h3>
+<ul>
+<li><a href="https://www.bilibili.com/video/av65962501?from=search&amp;seid=5089170751259930044" target="_blank" rel="noopener">尚硅谷</a></li>
+</ul>
+<h3 id="友情提示："><a class="header-anchor" href="#友情提示：">⚡</a>友情提示：</h3>
+<ol>
+<li>
+<p>无论是学习视频还是博客，都不要一下子从头看到尾，按需观看即可。</p>
+</li>
+<li>
+<p>虽然任务好像用到了计算机网络的相关知识，但这仅仅是http而已，碰到了什么问题再去通过搜索引擎找解决方案，网络不是任务重点，有用到了解即可，不需要很深的知识。</p>
+</li>
+</ol>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Spring/">Spring</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%90%8E%E5%8F%B0%E5%BC%80%E5%8F%91/">后台开发</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/10/24/SQL%E4%B8%ADhaving%E5%92%8Cwhere%E7%9A%84%E5%8C%BA%E5%88%AB/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">sql中having 和 where的区别</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/10/16/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F(state)/">
+                        <span class="hidden-mobile">状态模式(state)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+    <div class="text-center py-3">
+        <div>
+            本站由 <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+            <i class="iconfont icon-love"></i>
+            <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+                <span>Fluid</span></a> 强力驱动
+        </div>
+
+        <div>
+            <span id="timeDate">载入天数...</span>
+            <span id="times">载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/5/2019 00:00:00"); //此处修改你的建站时间或者网站上线时间
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已经存在&nbsp" + dnum + "&nbsp天";
+                    document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum +
+                        "&nbsp秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+        </div>
+
+        
+  <div>
+    
+      <!-- 不蒜子统计PV -->
+      
+      <span id="busuanzi_container_site_pv" style="display: none">
+      总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    </span>
+    
+    
+      <!-- 不蒜子统计UV -->
+      
+      <span id="busuanzi_container_site_uv" style="display: none">
+      总访客数 <span id="busuanzi_value_site_uv"></span> 人
+    </span>
+    
+  </div>
+
+
+        
+
+        
+
+        <p id="hitokoto">:D 获取中...</p>
+        <script>
+            fetch('https://v1.hitokoto.cn')
+                .then(response => response.json())
+                .then(data => {
+                    const hitokoto = document.getElementById('hitokoto')
+                    hitokoto.innerText = data.hitokoto
+                })
+                .catch(console.error)
+        </script>
+    </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+<!-- Plugins -->
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Spring Boot学习建议&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+  <script>(function (i, s, o, g, r, a, m) {
+      i['DaoVoiceObject'] = r;
+      i[r] = i[r] ||
+        function () {
+          (i[r].q = i[r].q || []).push(arguments);
+        };
+      i[r].l = 1 * new Date();
+      a = s.createElement(o);
+      m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      a.charset = 'utf-8';
+      m.parentNode.insertBefore(a, m);
+    })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/a54a5523.js", 'daovoice');
+    daovoice('init', {
+      app_id: "a54a5523",
+    });
+    daovoice('update');
+  </script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

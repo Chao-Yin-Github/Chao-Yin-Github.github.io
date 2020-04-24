@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>JVM 知识--垃圾收集器 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.18.1/styles/atom-one-dark-reasonable.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_ijqayz9ro8k.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              首页</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              归档</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              标签</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" false
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2020-03-30 15:23">
+                    2020 三月 30, 星期一 , 3:23 下午
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    3.4k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    70
+                     分钟
+                  </span>
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  <span id="busuanzi_container_page_pv" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>
+                
+              </div>
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-warning">
+                本文最后更新于：2020 四月 20, 星期一 , 1:45 凌晨
+              </p>
+            
+            <article class="markdown-body">
+              <h1>基于分代收集理论</h1>
+<a id="more"></a>
+<h2 id="新生代收集器-Minor-GC"><a class="header-anchor" href="#新生代收集器-Minor-GC">⚡</a>新生代收集器 (Minor GC)</h2>
+<h3 id="Serial"><a class="header-anchor" href="#Serial">⚡</a>Serial</h3>
+<ol>
+<li>
+<p>标记-复制算法</p>
+</li>
+<li>
+<p>单线程: 不仅仅是只有一条收集线程,更是进行垃圾收集时必须暂停其他工作线程的工作</p>
+</li>
+<li>
+<p>有 “STOP THE WORLD”,降低用户体验</p>
+</li>
+<li>
+<p>优点是: 简单高效,仍然是 HotSpot 虚拟机客户端模式下的默认新生代收集器</p>
+<p>因为它是所有收集器里额外内存消耗最小的,适用于内存资源受限的场景</p>
+<p>由于没用线程交互的开销,可以获得最高的单线程收集效率</p>
+</li>
+<li>
+<p>推荐搭配 Serial Old 使用</p>
+</li>
+</ol>
+<h3 id="ParNew"><a class="header-anchor" href="#ParNew">⚡</a>ParNew</h3>
+<ol>
+<li>
+<p>标记-复制算法</p>
+</li>
+<li>
+<p>ParNew 实质上是 Serial 收集器的多线程版本</p>
+</li>
+<li>
+<p>ParNew 是 HotSpot 虚拟机服务端模式下的默认新生代收集器</p>
+</li>
+<li>
+<p>ParNew 在单线程的环境下绝对不会有比 Serial 收集器更好的效果</p>
+</li>
+<li>
+<p>ParNew 最先退出历史舞台,只能和 CMS 一起使用</p>
+</li>
+</ol>
+<h3 id="Parallel-Scavenge"><a class="header-anchor" href="#Parallel-Scavenge">⚡</a>Parallel Scavenge</h3>
+<ol>
+<li>
+<p>标记-复制算法</p>
+</li>
+<li>
+<p>多线程,能够并行收集</p>
+</li>
+<li>
+<p>特点是保证一个可控的吞吐量<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>,而 CMS 保证的是一个缩短用户线程的停顿时间</p>
+</li>
+<li>
+<p>也被成为&quot;吞吐量优先收集器&quot;</p>
+</li>
+</ol>
+<h2 id="老年代收集器-Major-GC"><a class="header-anchor" href="#老年代收集器-Major-GC">⚡</a>老年代收集器 (Major GC)</h2>
+<h3 id="Serial-Old"><a class="header-anchor" href="#Serial-Old">⚡</a>Serial Old</h3>
+<ol>
+<li>
+<p>标记-<strong>整理</strong>算法</p>
+</li>
+<li>
+<p>单线程</p>
+</li>
+<li>
+<p>默认是 HotSpot 虚拟机客户端模式下默认的老年代收集器</p>
+</li>
+<li>
+<p>如果在服务端下,有两种用途:</p>
+<ol>
+<li>
+<p>JDK 5 以前,与 Parallel Scavenge 搭配使用</p>
+</li>
+<li>
+<p>另一种就是作为 CMS 收集器发生失败时的后备预案,在并发收集时发生 Concurrent Mode Failure 时使用</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="Parallel-Old"><a class="header-anchor" href="#Parallel-Old">⚡</a>Parallel Old</h3>
+<ol>
+<li>
+<p>Parallel Scavenge 的老年代版本</p>
+</li>
+<li>
+<p>标记-整理算法</p>
+</li>
+<li>
+<p>多线程</p>
+</li>
+</ol>
+<h3 id="CMS-Concurrent-Mark-Sweep"><a class="header-anchor" href="#CMS-Concurrent-Mark-Sweep">⚡</a>CMS (<strong>Concurrent Mark Sweep</strong>)</h3>
+<ol>
+<li>
+<p>Old GC, CMS 独有</p>
+</li>
+<li>
+<p>标记-<strong>清除</strong>算法</p>
+</li>
+<li>
+<p>以获取最短回收停顿时间为目标</p>
+</li>
+<li>
+<p>运作过程更复杂</p>
+<ol>
+<li>
+<p>初始标记</p>
+<p>仅仅标记 GC Roots 能够关联到的对象,速度快</p>
+</li>
+<li>
+<p>并发标记</p>
+<p>从 GC Roots 的直接关联对象开始遍历整个对象图,耗时长但是不用停顿用户线程</p>
+</li>
+<li>
+<p>重新标记</p>
+<p>修正并发标记期间,因用户线程继续运作而导致标记变动的一部分对象的标记记录,停顿时间比初始标记时间稍长</p>
+</li>
+<li>
+<p>并发清除</p>
+<p>清理删除掉已经标记死亡的对象</p>
+</li>
+</ol>
+<p>初始标记和重新标记两个过程仍然需要 “Stop The World”</p>
+</li>
+<li>
+<p>缺点:</p>
+<ol>
+<li>
+<p>面向并发的程序对处理器资源比较敏感</p>
+<p>虽然并发阶段不会导致用户线程停顿,但是由于占用了一部分资源,会导致应用程序变慢,降低总吞吐量</p>
+</li>
+<li>
+<p>无法处理&quot;浮动垃圾&quot;</p>
+<p>浮动垃圾是由于在并发标记和并发清除阶段,用户线程继续产生的垃圾对象,而此次垃圾收集不能回收他们,只能等到下一次再清除</p>
+<p>而且需要留足够的内存空间提供给用户线程使用,因此 CMS 收集器不能像其他收集器那样,等老年代几乎完全满了再进行收集</p>
+<p>如果预留内存无法满足程序分配新对象的需要,有可能出现 “Concurrent Mode Failure” 失败,此时虚拟机就会启动预备方案,临时启用 Serial Old 收集器执行 GC,但这样停顿时间就很长了</p>
+</li>
+<li>
+<p>标记-清除产生的大量空间碎片</p>
+<p>无法找到足够大的连续空间分配大对象,而不得不产生另一次完全 “Stop the World” 的 Full GC</p>
+</li>
+</ol>
+</li>
+</ol>
+<!-- # 不分代垃圾收集 -->
+<h2 id="其他"><a class="header-anchor" href="#其他">⚡</a>其他</h2>
+<h3 id="G1-Garbage-First"><a class="header-anchor" href="#G1-Garbage-First">⚡</a>G1 (Garbage First)</h3>
+<ol>
+<li>
+<p>Mixed GC</p>
+</li>
+<li>
+<p>被 Oracle 称为&quot;全功能的垃圾收集器&quot;</p>
+</li>
+<li>
+<p>不再分代收集,而是面向整个堆的任何部分组成回收集 Set 进行回收,同时也是面向局部收集</p>
+<p>注意,收集范围还是整个堆,但将堆划分为每一个 Region 看做是一个局部,每个 Region 代表不同的代,具体是哪个代是动态的,而不是像以前那样的要么是新生代,要么是老年代,要么是整个堆</p>
+<p>即以前都是什么区域决定什么对象,现在是<strong>对象决定区域</strong></p>
+</li>
+<li>
+<p>是否回收衡量标准不是代数,而是哪块内存的多少,是回收的经验时间,即回收的收益大小</p>
+<p>通过维护这样一个优先级列表,每次回收价值更大的对象</p>
+</li>
+<li>
+<p>每一个 Region 可以扮演, Eden, Survivor, Major 或者 Humongous 区域</p>
+</li>
+<li>
+<p>运作过程</p>
+<ol>
+<li>
+<p>初始标记</p>
+<p>仅仅标记 GC Roots 能直接关联的对象,暂停用户线程,但耗时较短</p>
+</li>
+<li>
+<p>并发标记</p>
+<p>唯一不用暂停用户线程的阶段</p>
+<p>从 GC Roots 开始对堆中的对象进行可达性分析,递归扫描整个对象的对象图</p>
+</li>
+<li>
+<p>最终标记</p>
+<p>短暂暂停用户线程,用于处理并发标记时有引用变动的对象</p>
+</li>
+<li>
+<p>筛选回收</p>
+<p>更新 Region 的统计数据,对各个 Region 的回收价值和成本进行排序</p>
+<p>根据用户期望的停顿时间来制定回收计划,可以把一部分 Region 的存活对象复制到空的 Region 当中,再清理旧 Region</p>
+<p>并且,由于是按照 Region 清理,G1 不会产生内存碎片!</p>
+</li>
+</ol>
+</li>
+<li>
+<p>里程碑:通过追求能够应付应用的内存分配速率</p>
+<p>不追求一次把整个 Java 堆全部清理干净,而只要保证收集的速度能跟得上对象分配的速度就能工作的很完美</p>
+</li>
+<li>
+<p>特点总结:</p>
+<ol>
+<li>
+<p>不分代</p>
+</li>
+<li>
+<p>建立可预测的时间停顿模型,可以指定最大停顿时间</p>
+</li>
+<li>
+<p>分 Region 的布局,不会产生空间碎片</p>
+</li>
+<li>
+<p>按照收益回收的红利</p>
+</li>
+</ol>
+</li>
+<li>
+<p>缺点:</p>
+<ol>
+<li>
+<p>内存占用大</p>
+<p>和 CMS 一样,使用卡表来处理跨区指针,但是比 CMS 更加复杂,占用堆的20%空间甚至更多</p>
+</li>
+<li>
+<p>执行负载</p>
+<p>G1 除了使用写屏障来更新卡表之外,还为了实现原始快照搜索(STAB)算法,用写屏障来跟踪并发时的指针变化情况,导致用户线程在执行阶段有额外的负担</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="低延迟垃圾收集器"><a class="header-anchor" href="#低延迟垃圾收集器">⚡</a>低延迟垃圾收集器</h2>
+<p>几乎整个工作过程都是并发的,只有在初始标记,最终标记阶段有短暂的停顿,且停顿时间基本固定</p>
+<h3 id="Shenandoah"><a class="header-anchor" href="#Shenandoah">⚡</a>Shenandoah</h3>
+<ol>
+<li>
+<p>和 G1 有很多相似的地方</p>
+<p>内存布局 初始标记,并发标记的思路 …</p>
+</li>
+<li>
+<p>G1 就是由于合并了 Shenandoah 的代码才能获得多线程 Full GC 的支持</p>
+<p>G1 修改的代码也会反映到 Shenandoah 上面</p>
+</li>
+<li>
+<p>相比 G1 的改进</p>
+<ol>
+<li>
+<p>G1 的筛选回收阶段是多线程并行但不是并发的,而 Shenandoah 可以</p>
+</li>
+<li>
+<p>默认不使用分代收集</p>
+</li>
+<li>
+<p>G1 中的记忆集变成了连接矩阵的全局数据结构 —— 二维表,减少维护消耗</p>
+</li>
+</ol>
+</li>
+<li>
+<p>运作过程</p>
+<ol>
+<li>
+<p>初始标记</p>
+</li>
+<li>
+<p>并发标记</p>
+</li>
+<li>
+<p>最终标记</p>
+</li>
+<li>
+<p><strong>并发清理</strong></p>
+<p>清理那些整个 Region 连一个存活对象都没有的</p>
+</li>
+<li>
+<p><strong>并发回收</strong> (核心)</p>
+<p>先把回收集里面的存活对象复制到未被使用的 Region</p>
+<p>但是这个复制对象的过程是在并发时完成的, 就可能会出现一边复制,一边读的问题</p>
+<p>而它是通过读屏障和被称为 Brooks Pointers 的转发指针来解决的</p>
+</li>
+<li>
+<p>初始引用更新</p>
+<p>把所有指向旧对象的引用修正到复制到的新地址</p>
+<p>只是建议一个线程集合点,会产生短暂的暂停</p>
+</li>
+<li>
+<p><strong>并发引用更新</strong></p>
+<p>真正开始引用更新,不再需要沿着对象图进行搜索,只需要按照内存物理地址的顺序,顺序搜索出引用类型</p>
+</li>
+<li>
+<p>最终引用更新</p>
+<p>修正 GC Roots 中的引用</p>
+</li>
+<li>
+<p>并发清理</p>
+<p>经过并发回收和引用更新之后,整个回收集中所有的 Region 已再无存活对象, 最后再调用一次并发清理过程回收 Region 的空间</p>
+</li>
+</ol>
+<ul>
+<li>
+<p>关于 Brooks Pointers</p>
+<p>其实原来的解决方案是设置自陷陷阱,主动触发异常,再进入预设好的异常处理器中,再由代码逻辑吧访问转发到复制后的对象上.但是如果没有操作系统的支持,会导致用户态频繁转到内核态,代价很大</p>
+<p>而在原有对象布局结构的最前面统一增加一个新的引用字段,在不处于并发移动的i情况下,该引用指向自己</p>
+<p>这样,当对象有了一份新的副本时,只需要就对象指针的值,指向新对象.只要就对象的内存依然存在,虚拟机内存中所有通过旧引用地址访问代码便仍然可用,都会被转发到新对象上继续工作</p>
+<ul>
+<li>
+<p>但是请注意,这个设计导致了必然会出现多线程竞争问题</p>
+<p>例如当复制对象完成后,用户修改了旧对象,收集器线程才刚刚更新指针</p>
+<p>所以,对指针转发的操作必须采用同步措施,在统一时间内只能让用户线程或者收集器线程其中之一访问</p>
+</li>
+<li>
+<p>还有一点是执行频率问题</p>
+<p>在面向对象编程的语言中,对象访问是非常重要的,非常频繁的,而 Shenandoah 同时设置读,写屏障,带来了数量庞大的性能开销</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="ZGC"><a class="header-anchor" href="#ZGC">⚡</a>ZGC</h3>
+<ol>
+<li>
+<p>染色指针技术,将指针的高四位提取出来存储四个标志信息</p>
+</li>
+<li>
+<p>运作过程</p>
+<p>ZGC 的四个大阶段都是可以并发执行的,仅仅两个阶段中间会有短暂的停顿用户线程</p>
+<ol>
+<li>
+<p>并发标记</p>
+<p>和 G1, Shenandoah 类似,只不过标记是在指针上而不是在对象上进行的</p>
+</li>
+<li>
+<p>并发预备重分配</p>
+<p>根据特定的查询条件统计要清理的 Region, 将这些 Region 重新组成分配集,准备复制到其他的 Region 中</p>
+</li>
+<li>
+<p>并发重分配 (核心)</p>
+<p>把重分配集中的存活对象复制到新的 Region 上,并为重分配集中的每个 Region 维护一个转发表,记录从旧对象到新对象的转发关系</p>
+<p>如果用户线程此时访问了位于重分配集中的对象,这次访问将会被预置的内存屏障所截获,然后立即根据 Region 上的转发表记录,将访问转发到新复制的对象,这种行为成为指针的 “自愈”</p>
+<p>相比 Shenandoah 的转发指针,每次都会有转发的固定开销,ZGC 运行时的负载比 Shenandoah 要低一些</p>
+</li>
+<li>
+<p>并发重映射</p>
+<p>修正整个堆中只想重分配集中旧对象的所有引用,类似 Shenandoah 的并发引用更新</p>
+<p>但是 ZGC 这个任务并不是那么迫切的,因为即使是旧引用,也是可以自愈的,也不过是一次转发和修正</p>
+<p>因此,ZGC 把这个阶段的工作合并到了下一次垃圾收集的并发标记阶段,节省了一次遍历所有对象图的开销</p>
+</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>
+<p>优点</p>
+<p>由于 ZGC 完全没有记忆集,甚至没有分代,所以给用户线程的运行负担小很多</p>
+</li>
+<li>
+<p>缺点</p>
+<ol>
+<li>
+<p>ZGC 对整个堆回收的速度较慢,但是由于对象的分配速率很高,并且很多朝生夕灭,但是在此时又被当作是存活对象,没有标记回收,导致产生了很多浮动垃圾</p>
+<p>因为较长的回收时间,和高速产生的对象,并且这个过程如果持续维持的话,堆中能够用于腾挪的空间会越来越小</p>
+<p>目前解决办法是尽可能的增加堆的大小,但是要本质上解决,还是必须引入分代收集理论,将对象都在一个专门的区域创建,然后专门对这个区域进行更快,更频繁的收集</p>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="Epsilon"><a class="header-anchor" href="#Epsilon">⚡</a>Epsilon</h3>
+<p>不能够进行垃圾收集</p>
+<h1>垃圾收集器的范围</h1>
+<ul>
+<li>
+<h2 id="Partial-GC"><a class="header-anchor" href="#Partial-GC">⚡</a>Partial GC</h2>
+<ul>
+<li>
+<h3 id="Minor-GC-Young-GC"><a class="header-anchor" href="#Minor-GC-Young-GC">⚡</a>Minor GC / Young GC</h3>
+<p>仅仅是收集新生代</p>
+</li>
+<li>
+<h3 id="Old-GC-CMS-独有模式"><a class="header-anchor" href="#Old-GC-CMS-独有模式">⚡</a>Old GC (CMS 独有模式)</h3>
+<p>收集老年代</p>
+</li>
+<li>
+<h3 id="Major-GC"><a class="header-anchor" href="#Major-GC">⚡</a>Major GC</h3>
+<p>同 Old GC,收集老年代</p>
+</li>
+<li>
+<h3 id="Mixed-GC-G1-独有模式"><a class="header-anchor" href="#Mixed-GC-G1-独有模式">⚡</a>Mixed GC (G1 独有模式)</h3>
+<p>目标是收集整个新生代和老年代</p>
+</li>
+</ul>
+</li>
+<li>
+<h2 id="Full-GC-Major-GC"><a class="header-anchor" href="#Full-GC-Major-GC">⚡</a>Full GC / Major GC</h2>
+<p>收集整个 Java 堆和方法区</p>
+</li>
+</ul>
+<p>注意:</p>
+<blockquote>
+<p>Major GC 有不同语义,要弄清楚到底是指与 Full GC 同样的整个堆和方法区的收集,还是值与 Old GC 类似的仅仅老年代堆的收集</p>
+</blockquote>
+<h1>并发和并行</h1>
+<ol>
+<li>
+<p>并行 (Parallel): 多条垃圾收集器线程之间的关系,说明同一时间有多条这样的线程在协同工作,通常默认用户线程此时处于等待状态</p>
+</li>
+<li>
+<p>并发 (Concurrent): 描述的是垃圾收集器线程和用户线程之间的关系,说明同一时间垃圾收集器线程和用户线程都在运行,但由于垃圾收集器线程占用了一部分系统资源,应用程序虽然还行响应,但是吞吐量会受到一定影响</p>
+</li>
+</ol>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>吞吐量=(运行用户代码时间)/(运行用户代码+_垃圾收集的时间) <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JVM/">JVM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/3/31/JVM-%E7%9F%A5%E8%AF%86-OOM%E7%9A%84%E5%87%A0%E7%A7%8D%E6%83%85%E5%86%B5/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JVM 知识--OOM的几种情况</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/3/29/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E7%A1%AC%E4%BB%B6%E5%86%85%E5%AD%98%E6%9E%B6%E6%9E%84/">
+                        <span class="hidden-mobile">并发知识-硬件内存架构</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+    <div class="text-center py-3">
+        <div>
+            本站由 <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+            <i class="iconfont icon-love"></i>
+            <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+                <span>Fluid</span></a> 强力驱动
+        </div>
+
+        <div>
+            <span id="timeDate">载入天数...</span>
+            <span id="times">载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/5/2019 00:00:00"); //此处修改你的建站时间或者网站上线时间
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已经存在&nbsp" + dnum + "&nbsp天";
+                    document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum +
+                        "&nbsp秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+        </div>
+
+        
+  <div>
+    
+      <!-- 不蒜子统计PV -->
+      
+      <span id="busuanzi_container_site_pv" style="display: none">
+      总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    </span>
+    
+    
+      <!-- 不蒜子统计UV -->
+      
+      <span id="busuanzi_container_site_uv" style="display: none">
+      总访客数 <span id="busuanzi_value_site_uv"></span> 人
+    </span>
+    
+  </div>
+
+
+        
+
+        
+
+        <p id="hitokoto">:D 获取中...</p>
+        <script>
+            fetch('https://v1.hitokoto.cn')
+                .then(response => response.json())
+                .then(data => {
+                    const hitokoto = document.getElementById('hitokoto')
+                    hitokoto.innerText = data.hitokoto
+                })
+                .catch(console.error)
+        </script>
+    </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+<!-- Plugins -->
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "JVM 知识--垃圾收集器&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+  <script>(function (i, s, o, g, r, a, m) {
+      i['DaoVoiceObject'] = r;
+      i[r] = i[r] ||
+        function () {
+          (i[r].q = i[r].q || []).push(arguments);
+        };
+      i[r].l = 1 * new Date();
+      a = s.createElement(o);
+      m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      a.charset = 'utf-8';
+      m.parentNode.insertBefore(a, m);
+    })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/a54a5523.js", 'daovoice');
+    daovoice('init', {
+      app_id: "a54a5523",
+    });
+    daovoice('update');
+  </script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

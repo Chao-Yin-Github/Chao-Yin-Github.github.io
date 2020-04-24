@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>hexo+Github Pages搭建博客指南 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.18.1/styles/atom-one-dark-reasonable.min.css" />
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_ijqayz9ro8k.css">
+
+
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="iconfont icon-home-fill"></i>
+              首页</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">
+              <i class="iconfont icon-archive-fill"></i>
+              归档</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">
+              <i class="iconfont icon-tags-fill"></i>
+              标签</a>
+          </li>
+        
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">
+              <i class="iconfont icon-user-fill"></i>
+              关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" false
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <div class="mt-3 post-meta">
+                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+                  <time datetime="2019-07-12 15:22">
+                    2019 七月 12, 星期五 , 3:22 下午
+                  </time>
+                </div>
+              
+
+              <div class="mt-1">
+                
+                  
+                  <span class="post-meta mr-2">
+                    <i class="iconfont icon-chart"></i>
+                    631 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta mr-2">
+                      <i class="iconfont icon-clock-fill"></i>
+                    
+                    
+                    18
+                     分钟
+                  </span>
+                
+
+                
+                  <!-- 不蒜子统计文章PV -->
+                  
+                  <span id="busuanzi_container_page_pv" class="post-meta" style="display: none">
+                    <i class="iconfont icon-eye" aria-hidden="true"></i>
+                    <span id="busuanzi_value_page_pv"></span> 次
+                  </span>
+                
+              </div>
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-warning">
+                本文最后更新于：2020 四月 22, 星期三 , 5:34 下午
+              </p>
+            
+            <article class="markdown-body">
+              <ol>
+<li>
+<h2 id="hexo-ndoejs安装"><a class="header-anchor" href="#hexo-ndoejs安装">⚡</a>hexo+ndoejs安装</h2>
+<p>hexo:</p>
+<p><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">具体说明请看官方文档</a></p>
+<p>node + npm:</p>
+ <div class="hljs"><pre><code class="hljs shell">sudo pacman -S nodejs npm</code></pre></div>
+<p><a href="https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally" target="_blank" rel="noopener">npm 权限问题</a></p>
+</li>
+<li>
+<h2 id="主题配置"><a class="header-anchor" href="#主题配置">⚡</a>主题配置</h2>
+<ol>
+<li>
+<p>选择一个主题克隆下来</p>
+<p>例如：<a href="https://github.com/klugjo/hexo-theme-alpha-dust" target="_blank" rel="noopener">alpha-dust</a></p>
+ <div class="hljs"><pre><code class="hljs shell">git clone https://github.com/klugjo/hexo-theme-alpha-dust themes/alpha-dustgit clone</code></pre></div>
+</li>
+<li>
+<p>修改所需配置</p>
+<ol>
+<li>
+<p>author，discription等等</p>
+</li>
+<li>
+<p>修改favicon</p>
+<ol>
+<li>
+<p><a href="http://www.faviconico.org/favicon" target="_blank" rel="noopener">在线生成ico</a></p>
+</li>
+<li>
+<p>把生成的文件放到 blog/source目录下</p>
+<p>并修改文件名为favicon.ico</p>
+</li>
+<li>
+<p>(并没有效果) 修改blog/_config.yml</p>
+ <div class="hljs"><pre><code class="hljs yml"><span class="hljs-comment"># 增加一行</span>
+<span class="hljs-string">favicon:/favicon.ico</span></code></pre></div>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>使用hexo</p>
+<ol>
+<li>
+<p>生成草稿或者新的markdown文件</p>
+ <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 生成草稿</span>
+hexo new draft test
+
+<span class="hljs-meta">#</span><span class="bash"> 生成markdown文件</span>
+hexo new post blog</code></pre></div>
+</li>
+<li>
+<p>将draft草稿发布</p>
+ <div class="hljs"><pre><code class="hljs shell">hexo publish post test</code></pre></div>
+</li>
+<li>
+<p>部到 git</p>
+ <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 安装插件</span>
+npm install hexo-deployer-git  --save</code></pre></div>
+</li>
+</ol>
+</li>
+<li>
+<p>插件</p>
+<ul>
+<li>
+<p>live2d</p>
+  <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> sudo npm install hexo-helper-live2d --save</span>
+
+<span class="hljs-meta">#</span><span class="bash"> shizaku是model的名字</span>
+<span class="hljs-meta">$</span><span class="bash"> sudo npm install live2d-widget-model-shizuku --save</span></code></pre></div>
+<p>_config.yml加入如下配置</p>
+  <div class="hljs"><pre><code class="hljs yml"><span class="hljs-comment"># Live2D</span>
+<span class="hljs-comment">## https://github.com/EYHN/hexo-helper-live2d</span>
+<span class="hljs-attr">live2d:</span>
+<span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">scriptFrom:</span> <span class="hljs-string">jsdelivr</span> <span class="hljs-comment"># 默认</span>
+<span class="hljs-attr">pluginRootPath:</span> <span class="hljs-string">live2dw/</span> <span class="hljs-comment"># 插件在站点上的根目录(相对路径)</span>
+<span class="hljs-attr">pluginJsPath:</span> <span class="hljs-string">lib/</span> <span class="hljs-comment"># 脚本文件相对与插件根目录路径</span>
+<span class="hljs-attr">pluginModelPath:</span> <span class="hljs-string">assets/</span> <span class="hljs-comment"># 模型文件相对与插件根目录路径</span>
+<span class="hljs-comment"># scriptFrom: jsdelivr # jsdelivr CDN</span>
+<span class="hljs-comment"># scriptFrom: unpkg # unpkg CDN</span>
+<span class="hljs-comment"># scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js # 你的自定义 url</span>
+<span class="hljs-attr">tagMode:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 标签模式, 是否仅替换 live2d tag标签而非插入到所有页面中</span>
+<span class="hljs-attr">debug:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 调试, 是否在控制台输出日志</span>
+<span class="hljs-attr">model:</span>
+<span class="hljs-attr">use:</span> <span class="hljs-string">live2d-widget-model-shizuku</span> <span class="hljs-comment"># npm-module package name</span>
+    <span class="hljs-attr">scale:</span> <span class="hljs-number">1</span>
+    <span class="hljs-attr">hHeadPos:</span> <span class="hljs-number">0.5</span>
+    <span class="hljs-attr">vHeadPos:</span> <span class="hljs-number">0.618</span>
+<span class="hljs-attr">display:</span>
+    <span class="hljs-attr">superSample:</span> <span class="hljs-number">2</span>
+    <span class="hljs-attr">width:</span> <span class="hljs-number">125</span>
+    <span class="hljs-attr">height:</span> <span class="hljs-number">125</span>
+    <span class="hljs-attr">position:</span> <span class="hljs-string">left</span>
+    <span class="hljs-attr">hOffset:</span> <span class="hljs-number">30</span>
+    <span class="hljs-attr">vOffset:</span> <span class="hljs-number">-20</span>
+<span class="hljs-attr">mobile:</span>
+    <span class="hljs-attr">show:</span> <span class="hljs-literal">false</span>
+    <span class="hljs-attr">scale:</span> <span class="hljs-number">0.05</span>
+<span class="hljs-attr">react:</span>
+    <span class="hljs-attr">opacityDefault:</span> <span class="hljs-number">1</span>
+    <span class="hljs-attr">opacityOnHover:</span> <span class="hljs-number">0.2</span></code></pre></div>
+<p>想要其他的model可以去<a href="https://huaji8.top/post/live2d-plugin-2.0/" target="_blank" rel="noopener">官方博客找</a></p>
+</li>
+<li>
+<p>Browsersync 实时预览编辑</p>
+  <div class="hljs"><pre><code class="hljs shell">npm install hexo-browsersync --save</code></pre></div>
+</li>
+<li>
+<p>hexo-deployer-shell 同步服务器</p>
+  <div class="hljs"><pre><code class="hljs shell">npm install hexo-deployer-shell --save</code></pre></div>
+<p>修改 root 的 _config.yml</p>
+  <div class="hljs"><pre><code class="hljs yml"><span class="hljs-attr">deploy:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">shell</span>
+  <span class="hljs-attr">command:</span> <span class="hljs-string">&lt;your</span> <span class="hljs-string">deploy</span> <span class="hljs-string">command&gt;</span>
+  <span class="hljs-attr">options:</span>
+  <span class="hljs-attr">timeout:</span> <span class="hljs-number">2000</span></code></pre></div>
+</li>
+<li>
+<p><a href="https://github.com/netcan/hexo-generator-index-pin-top" target="_blank" rel="noopener">置顶</a></p>
+  <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> npm uninstall hexo-generator-index --save</span>
+<span class="hljs-meta">$</span><span class="bash"> npm install hexo-generator-index-pin-top --save</span></code></pre></div>
+<p>如果要置顶,就在文章首的 font-matter 里面添加:<br>
+top: True</p>
+</li>
+<li>
+<p>markdown 脚注</p>
+<p><a href="https://github.com/hexojs/hexo-renderer-markdown-it" target="_blank" rel="noopener">换新的引擎</a></p>
+  <div class="hljs"><pre><code class="hljs shell">npm un hexo-renderer-marked --save
+
+npm i hexo-renderer-markdown-it --save</code></pre></div>
+<p>可选的配置</p>
+  <div class="hljs"><pre><code class="hljs yml"><span class="hljs-attr">markdown:</span>
+    <span class="hljs-attr">render:</span>
+        <span class="hljs-attr">html:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">xhtmlOut:</span> <span class="hljs-literal">false</span>
+        <span class="hljs-attr">breaks:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">linkify:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">typographer:</span> <span class="hljs-literal">true</span>
+        <span class="hljs-attr">quotes:</span> <span class="hljs-string">'“”‘’'</span>
+    <span class="hljs-attr">plugins:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">markdown-it-abbr</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">markdown-it-footnote</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">markdown-it-ins</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">markdown-it-sub</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">markdown-it-sup</span>
+    <span class="hljs-attr">anchors:</span>
+    <span class="hljs-attr">level:</span> <span class="hljs-number">2</span>
+    <span class="hljs-attr">collisionSuffix:</span> <span class="hljs-string">'v'</span>
+    <span class="hljs-attr">permalink:</span> <span class="hljs-literal">false</span>
+    <span class="hljs-attr">permalinkClass:</span> <span class="hljs-string">'header-anchor'</span>
+    <span class="hljs-attr">permalinkSide:</span> <span class="hljs-string">'left'</span>
+    <span class="hljs-attr">permalinkSymbol:</span> <span class="hljs-string">'⚡'</span>
+    <span class="hljs-attr">case:</span> <span class="hljs-number">0</span>
+    <span class="hljs-attr">separator:</span> <span class="hljs-string">''</span></code></pre></div>
+<p>换了引擎还要 clean 一下</p>
+<p><a href="https://zhanghuimeng.github.io/post/add-footnote-plugin-for-hexo-blog/" target="_blank" rel="noopener">参考博客</a></p>
+</li>
+<li>
+<p><a href="https://github.com/hexojs/hexo-generator-feed" target="_blank" rel="noopener">RSS</a></p>
+  <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">$</span><span class="bash"> npm install hexo-generator-feed --save</span></code></pre></div>
+<p>对于 fluid 主题,我们可以在关于页里面修改 icons 支持 rss,link 就写 <code>/atom.xml</code></p>
+</li>
+<li>
+<p><a href="https://github.com/HCLonely/hexo-online-server" target="_blank" rel="noopener">hexo-online-server</a></p>
+<p>在线编辑</p>
+<p>坑(2020.4.17版本):</p>
+<ol>
+<li>
+<p>展示的配置注释要删</p>
+</li>
+<li>
+<p>配置里面的 secret 要随便输一些东西,否则会报错:</p>
+<p>Error: secret option required for sessions</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/configuration/">configuration</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/7/13/%E8%B4%AA%E5%90%83%E8%9B%87/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">贪吃蛇</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2019/7/11/Linux%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/">
+                        <span class="hidden-mobile">Linux常用指令</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+    <div class="text-center py-3">
+        <div>
+            本站由 <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+            <i class="iconfont icon-love"></i>
+            <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+                <span>Fluid</span></a> 强力驱动
+        </div>
+
+        <div>
+            <span id="timeDate">载入天数...</span>
+            <span id="times">载入时分秒...</span>
+            <script>
+                var now = new Date();
+
+                function createtime() {
+                    var grt = new Date("08/5/2019 00:00:00"); //此处修改你的建站时间或者网站上线时间
+                    now.setTime(now.getTime() + 250);
+                    days = (now - grt) / 1000 / 60 / 60 / 24;
+                    dnum = Math.floor(days);
+                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+                    hnum = Math.floor(hours);
+                    if (String(hnum).length == 1) {
+                        hnum = "0" + hnum;
+                    }
+                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+                    mnum = Math.floor(minutes);
+                    if (String(mnum).length == 1) {
+                        mnum = "0" + mnum;
+                    }
+                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+                    snum = Math.round(seconds);
+                    if (String(snum).length == 1) {
+                        snum = "0" + snum;
+                    }
+                    document.getElementById("timeDate").innerHTML = "本站已经存在&nbsp" + dnum + "&nbsp天";
+                    document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum +
+                        "&nbsp秒";
+                }
+                setInterval("createtime()", 250);
+            </script>
+        </div>
+
+        
+  <div>
+    
+      <!-- 不蒜子统计PV -->
+      
+      <span id="busuanzi_container_site_pv" style="display: none">
+      总访问量 <span id="busuanzi_value_site_pv"></span> 次
+    </span>
+    
+    
+      <!-- 不蒜子统计UV -->
+      
+      <span id="busuanzi_container_site_uv" style="display: none">
+      总访客数 <span id="busuanzi_value_site_uv"></span> 人
+    </span>
+    
+  </div>
+
+
+        
+
+        
+
+        <p id="hitokoto">:D 获取中...</p>
+        <script>
+            fetch('https://v1.hitokoto.cn')
+                .then(response => response.json())
+                .then(data => {
+                    const hitokoto = document.getElementById('hitokoto')
+                    hitokoto.innerText = data.hitokoto
+                })
+                .catch(console.error)
+        </script>
+    </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+<!-- Plugins -->
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "hexo+Github Pages搭建博客指南&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+  <script>(function (i, s, o, g, r, a, m) {
+      i['DaoVoiceObject'] = r;
+      i[r] = i[r] ||
+        function () {
+          (i[r].q = i[r].q || []).push(arguments);
+        };
+      i[r].l = 1 * new Date();
+      a = s.createElement(o);
+      m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      a.charset = 'utf-8';
+      m.parentNode.insertBefore(a, m);
+    })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/a54a5523.js", 'daovoice');
+    daovoice('init', {
+      app_id: "a54a5523",
+    });
+    daovoice('update');
+  </script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

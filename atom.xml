@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>y·◑</title>
+  <icon>https://chao-yin-github.github.io/icon.png</icon>
+  <subtitle>Talk is cheap,show me the code.</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://chao-yin-github.github.io/"/>
+  <updated>2020-04-23T05:51:16.937Z</updated>
+  <id>https://chao-yin-github.github.io/</id>
+  
+  <author>
+    <name>Yin Chao</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>并发知识-(杂谈) Java 并发学习体会</title>
+    <link href="https://chao-yin-github.github.io/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-(%E6%9D%82%E8%B0%88)%20Java%20%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E4%BD%93%E4%BC%9A/"/>
+    <id>https://chao-yin-github.github.io/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-(%E6%9D%82%E8%B0%88)%20Java%20%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E4%BD%93%E4%BC%9A/</id>
+    <published>2020-04-23T05:26:00.000Z</published>
+    <updated>2020-04-23T05:51:16.937Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;为什么并发编程难学,因为并发就要保证两个性质: 高可用,正确性&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="concurrent" scheme="https://Chao-Yin-Github.github.io/tags/concurrent/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>并发知识- (杂谈) 高并发高可用 VS 多线程正确性</title>
+    <link href="https://chao-yin-github.github.io/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%20(%E6%9D%82%E8%B0%88)%20%E9%AB%98%E5%B9%B6%E5%8F%91%E9%AB%98%E5%8F%AF%E7%94%A8-VS-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%A3%E7%A1%AE%E6%80%A7/"/>
+    <id>https://chao-yin-github.github.io/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%20(%E6%9D%82%E8%B0%88)%20%E9%AB%98%E5%B9%B6%E5%8F%91%E9%AB%98%E5%8F%AF%E7%94%A8-VS-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%A3%E7%A1%AE%E6%80%A7/</id>
+    <published>2020-04-23T03:44:27.000Z</published>
+    <updated>2020-04-23T09:04:55.357Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;写在前面&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#写在前面&quot;&gt;⚡&lt;/a&gt;写在前面&lt;/h2&gt;
+&lt;p&gt;文章是学习并发编程的时候,觉得并发编程难学,想到什么情况下需要用到并发编程,然后想到了一些情况,故记录之&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="concurrent" scheme="https://Chao-Yin-Github.github.io/tags/concurrent/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>并发知识-- ReentrantLock</title>
+    <link href="https://chao-yin-github.github.io/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-ReentrantLock/"/>
+    <id>https://chao-yin-github.github.io/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-ReentrantLock/</id>
+    <published>2020-04-21T08:51:16.000Z</published>
+    <updated>2020-04-23T11:46:32.613Z</updated>
+    
+    <summary type="html">
+    
+      如果并发度很大,那么就一定存在线程之前对锁的竞争,这时,如果是公平锁,那么先获取锁的线程先处理,后获取锁的排在一个等待队列,然后这个线程就 `park` 暂停,然后等待锁释放和通知,`unpark` 后,再去获取锁...
+    
+    </summary>
+    
+    
+    
+      <category term="concurrent" scheme="https://Chao-Yin-Github.github.io/tags/concurrent/"/>
+    
+      <category term="Java" scheme="https://Chao-Yin-Github.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>并发知识--多线程</title>
+    <link href="https://chao-yin-github.github.io/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    <id>https://chao-yin-github.github.io/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%A4%9A%E7%BA%BF%E7%A8%8B/</id>
+    <published>2020-04-21T01:36:59.000Z</published>
+    <updated>2020-04-21T08:47:51.287Z</updated>
+    
+    <summary type="html">
+    
+      《Java 并发编程的艺术》—— 方鹏飞 -- 笔记
+    
+    </summary>
+    
+    
+    
+      <category term="concurrent" scheme="https://Chao-Yin-Github.github.io/tags/concurrent/"/>
+    
+      <category term="Java" scheme="https://Chao-Yin-Github.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL 知识-- ICP 优化</title>
+    <link href="https://chao-yin-github.github.io/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-ICP-%E4%BC%98%E5%8C%96/"/>
+    <id>https://chao-yin-github.github.io/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-ICP-%E4%BC%98%E5%8C%96/</id>
+    <published>2020-04-16T13:16:14.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Index Condition Pushdown (ICP)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;目的: 在取出索引的同时,提前判断 where 条件,从而提前过滤一部分不符合条件的记录&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="database" scheme="https://Chao-Yin-Github.github.io/tags/database/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL 知识-- MRR 优化</title>
+    <link href="https://chao-yin-github.github.io/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-MRR%20%E4%BC%98%E5%8C%96/"/>
+    <id>https://chao-yin-github.github.io/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-MRR%20%E4%BC%98%E5%8C%96/</id>
+    <published>2020-04-16T12:47:54.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Multi-Range Read (MRR)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;目的:减少磁盘随机访问&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="database" scheme="https://Chao-Yin-Github.github.io/tags/database/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL 知识-- InnoDB 和 MyISAM</title>
+    <link href="https://chao-yin-github.github.io/2020/4/15/MySQL-%E7%9F%A5%E8%AF%86-InnoDB-%E5%92%8C-MyISAM/"/>
+    <id>https://chao-yin-github.github.io/2020/4/15/MySQL-%E7%9F%A5%E8%AF%86-InnoDB-%E5%92%8C-MyISAM/</id>
+    <published>2020-04-15T08:30:00.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;区别&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#区别&quot;&gt;⚡&lt;/a&gt;区别&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;InnoDB 支持事务,MyISAM 不支持事务&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="database" scheme="https://Chao-Yin-Github.github.io/tags/database/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL 知识--索引</title>
+    <link href="https://chao-yin-github.github.io/2020/4/14/MySQL-%E7%9F%A5%E8%AF%86-%E7%B4%A2%E5%BC%95/"/>
+    <id>https://chao-yin-github.github.io/2020/4/14/MySQL-%E7%9F%A5%E8%AF%86-%E7%B4%A2%E5%BC%95/</id>
+    <published>2020-04-14T10:35:00.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;几种索引&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#几种索引&quot;&gt;⚡&lt;/a&gt;几种索引&lt;/h2&gt;
+&lt;h3 id=&quot;聚集索引-聚簇索引-cluster-index-主键索引&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#聚集索引-聚簇索引-cluster-index-主键索引&quot;&gt;⚡&lt;/a&gt;聚集索引 (聚簇索引 cluster index)(主键索引)&lt;/h3&gt;
+&lt;p&gt;聚集索引数据行的&lt;strong&gt;物理顺序&lt;/strong&gt;与列值(一般是主键列)的逻辑顺序相同&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="database" scheme="https://Chao-Yin-Github.github.io/tags/database/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM 知识--JVM 和 JMM</title>
+    <link href="https://chao-yin-github.github.io/2020/4/14/JVM-%E7%9F%A5%E8%AF%86-JVM-%E5%92%8C-JMM/"/>
+    <id>https://chao-yin-github.github.io/2020/4/14/JVM-%E7%9F%A5%E8%AF%86-JVM-%E5%92%8C-JMM/</id>
+    <published>2020-04-14T05:35:03.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;JMM-解释&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#JMM-解释&quot;&gt;⚡&lt;/a&gt;JMM 解释&lt;/h2&gt;
+&lt;p&gt;JMM (Java Memory Model) 定义了 Java 虚拟机(JVM)在计算机内存(RAM)中的工作方式。JVM 是整个计算机虚拟模型，所以 JMM 隶属于 JVM&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="JVM" scheme="https://Chao-Yin-Github.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL 常用指令</title>
+    <link href="https://chao-yin-github.github.io/2020/4/11/MySQL-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"/>
+    <id>https://chao-yin-github.github.io/2020/4/11/MySQL-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</id>
+    <published>2020-04-11T14:31:40.000Z</published>
+    <updated>2020-04-23T09:23:44.147Z</updated>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;修改字段 video 为 utf8mb4 编码&lt;/p&gt;
+  &lt;div class=&quot;hljs&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs sql&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;alter&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;table&lt;/span&gt; slaughter_sheepinfo &lt;span class=&quot;hljs-keyword&quot;&gt;change&lt;/span&gt; video video &lt;span class=&quot;hljs-built_in&quot;&gt;varchar&lt;/span&gt;(&lt;span class=&quot;hljs-number&quot;&gt;250&lt;/span&gt;) &lt;span class=&quot;hljs-built_in&quot;&gt;character&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;set&lt;/span&gt; utf8mb4&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="shellCommand" scheme="https://Chao-Yin-Github.github.io/tags/shellCommand/"/>
+    
+      <category term="SQL" scheme="https://Chao-Yin-Github.github.io/tags/SQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL 知识--连接join</title>
+    <link href="https://chao-yin-github.github.io/2020/4/11/MySQL-%E7%9F%A5%E8%AF%86-%E8%BF%9E%E6%8E%A5join/"/>
+    <id>https://chao-yin-github.github.io/2020/4/11/MySQL-%E7%9F%A5%E8%AF%86-%E8%BF%9E%E6%8E%A5join/</id>
+    <published>2020-04-11T13:20:59.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;最笨拙的join就是多个表的for循环,以幂次增长&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="database" scheme="https://Chao-Yin-Github.github.io/tags/database/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM 知识--对象</title>
+    <link href="https://chao-yin-github.github.io/2020/4/11/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1/"/>
+    <id>https://chao-yin-github.github.io/2020/4/11/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1/</id>
+    <published>2020-04-10T16:58:35.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;对象布局 =  对象头(12个byte=96bit) + 实例数据 + 对齐填充 (变成8的倍数)&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="JVM" scheme="https://Chao-Yin-Github.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM 知识--内存溢出和内存泄漏</title>
+    <link href="https://chao-yin-github.github.io/2020/4/11/JVM-%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/"/>
+    <id>https://chao-yin-github.github.io/2020/4/11/JVM-%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/</id>
+    <published>2020-04-10T16:22:21.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;内存溢出(MemoryOverflow)就是你要求分配的内存超出了系统给你的,导致系统无法再给你提供内存资源（内存资源耗尽）&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="JVM" scheme="https://Chao-Yin-Github.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM 知识--OOM的几种情况</title>
+    <link href="https://chao-yin-github.github.io/2020/3/31/JVM-%E7%9F%A5%E8%AF%86-OOM%E7%9A%84%E5%87%A0%E7%A7%8D%E6%83%85%E5%86%B5/"/>
+    <id>https://chao-yin-github.github.io/2020/3/31/JVM-%E7%9F%A5%E8%AF%86-OOM%E7%9A%84%E5%87%A0%E7%A7%8D%E6%83%85%E5%86%B5/</id>
+    <published>2020-03-31T12:45:30.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;堆&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;内存&lt;strong&gt;溢出&lt;/strong&gt; (MemoryOverflow)&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="JVM" scheme="https://Chao-Yin-Github.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM 知识--垃圾收集器</title>
+    <link href="https://chao-yin-github.github.io/2020/3/30/JVM-%E7%9F%A5%E8%AF%86-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/"/>
+    <id>https://chao-yin-github.github.io/2020/3/30/JVM-%E7%9F%A5%E8%AF%86-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/</id>
+    <published>2020-03-30T07:23:05.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1&gt;基于分代收集理论&lt;/h1&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="JVM" scheme="https://Chao-Yin-Github.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>并发知识-硬件内存架构</title>
+    <link href="https://chao-yin-github.github.io/2020/3/29/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E7%A1%AC%E4%BB%B6%E5%86%85%E5%AD%98%E6%9E%B6%E6%9E%84/"/>
+    <id>https://chao-yin-github.github.io/2020/3/29/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E7%A1%AC%E4%BB%B6%E5%86%85%E5%AD%98%E6%9E%B6%E6%9E%84/</id>
+    <published>2020-03-29T07:08:03.000Z</published>
+    <updated>2020-04-21T13:51:44.801Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;CPU-工作机制&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#CPU-工作机制&quot;&gt;⚡&lt;/a&gt;CPU 工作机制&lt;/h2&gt;
+&lt;p&gt;CPU 速度快,但是数据存放到内存中,而内存相对较慢,所以 CPU 中间加上 cache 多级高速缓存来提升数据读取速度&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="concurrent" scheme="https://Chao-Yin-Github.github.io/tags/concurrent/"/>
+    
+      <category term="os" scheme="https://Chao-Yin-Github.github.io/tags/os/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM 知识--JVM 内存区域</title>
+    <link href="https://chao-yin-github.github.io/2020/3/29/JVM-%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/"/>
+    <id>https://chao-yin-github.github.io/2020/3/29/JVM-%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/</id>
+    <published>2020-03-29T03:29:39.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Java-内存区域&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#Java-内存区域&quot;&gt;⚡&lt;/a&gt;Java 内存区域&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Java 虚拟机在执行 Java 程序的过程中将它所管理的内存区域分成若干个不同的数据区域,称为 Java 内存区域.(&lt;strong&gt;即运行时数据区&lt;/strong&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="JVM" scheme="https://Chao-Yin-Github.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring 源码之 Spring @Bean 和 @Component</title>
+    <link href="https://chao-yin-github.github.io/2020/3/21/Spring-%E6%BA%90%E7%A0%81%E4%B9%8B-Spring-Bean-%E5%92%8C-Component/"/>
+    <id>https://chao-yin-github.github.io/2020/3/21/Spring-%E6%BA%90%E7%A0%81%E4%B9%8B-Spring-Bean-%E5%92%8C-Component/</id>
+    <published>2020-03-21T06:37:38.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;我的理解&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#我的理解&quot;&gt;⚡&lt;/a&gt;我的理解&lt;/h2&gt;
+&lt;p&gt;当学习 Spring 框架的时候,我们会使用 Java configuration + annotation 的方法配置依赖,例如使用 @Component 注解在 Service,dao,mapper 等类, 这样来注册给 IoC 容器,让它来管理这个 Bean 并且自动装配所需要的依赖&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Spring" scheme="https://Chao-Yin-Github.github.io/tags/Spring/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据源和数据连接池</title>
+    <link href="https://chao-yin-github.github.io/2020/3/20/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E6%95%B0%E6%8D%AE%E8%BF%9E%E6%8E%A5%E6%B1%A0/"/>
+    <id>https://chao-yin-github.github.io/2020/3/20/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E6%95%B0%E6%8D%AE%E8%BF%9E%E6%8E%A5%E6%B1%A0/</id>
+    <published>2020-03-20T07:21:48.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;数据源&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#数据源&quot;&gt;⚡&lt;/a&gt;数据源:&lt;/h2&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="database" scheme="https://Chao-Yin-Github.github.io/tags/database/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java 开发规范</title>
+    <link href="https://chao-yin-github.github.io/2020/3/18/Java-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/"/>
+    <id>https://chao-yin-github.github.io/2020/3/18/Java-%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83/</id>
+    <published>2020-03-18T14:16:02.000Z</published>
+    <updated>2020-04-19T17:45:35.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;ol&gt;
+&lt;li&gt;重写构造方法的时候一定要重写默认的空构造方法&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Spring" scheme="https://Chao-Yin-Github.github.io/tags/Spring/"/>
+    
+  </entry>
+  
+</feed>

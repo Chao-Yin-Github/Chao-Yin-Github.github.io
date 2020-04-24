@@ -4,25 +4,6 @@
   
   
   <entry>
-    <title>并发知识-(杂谈) Java 并发学习体会</title>
-    <link href="/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-(%E6%9D%82%E8%B0%88)%20Java%20%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E4%BD%93%E4%BC%9A/"/>
-    <url>/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-(%E6%9D%82%E8%B0%88)%20Java%20%E5%B9%B6%E5%8F%91%E5%AD%A6%E4%B9%A0%E4%BD%93%E4%BC%9A/</url>
-    
-    <content type="html"><![CDATA[<p>为什么并发编程难学,因为并发就要保证两个性质: 高可用,正确性</p><a id="more"></a><p>然后,为了实现这两个性质,又引出了如何保证代码的原子性,可见性,有序性,又牵扯到底层知识的支撑,上层应用或者底层的实现</p><p>再然后,JDK 有 JDK 的实现,JVM 又有 JVM 的实现,操作系统有操作系统的实现</p><p>具体的有锁,JDK 锁的类有多了去了,有 volatile 关键字,有线程池,有 CPU 缓存一致协议, CPU 总线加锁</p><p>要去学习并发编程,就又要有操作系统的知识,又要有 JMM 内存模型乃至 CPU 硬件模型的知识,还要有 JVM 的知识,甚至还要去读 JDK 的源码…</p><p>例如 JVM 中 synchronized 锁的实现,synchronized 锁是锁对象,那你就要去看一个对象在内存中的布局(对象存储了什么信息,以什么形式存储),锁的是对象头的哪个部分呢,又要去看对象头里面具体的哪一个标志位,找到了在哪,才能知道,synchronized 是如何实现的</p><p>读看得见的源码也不一定读得清白,举个例子,ReentrantLock 内部是由 AQS 框架实现的,而你要学好 ReentrantLock 又要去看 AQS 这个类的 API 是怎么设计的,这个抽象类一些自己的实现,但是你又不知道什么情况下要用到什么 API(acquire 方法, tryAcquire 方法什么情况下使用?), 又要回头结合 ReentrantLock 的应用去看 AQS 的 API 的功能,看应用也不一定能够知道 AQS 为什么这么设计,设计有什么好处…这么一看,我们就要在 ReentrantLock 和 AQS 这两个类里面<strong>反复横跳</strong>,就好像<s>在棺材里面进行仰卧起坐</s>…</p><p>说实话,要学好并发编程,底层知识一个都不能少: CPU 硬件内存架构,操作系统知识(进程线程,用户态内核态),JVM,JMM,JDK 源码</p><p>而且,更重要的是,并发编程就像一个多叉树,不仅子树多而杂而难,而且子树之前又相互纠结交错,而不像 JVM 那样,子树不多,而且子树之间没有很大的交错的知识,就算有,也有明确的一个先后顺序(JVM 内存区域-&gt; (GC -&gt;) 类加载子系统)条理性清晰很明确</p><p>讲到这里,我发现这篇文章就不能说是体会了,其实就是<s>吐槽和无奈</s>(摊手.jpg)</p><p>不过就我目前的学习体会,我觉得应该是先把上面说的基础知识打牢,然后针对性的学习,例如可以先从 volatile 入手,弄明白之后,然后再去看比较难的 synchronized 锁和 ReentrantLock 以及 AQS 等等,至于最难的部分可能就是 AQS 了吧ႎ</p><p>ps: <s>竟然开始写软文了🤣</s></p>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>concurrent</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>并发知识- (杂谈) 高并发高可用 VS 多线程正确性</title>
     <link href="/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%20(%E6%9D%82%E8%B0%88)%20%E9%AB%98%E5%B9%B6%E5%8F%91%E9%AB%98%E5%8F%AF%E7%94%A8-VS-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%A3%E7%A1%AE%E6%80%A7/"/>
     <url>/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%20(%E6%9D%82%E8%B0%88)%20%E9%AB%98%E5%B9%B6%E5%8F%91%E9%AB%98%E5%8F%AF%E7%94%A8-VS-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%A3%E7%A1%AE%E6%80%A7/</url>
@@ -47,27 +28,6 @@
     <url>/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-ReentrantLock/</url>
     
     <content type="html"><![CDATA[<h2 id="ReentrantLock-初步设计思想"><a class="header-anchor" href="#ReentrantLock-初步设计思想">⚡</a>ReentrantLock 初步设计思想</h2><p>new 一个 ReentrantLock 之后,调用 lock 方法,改变锁的状态码,从0变为1,主线程获取到锁,然后继续执行</p><p>如果此时同一个线程多次调用则进行多次重入,状态码增加</p><p>如果是线程交替执行,即并发度不是很高,那么就不存在锁的竞争,可以依次获取锁,然后依次释放,循环往复,保证高性能高可用</p><p>但是如果并发度很大,那么就一定存在线程之前对锁的竞争,这时,如果是公平锁,那么先获取锁的线程先处理,后获取锁的排在一个等待队列,然后这个线程就 <code>park</code> 暂停,然后等待锁释放和通知,<code>unpark</code> 后,再去获取锁</p><p>(注意:此处的 park 和 unpark 只是一种抽象概念,不一定指 LockSupport 里面的方法,也可以是 interrupt 中断)</p><p>但是,这里虽然想的很容易理解,但是要实现却不是那么容易,且看我如下分析</p><h2 id="ReentrantLock-类数据结构"><a class="header-anchor" href="#ReentrantLock-类数据结构">⚡</a>ReentrantLock 类数据结构</h2><h3 id="ReentrantLock-抽象内部类-Sync-锁"><a class="header-anchor" href="#ReentrantLock-抽象内部类-Sync-锁">⚡</a>ReentrantLock 抽象内部类 Sync 锁</h3><p>图 ReentrantLockSyncAndExtend:</p><p><img src="/img/ReentrantLockSyncAndExtend.png" srcset="/img/loading.gif" alt="ReentrantLockSyncAndExtend"></p><p>图 ReentrantLockSyncAndExtend1:<br><img src="/img/ReentrantLockSyncAndExtend1.png" srcset="/img/loading.gif" alt="ReentrantLockSyncAndExtend1"></p><p>从源码和上图可知, Sync 只有第一个 <code>lock()</code> 方法是抽象的,有一个默认的非公平的 <code>nonFairTryAcquired(int)</code> 方法,这个方法是<strong>尝试</strong>获取锁的,并且是一种非公平的方式</p><h2 id="Sync-的公平锁具体实现"><a class="header-anchor" href="#Sync-的公平锁具体实现">⚡</a>Sync 的<strong>公平锁</strong>具体实现</h2><p>图 AQSAbstractTryAcquire:</p><p><img src="/img/ReentrantLockFairSync.jpg" srcset="/img/loading.gif" alt="ReentrantLockFairSync"></p><p>一个 lock 方法,一个 tryAcquire 方法</p><p>lock 方法是 Sync 的具体实现,而 tryAcquire 则是<strong>重写</strong>了 Sync 的父类 AQS 的方法</p><p><span id="ReentrantLockFairSync1">图 ReentrantLockFairSync1</span><br><img src="/img/ReentrantLockFairSync1.jpg" srcset="/img/loading.gif" alt="ReentrantLockFairSync1"></p><h2 id="ReentrantLock-加锁过程-公平锁"><a class="header-anchor" href="#ReentrantLock-加锁过程-公平锁">⚡</a>ReentrantLock 加锁过程 (公平锁)</h2><h3 id="第一次加锁"><a class="header-anchor" href="#第一次加锁">⚡</a>第一次加锁</h3><ol><li><p>new 是默认非公平锁(这里分析公平锁)</p> <div class="hljs"><pre><code class="hljs java">sync = <span class="hljs-keyword">new</span> FairSync();</code></pre></div></li><li><p>当程序中调用 <code>reentrantLock.lock()</code> 方法时</p><p>lock() 方法就会调用 <code>sync.lock()</code> 方法</p><p>(sync 锁具体实现 lock 方法的 非公平的锁和公平锁不同)</p><p>由上面两张图可知,在 <code>lock()</code> 方法里面直接调用的是 <strong>AQS</strong> 的 <code>acquire(int)</code> 方法, 并且参数为1</p></li><li><p>那我们再去看 AQS</p><p><span id="AQSAcquire"><img src="/img/AQSAcquire.jpg" srcset="/img/loading.gif" alt="AQSAcquire"></span></p><p>我们可以看到首先会调用 <code>tryAcquire(int)</code> 方法,这也是 AQS 中的一个方法,我们可以根据名称猜测这个方法是用来<em>尝试获取锁</em>的</p><p>点进去,发现:</p><p><img src="/img/AQSAbstractTryAcquire.png" srcset="/img/loading.gif" alt="AQSAbstractTryAcquire"></p><p>仅仅抛一个异常?!</p><p>这当然不可能,因为这样没有任何意义</p><p>再按住 <code>ctrl</code>和<code>alt</code>,鼠标点击 <code>tryAcquire</code>,出现如下具体实现:</p><p><img src="/img/AQSAbstractTryAcquire1.jpg" srcset="/img/loading.gif" alt="AQSAbstractTryAcquire2"></p><p>我们点击第一个,发现回到了 ReentrantLock 里面的 FairSync 静态内部类的 <code>tryAcquire(int)</code> 方法, <a href="#ReentrantLockFairSync1">见图 ReentrantLockFairSync1</a></p><p>这说明,内部的公平锁自己重写了 AQS 的方法但是没有加 <strong><code>@Override</code></strong> 注释!</p></li><li><p>再回到 ReentrantLock 看这个公平锁的 <code>tryAcquired(int)</code> 方法(和<a href="#ReentrantLockFairSync1">图ReentrantLockFairSync1 一样,只是把代码贴出来了</a>)</p><p>具体分析见<span id="ReentrantLockFairSyncTryAcquire">注释:</span></p> <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">tryAcquire</span><span class="hljs-params">(<span class="hljs-keyword">int</span> acquires)</span> </span>&#123;    <span class="hljs-comment">// 拿到当前线程</span>    <span class="hljs-keyword">final</span> Thread current = Thread.currentThread();    <span class="hljs-comment">// 拿到 AQS 的内部 volatile 变量 state</span>    <span class="hljs-keyword">int</span> c = getState();    <span class="hljs-comment">// 如果 state =0 说明此时没有线程拿到锁</span>    <span class="hljs-keyword">if</span> (c == <span class="hljs-number">0</span>) &#123;        <span class="hljs-comment">// 第一个 hasQueuedPredecessors() 是 AQS 的内部方法,是用来判断村不存在队列或者需不需要排队</span>        <span class="hljs-comment">// 返回 false 在表示队列不存在或者队列中没有前驱(即队列中没有已经拿到锁的线程)</span>        <span class="hljs-comment">// 那么这个线程就不需要排队</span>        <span class="hljs-comment">// 为什么需要排队呢,最前面将思想的时候其实已经说了:</span>        <span class="hljs-comment">// 想想如果存在多线程竞争,而且又是公平锁,那么就需要排队等待,直到前面那个线程处理完了,后面的线程才能拿到锁,再去处理</span>        <span class="hljs-comment">// todo 这里理解排队要看之后的线程竞争或者其他特殊情况,我们这里假设的是第一个线程来拿锁,暂时不考虑,因为从开始到现在根本没有初始化队列(new FairSync 也没有初始化 Sync 父类的 AQS 队列)</span>        <span class="hljs-keyword">if</span> (!hasQueuedPredecessors() &amp;&amp;                <span class="hljs-comment">// 下面调用 AQS 的 CAS 方法,原子操作,改变的是 AQS 内部的 state 变量</span>                <span class="hljs-comment">// CAS 尝试加锁</span>                compareAndSetState(<span class="hljs-number">0</span>, acquires)) &#123;            <span class="hljs-comment">// 如果前面的条件成立,说明: 1. 自己不需要排队 2. 自己成功拿到锁了</span>            <span class="hljs-comment">// 此时就可以将锁设置为当前线程</span>            <span class="hljs-comment">// 注意,这个方法是 `AQS` 继承 `AOS` 这个抽象类自己内部的方法,表示是一个排他锁</span>            <span class="hljs-comment">// 关于 AOS 具体看下面相应的地方,这里就不多做解释,现在就认为是一个排他锁</span>            setExclusiveOwnerThread(current);             <span class="hljs-comment">// 返回 true,表示成功加上了排他锁</span>            <span class="hljs-comment">// 第一个线程到这里返回</span>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;        &#125;    <span class="hljs-comment">// 又有一个线程来了,如果锁状态不为0,说明已经加锁,并且该线程就是之前加锁的第一个线程,此时会重入,state +1,并返回 true,代表重入锁加锁成功</span>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (current == getExclusiveOwnerThread()) &#123;        <span class="hljs-comment">// 可能在这里会想,c 是最前面 getState() 方法得到的,为什么这里不用 CAS 来保证原子操作呢?</span>        <span class="hljs-comment">// 因为其它的线程如果来了,会首先排队,不会改变第一个线程的状态值</span>        <span class="hljs-comment">// 但是如果第一个线程此时刚好释放所了,岂不是重入错了?</span>        <span class="hljs-comment">// 这里就要看上面的 else-if 判断了,如果是同一线程重入,然后释放,然后再加锁是不可能的,一个线程怎么可能同时加锁和解锁呢!</span>        <span class="hljs-comment">// 上面是目前我的分析,如果加上锁自动释放(超时释放)的功能 tryLock 可能会有问题?</span>        <span class="hljs-comment">// 解答: tryLock 是在指定时间内获取锁,而不是在指定时间内释放拿到的锁,拿到锁释放必须由这个线程显式调用 unLock 方法,所以根本不会存在自动释放锁这个逻辑</span>        <span class="hljs-comment">// 超时释放指的是超过时间没有拿到就放弃抢锁,不是超时了就释放锁</span>        <span class="hljs-keyword">int</span> nextc = c + acquires;        <span class="hljs-keyword">if</span> (nextc &lt; <span class="hljs-number">0</span>)            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error(<span class="hljs-string">"Maximum lock count exceeded"</span>);        setState(nextc);        <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;    &#125;    <span class="hljs-comment">// 如果锁状态不为0,并且是另一个线程来加锁,会返回 false</span>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;&#125;</code></pre></div><p>关于 <code>hasQueuedPredecessors() </code> 方法,放到 AQS 章节再讲,这些 AQS 内部方法也有很多需要分析</p></li><li><p>方法 <code>tryAcquire(int)</code> 返回 true,回到<a href="#AQSAcquire">前面 AQS 的 acquire</a></p><p>此时 if 条件不成立,直接返回了,然后递归返回,就没有什么,结束程序中的 <code>reentrantLock.lock()</code> 方法,加锁成功,主程序继续执行</p></li></ol><h3 id="如果此时第一个线程又来加锁-重入"><a class="header-anchor" href="#如果此时第一个线程又来加锁-重入">⚡</a>如果此时第一个线程又来加锁(重入)</h3><p>此时在 <code>ReentrantLock</code> 中的 <code>FairSync</code> 的 <code>tryAcquire(int)</code> 方法里面,进入 else 判断,<a href="#ReentrantLockFairSyncTryAcquire">请看代码注释 else-if 部分</a></p><p><code>tryAcquire(int)</code> 返回 true, 然后也是和第一次拿到锁一样,调用递归返回,主程序继续执行</p><p>不过需要注意,<code>FairSync</code> 公平锁的父类 AQS 的内部状态 volatile 变量 state 每次都要加一,而每次释放锁的时候,state 才会减一,最后一定要变为0才释放了所有锁</p><h3 id="如果是第二个线程来了-也开始加锁-并且此时第一个线程还没有释放锁"><a class="header-anchor" href="#如果是第二个线程来了-也开始加锁-并且此时第一个线程还没有释放锁">⚡</a>如果是第二个线程来了,也开始加锁,并且此时第一个线程还没有释放锁</h3><ol><li><p>同上面两种情况,会调用 <code>sync.lock()</code> 方法,然后 <code>acquire(1)</code>,再然后 <code>tryAcquire(1)</code></p><p>但是此时 if 和 else 条件都不满足,会返回 false</p></li><li><p><a href="#AQSAcquire">此时AQS 的</a> <code>acquire(1)</code> 方法中 if 的第一个 <code>tryAcquire(1)</code> 取反,值为 true,进入 <code>acquiredQueue(addWaiter(Node.Exclusive,1))</code> 两个方法</p><p>这两个方法就不在这里分析了,因为这是属于 AQS 内部实现,而且很复杂,需要单独说</p><p>我们现在就只需要知道,这里第二个线程就会去在 AQS 内部排队等待</p><p>再然后,会调用 <code>selfInterrupt()</code> 方法,这个 AQS 方法比较简单,就把代码截出来了</p><p><img src="/img/AQSSelfInterrupt.png" srcset="/img/loading.gif" alt="AQSSelfInterrupt"></p><p>把当前线程中断,来让出 CPU 等待 AQS 的唤醒</p></li></ol><h2 id="ReentrantLock-加锁过程-非公平锁"><a class="header-anchor" href="#ReentrantLock-加锁过程-非公平锁">⚡</a>ReentrantLock 加锁过程 (非公平锁)</h2><p><span id="ReentrantLockNonFairSync">如图 ReentrantLockNonFairSync:</span></p><p><img src="/img/ReentrantLockNonFairSync.png" srcset="/img/loading.gif" alt="ReentrantLockNonFairSync"></p><h3 id="第一次加锁-v2"><a class="header-anchor" href="#第一次加锁-v2">⚡</a>第一次加锁</h3><ol><li><p>有源码和上图知,调用 <code>ReentrantLock.lock()</code> 方法时,会调用上图中非公平锁 NonFairSync 的方法</p><ol><li><p>首先会 CAS 直接尝试抢占锁,如果抢到了就直接上锁,程序正常返回</p><p>就是比公平锁少了一个判断方法 <code>!hasQueuedPredecessors()</code> 来判断需不需要排队</p><p>非公平锁当然不需要排队啦~</p></li><li><p>如果没有没有直接抢到,那么其实还是要排队,调用 AQS 的 <code>acquire()</code> 方法</p><p>注意,这个时候就不要认为之后的逻辑和公平锁一模一样,因为锁在继承 <code>AQS</code> 的实现的时候,都重写了 <code>AQS</code> 的 <code>tryAcquire()</code> 方法</p><p>对于非公平锁来说,它默认使用的是 <code>ReentrantLock</code> 类中 <code>Sync</code> 父类里面的 <code>nonFairTryAcquire()</code> 方法</p><ol><li><p>nonFairTryAcquire()</p><p><img src="/img/ReentrantLockNonFairTryAcquire.png" srcset="/img/loading.gif" alt="ReentrantLockNonFairTryAcquire"></p><p>和公平锁的实现没有太大差别,仅仅只是少了 <code>hasQueuedPredecessor()</code> 这个重要的查看队列的方法,会上来就去尝试获取锁,而不考虑是否存在等待队列</p></li></ol></li></ol></li></ol><h3 id="重入情况则和公平锁一致"><a class="header-anchor" href="#重入情况则和公平锁一致">⚡</a>重入情况则和公平锁一致</h3><p><a href="#ReentrantLockFairSyncTryAcquire">同上的 else-if</a></p><h3 id="第二个线程来加锁了"><a class="header-anchor" href="#第二个线程来加锁了">⚡</a>第二个线程来加锁了</h3><p>假设存在线程竞争,那么根据 <a href="#ReentrantLockNonFairSync">图</a>,和公平锁一样,还是会进入上图的 <code>nonFairTryAcquire()</code>,然后返回 false,然后调用 AQS 的 <code>addWaiter()</code> 和 <code>acquireQueued()</code> 加入到等待队列中,<code>selfInterrupt()</code>方法自我中断</p><h2 id="ReentrantLock-解锁过程"><a class="header-anchor" href="#ReentrantLock-解锁过程">⚡</a>ReentrantLock 解锁过程</h2><h3 id="线程调用了-unLock"><a class="header-anchor" href="#线程调用了-unLock">⚡</a>线程调用了 unLock</h3><p><img src="/img/ReentrantLockSyncUnLock.png" srcset="/img/loading.gif" alt="ReentrantLockSyncUnLock"></p><p>然而这个 <code>release(1)</code> 方法又是 AQS 内部的方法:</p><p><img src="/img/AQSRelease.png" srcset="/img/loading.gif" alt="AQSRelease"></p><p>从上面可以看到,这里首先调用了一个 <code>tryRelease(1)</code> 方法</p><p><img src="/img/ReentrantLockTryRelease.png" srcset="/img/loading.gif" alt="ReentrantLockTryRelease"></p><ol><li><p><code>tryRelease()</code> 方法</p><p>这个是 <code>ReentrantLock</code> 内部 <code>Sync</code> 自己实现的默认方法,并且公平锁和非公平锁调用一致</p><p>由于锁可以重入,所以这里 <code>getState()</code> 获取到的状态值可能大于1,所以此处要减去参数 release (=1) 拿到预期值</p><p>然后进行判断,如果不是锁持有的线程拿到锁会抛出异常(一般不会出现)</p><p>如果上面预期的状态值等于0,则说明锁可以释放,此时就把共享锁设为空;反之,不进行该操作</p><p>(注意:锁为空并不代表锁已经释放,因为锁的状态是由 state 字段标识的,此时并没有改锁的状态)</p><p>然后改变锁的状态 <code>setState()</code>,并且返回释放锁的结果</p><p>想想这里改变状态为什么不用 CAS 操作?原因其实上面提到一些</p><p>因为此时线程又不可能重入(这个线程正在释放,怎么可能会重入),如果是别的线程,在 <code>setState()</code> 操作之前,锁还没有释放又不可能来抢锁,所以这里就可以安安心心的进行锁的状态改变了</p></li><li><p>tryRelease() 方法返回了,之后就是 AQS 的内部实现和状态判断了</p><p>老规律还是把这个实现留在讲 AQS 的文章里面集中分析吧</p><p>我们只需要知道此时锁已经释放,并且把 AQS 的内部状态 state 重置成 0,并且锁头已经置为空就行了</p></li></ol><h2 id="写在后面"><a class="header-anchor" href="#写在后面">⚡</a>写在后面</h2><p>AQS 和 ReentrantLock 代码,首先看子路老师的视频和马士兵的视频,然后对着源码一点点分析,做笔记,再结合博客看</p><p>自己再把 AQS 和 ReentrantLock 的类图先理清楚,有哪些内部类,哪些方法,哪些是抽象的,哪些是具体实现,分别做了什么,一层层理清楚</p><p>这篇文章仅仅分析了 ReentrantLock, 很多更重要的代码其实在 AQS 里面,具体分析就暂时等待 AQS 的文章吧</p><p>要不然,ReentrantLock 用到了 AQS 的一部分 api,我们就去看 AQS, 看了 AQS 又不知道像 <code>tryAcquire()</code> 和 <code>acquire()</code> 到底分别在什么情况下使用,又要回到 ReentrantLock 去看 api 的应用,让人云里雾里,非常头疼</p><p>其实也没有分析很多,<s>这么一想其实 ReentrantLock 还挺简单的</s></p>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>concurrent</tag>
-      
-      <tag>Java</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>并发知识--多线程</title>
-    <link href="/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    <url>/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
-    
-    <content type="html"><![CDATA[<h2 id="并发和并行"><a class="header-anchor" href="#并发和并行">⚡</a>并发和并行</h2><p>并发有线程的创建和上下文的切换的开销,所以有时候并发会比串行慢</p><h2 id="如何减少上下文切换"><a class="header-anchor" href="#如何减少上下文切换">⚡</a>如何减少上下文切换</h2><ol><li><p>无锁并发,线程交替执行</p><p>例如将数据的特征值 hash 取模分段,不同线程处理不同段的数据</p></li><li><p>CAS</p><p>CAS 自旋,不加锁</p></li><li><p>使用最少线程</p><p>避免创建不必要的线程,否则会造成大量任务等待</p></li><li><p>协程</p><p>单线程实现任务调度,并维持多个任务间的切换</p></li></ol><h2 id="避免死锁"><a class="header-anchor" href="#避免死锁">⚡</a>避免死锁</h2><ol><li><p>避免一个线程同时获取多个锁</p></li><li><p>避免一个锁里占用多个资源,尽量保证每个锁只占一个资源</p></li><li><p>尝试使用定时锁,使用 <code>lock.tryLock(timeout)</code> 来替代使用内部锁</p> <span class="label label-danger">内部锁?</span></li><li><p>对于数据库锁,加锁和解锁必须在一个数据库连接里,否则会出现解锁失败的情况</p></li></ol><h2 id="volatile"><a class="header-anchor" href="#volatile">⚡</a>volatile</h2><p>volatile 是轻量级的 synchronized,它保证了多线程的共享变量的可见性</p><p>可见性指,如果一个线程改变了一个共享变量,另一个线程可以马上看到</p><p>它比 synchronized 使用和执行成本更低,因为它不会引起线程的上下文的切换和调度</p><ol><li><p>原理:</p><ol><li>追加到64个字节提高并发效率</li></ol></li></ol>]]></content>
     
     
     
@@ -514,9 +474,9 @@
     
     <tags>
       
-      <tag>configuration</tag>
-      
       <tag>shellCommand</tag>
+      
+      <tag>configuration</tag>
       
     </tags>
     
@@ -714,9 +674,9 @@
     
     <tags>
       
-      <tag>configuration</tag>
-      
       <tag>Linux</tag>
+      
+      <tag>configuration</tag>
       
     </tags>
     
@@ -857,9 +817,9 @@
     
     <tags>
       
-      <tag>configuration</tag>
-      
       <tag>后台开发</tag>
+      
+      <tag>configuration</tag>
       
       <tag>SQL</tag>
       
@@ -882,9 +842,9 @@
     
     <tags>
       
-      <tag>configuration</tag>
-      
       <tag>后台开发</tag>
+      
+      <tag>configuration</tag>
       
     </tags>
     
@@ -1040,9 +1000,9 @@
     
     <tags>
       
-      <tag>configuration</tag>
-      
       <tag>Linux</tag>
+      
+      <tag>configuration</tag>
       
     </tags>
     

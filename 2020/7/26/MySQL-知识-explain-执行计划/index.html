@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>MySQL 知识-- explain 执行计划 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" false
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-07-26 18:44">
+      2020 七月 26, 星期日 , 6:44 晚上
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      98
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020 八月 19, 星期三 , 1:06 凌晨
+                
+              </p>
+            
+            <article class="markdown-body">
+              <h2 id="explain-查询字段"><a class="header-anchor" href="#explain-查询字段">⚡</a>explain 查询字段</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">列名</th>
+<th style="text-align:center">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">id</td>
+<td style="text-align:center">The SELECT identifier:select 标识符,表示执行顺序</td>
+</tr>
+<tr>
+<td style="text-align:center">select_type</td>
+<td style="text-align:center">The SELECT type:查询类型</td>
+</tr>
+<tr>
+<td style="text-align:center">table</td>
+<td style="text-align:center">The table for the output row: 表名</td>
+</tr>
+<tr>
+<td style="text-align:center">partitions</td>
+<td style="text-align:center">The matching partitions:使用的哪些分区(对于非分区表值为null)</td>
+</tr>
+<tr>
+<td style="text-align:center">type</td>
+<td style="text-align:center">The join type: join 类型</td>
+</tr>
+<tr>
+<td style="text-align:center">possible_keys</td>
+<td style="text-align:center">The possible indexes to choose:可能用到的索引</td>
+</tr>
+<tr>
+<td style="text-align:center">key</td>
+<td style="text-align:center">The index actually chosen:实际选择的索引</td>
+</tr>
+<tr>
+<td style="text-align:center">key_length</td>
+<td style="text-align:center">The length of the chosen key:所选择索引的长度</td>
+</tr>
+<tr>
+<td style="text-align:center">ref</td>
+<td style="text-align:center">The columns compared to the index :显示索引的哪一列被使用了,可以是一个常数</td>
+</tr>
+<tr>
+<td style="text-align:center">rows</td>
+<td style="text-align:center">Estimate of rows to be examined:预计检查行数</td>
+</tr>
+<tr>
+<td style="text-align:center">filtered</td>
+<td style="text-align:center">Percentage of rows filtered by table condition:通过过滤条件之后对比总数的百分比</td>
+</tr>
+<tr>
+<td style="text-align:center">Extra</td>
+<td style="text-align:center">Additional information:其他信息,如 using file sort,using index,using index condition,using join buffer,using where</td>
+</tr>
+</tbody>
+</table>
+<h3 id="id"><a class="header-anchor" href="#id">⚡</a>id</h3>
+<div class="hljs"><pre><code>&gt;The SELECT identifier. This is the sequential number of the SELECT within the query. The value can be NULL if the row refers to the union result of other rows. In this case, the table column shows a value like &lt;unionM,N&gt; to indicate that the row refers to the union of the rows with id values of M and N.
+&gt;
+&gt; 翻译:
+&gt;id 是 SELECT 的标识符.它是查询中 SELECT 的**顺序号**
+&gt;
+&gt;如果该行引用其他行的并集结果,则该值*可以为 NULL*,在这种情况下,table 字段会显示类似&lt;unionM，N&gt;的值，以表示该行引用 ID 值为 M 和 N 的行的并集。
+
+也就是说,id 数字越大越先执行,如果说数字一样大,那么就从上往下依次执行,还有一种为 null 的情况,是由于这一行会 union 其他行的结果(其对应 select_type 为 union result)
+</code></pre></div>
+<h3 id="select-type"><a class="header-anchor" href="#select-type">⚡</a>select_type</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">select_type</th>
+<th style="text-align:center">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">SIMPLE</td>
+<td style="text-align:center">Simple SELECT (not using UNION or subqueries): 简单查询,没有用到 union 或者子查询</td>
+</tr>
+<tr>
+<td style="text-align:center">PRIMARY</td>
+<td style="text-align:center">Outermost SELECT:最外层查询,即有 union 或者子查询的最外层查询,一个 SQL 整体语句有且仅有一个最外层查询</td>
+</tr>
+<tr>
+<td style="text-align:center">UNION</td>
+<td style="text-align:center">Second or later SELECT statement in a UNION: union 语句中,除了第一个表之外,第二和之后的查询都是 union</td>
+</tr>
+<tr>
+<td style="text-align:center">DEPENDENT</td>
+<td style="text-align:center">Second or later SELECT statement in a UNION, dependent on outer query: 与union一样，出现在union 或union all 语句中，但是这个查询要受到外部查询的影响</td>
+</tr>
+<tr>
+<td style="text-align:center">UNION RESULT</td>
+<td style="text-align:center">Result of a UNION: 包含 union 的结果集,在 union 和 union all 语句中,因为它不需要参与查询,所以id字段为null</td>
+</tr>
+<tr>
+<td style="text-align:center">SUBQUERY</td>
+<td style="text-align:center">First SELECT in subquery: 第一个出现的子查询. 即如果在 select 或者 where 里包含了子查询,那么子查询就是 subquery</td>
+</tr>
+<tr>
+<td style="text-align:center">DEPENDENT SUBQUERY</td>
+<td style="text-align:center">First SELECT in subquery, dependent on outer query: 和 subquery 一样,是第一个出现的子查询,并且它依靠外部查询.这就是**(相关子查询)**</td>
+</tr>
+<tr>
+<td style="text-align:center">DERIVED</td>
+<td style="text-align:center">Derived table SELECT (subquery in FROM clause): 派生表,from 子句中出现的子查询</td>
+</tr>
+<tr>
+<td style="text-align:center">MATERIALIZED</td>
+<td style="text-align:center">Materialized subquery</td>
+</tr>
+<tr>
+<td style="text-align:center">UNCACHEABLE SUBQUERY</td>
+<td style="text-align:center">A subquery for which the result cannot be cached and must be re-evaluated for each row of the outer query</td>
+</tr>
+<tr>
+<td style="text-align:center">UNCACHEABLE UNION</td>
+<td style="text-align:center">The second or later select in a UNION that belongs to an uncacheable subquery (see UNCACHEABLE SUBQUERY)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>DEPENDENT typically signifies the use of a correlated subquery: dependent 一般代表用到相关子查询</p>
+</blockquote>
+<blockquote>
+<p>DEPENDENT SUBQUERY evaluation differs from UNCACHEABLE SUBQUERY evaluation. For DEPENDENT SUBQUERY, the subquery is re-evaluated only once for each set of different values of the variables from its outer context. For UNCACHEABLE SUBQUERY, the subquery is re-evaluated for each row of the outer context.<br>
+DEPENDENT SUBQUERY 评估方式与 UNCACHEABLE SUBQUERY 不同.对于 DEPENDENT SUBQUERY,子查询仅针对其外部上下文中变量的每组不同值重新评估一次.对于UNCACHEABLE SUBQUERY,将为外部上下文的每一行重新评估子查询</p>
+</blockquote>
+<blockquote>
+<p>The select_type value for non-SELECT statements displays the statement type for affected tables. For example, select_type is DELETE for DELETE statements<br>
+非 SELECT 语句的 select_type 值显示受影响表的语句类型.例如,对于 DELETE 语句,select_type 是 DELETE</p>
+</blockquote>
+<h3 id="table"><a class="header-anchor" href="#table">⚡</a>table</h3>
+<blockquote>
+<p>The name of the table to which the row of output refers. This can also be one of the following values:</p>
+<p>&lt;unionM,N&gt; : The row refers to the union of the rows with id values of M and N.</p>
+<p><derivedN> : The row refers to the derived table result for the row with an id value of N. A derived table may result, for example, from a subquery in the FROM clause.</p>
+<p><subqueryN>: The row refers to the result of a materialized subquery for the row with an id value of N. See Section 8.2.2.2, “Optimizing Subqueries with Materialization”.</p>
+<p>即: 通常是所查询的表名,或者表的别名,或者一个为查询产生临时表(如派生表、子查询、union 集合)的标示符</p>
+</blockquote>
+<h3 id="type"><a class="header-anchor" href="#type">⚡</a><strong>type</strong></h3>
+<h4 id="system"><a class="header-anchor" href="#system">⚡</a>system</h4>
+<blockquote>
+<p>The table has only one row (= system table). This is a special case of the const join type.</p>
+<p>只有一行数据,const 的特殊情况</p>
+</blockquote>
+<p>(如果是 Innodb，type 通常都是 all 或者 index)</p>
+<h4 id="const"><a class="header-anchor" href="#const">⚡</a>const</h4>
+<blockquote>
+<p>The table has at most one matching row, which is read at the start of the query. Because there is only one row, values from the column in this row can be regarded as constants by the rest of the optimizer. const tables are very fast because they are read only once.</p>
+<p>表最多具有一个匹配行,该行在查询开始时读取.因为只有一行,所以优化器的其余部分可以将这一行中列的值视为常量.const表非常快,因为它们只需要读取一次</p>
+</blockquote>
+<blockquote>
+<p>const is used when you compare all parts of a PRIMARY KEY or UNIQUE index to constant values</p>
+<p>当您将 PRIMARY KEY 或 UNIQUE 索引的所有部分与常量值进行比较时,将使用 const</p>
+</blockquote>
+<p>例如:</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> tbl_name <span class="hljs-keyword">WHERE</span> primary_key=<span class="hljs-number">1</span>;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> tbl_name
+  <span class="hljs-keyword">WHERE</span> primary_key_part1=<span class="hljs-number">1</span> <span class="hljs-keyword">AND</span> primary_key_part2=<span class="hljs-number">2</span>;</code></pre></div>
+<p>即: 针对唯一或者主键索引等值查询,查询条件是一个常量,从该表中读取最多一行</p>
+<h4 id="eq-ref"><a class="header-anchor" href="#eq-ref">⚡</a>eq_ref</h4>
+<blockquote>
+<p>One row is read from this table for each combination of rows from the previous <a href="http://tables.It" target="_blank" rel="noopener">tables.It</a> is used when all parts of an index are used by the join and the index is a PRIMARY KEY or UNIQUE NOT NULL index.</p>
+<p>对于先前表中的每行组合,从这一张表中读取一行.当 join 使用索引的所有部分并且索引是 PRIMARY KEY 或 UNIQUE NOT NULL 索引时,显示 eq_ref</p>
+</blockquote>
+<blockquote>
+<p>eq_ref can be used for indexed columns that are compared using the = operator. The comparison value can be a constant or an expression that uses columns from tables that are read before this table.</p>
+<p>eq_ref 可用于使用 = 运算符进行比较的索引列.比较值可以是常量,也可以是使用在此表之前读取的表中列的表达式</p>
+</blockquote>
+<p>例如:</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> ref_table,other_table
+  <span class="hljs-keyword">WHERE</span> ref_table.key_column=other_table.column;
+
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> ref_table,other_table
+  <span class="hljs-keyword">WHERE</span> ref_table.key_column_part1=other_table.column
+  <span class="hljs-keyword">AND</span> ref_table.key_column_part2=<span class="hljs-number">1</span>;</code></pre></div>
+<p>即: 唯一性索引扫描,对于每个来自于前面的表的记录,从该表中匹配到唯一一行,并且一般是等值匹配.驱动表只返回一行数据,且这行数据是第二个表的主键或者唯一索引,且必须为 not null.<br>
+也就是 t1 join t2,其关联条件都是主键或唯一索引,t1的一行,对应 t2 也只有一行(一般用到最左原则)</p>
+<h4 id="ref"><a class="header-anchor" href="#ref">⚡</a>ref</h4>
+<blockquote>
+<p>All rows with matching index values are read from this table for each combination of rows from the previous tables. ref is used if the join uses only a leftmost prefix of the key or if the key is not a PRIMARY KEY or UNIQUE index (in other words, if the join cannot select a single row based on the key value). If the key that is used matches only a few rows, this is a good join type.</p>
+<p>对于先前表中的每个行组合,将从该表中读取具有匹配索引值的所有行.如果 join 仅使用键的最左前缀,或者如果该键不是 PRIMARY KEY 或 UNIQUE 索引(换句话说,如果联接无法根据键值选择单个行),则使用ref.如果使用的键仅匹配几行,则这是一种很好的联接类型</p>
+</blockquote>
+<p>即: 非唯一性索引扫描,类似 eq_ref,只是关联条件只是普通索引,不是唯一或主键索引,t1 对应的 t2 会有多个匹配行</p>
+<h4 id="ref-or-null"><a class="header-anchor" href="#ref-or-null">⚡</a>ref_or_null</h4>
+<blockquote>
+<p>This join type is like ref, but with the addition that MySQL does an extra search for rows that contain NULL values. This join type optimization is used most often in resolving subqueries</p>
+<p>这种 join 类型类似于 ref,<strong>但是 MySQL 需要额外搜索包含 NULL 值的行</strong>.此联接类型优化最常用于解决子查询</p>
+</blockquote>
+<p>例如:</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> ref_table
+  <span class="hljs-keyword">WHERE</span> key_column=expr <span class="hljs-keyword">OR</span> key_column <span class="hljs-keyword">IS</span> <span class="hljs-literal">NULL</span>;</code></pre></div>
+<h4 id="index-merge"><a class="header-anchor" href="#index-merge">⚡</a>index_merge</h4>
+<blockquote>
+<p>This join type indicates that the Index Merge optimization is used. In this case, the key column in the output row contains a list of indexes used, and key_len contains a list of the longest key parts for the indexes used</p>
+<p>此 join 类型表示使用了索引合并优化.在这种情况下,输出行中的键列包含使用的索引列表,而 key_len 包含使用的索引的最长键部分的列表</p>
+</blockquote>
+<p>即: 使用同一张表的多个索引,将多个索引合并取交集或者并集,常见 and,or 的条件使用了不同的索引</p>
+<h4 id="unique-subquery"><a class="header-anchor" href="#unique-subquery">⚡</a>unique_subquery</h4>
+<blockquote>
+<p>This type replaces eq_ref for some IN subqueries of the following form</p>
+</blockquote>
+<div class="hljs"><pre><code class="hljs sql">value IN (<span class="hljs-keyword">SELECT</span> primary_key <span class="hljs-keyword">FROM</span> single_table <span class="hljs-keyword">WHERE</span> some_expr)</code></pre></div>
+<blockquote>
+<p>unique_subquery is just an index lookup function that replaces the subquery completely for better efficiency.</p>
+<p>unique_subquery 只是一个索引查找函数,可以完全替换子查询以提高效率</p>
+</blockquote>
+<h4 id="range"><a class="header-anchor" href="#range">⚡</a>range</h4>
+<blockquote>
+<p>Only rows that are in a given range are retrieved, using an index to select the rows. The key column in the output row indicates which index is used. The key_len contains the longest key part that was used. The ref column is NULL for this type.</p>
+<p>使用索引选择行,仅检索给定范围内的行.输出行中的 key 指示使用哪个索引.key_len包含使用的最长的键部分。此类型的ref列为NULL。</p>
+</blockquote>
+<blockquote>
+<p>range can be used when a key column is compared to a constant using any of the =, &lt;&gt;, &gt;, &gt;=, &lt;, &lt;=, IS NULL, &lt;=&gt;, BETWEEN, LIKE, or IN() operators:</p>
+</blockquote>
+<p>即: 只检索给定范围的行，使用一个索引来选择行,而且可以是范围常量比较</p>
+<h4 id="index"><a class="header-anchor" href="#index">⚡</a>index</h4>
+<blockquote>
+<p>The index join type is the same as ALL, except that the index tree is scanned. This occurs two ways:</p>
+</blockquote>
+<h4 id="fulltext"><a class="header-anchor" href="#fulltext">⚡</a>fulltext</h4>
+<blockquote>
+<p>The join is performed using a FULLTEXT index.</p>
+<p>用到全文索引时显示</p>
+</blockquote>
+<h3 id="possible-keys"><a class="header-anchor" href="#possible-keys">⚡</a>possible_keys</h3>
+<p>可能用到的索引</p>
+<blockquote>
+<p>If this column is NULL, there are no relevant indexes. In this case, you may be able to improve the performance of your query by examining the WHERE clause to check whether it refers to some column or columns that would be suitable for indexing. If so, create an appropriate index and check the query with EXPLAIN again</p>
+<p>翻译: 如果此列为 NULL,则没有相关的索引.在这种情况下,你可以通过检查 WHERE 子句来检查它是否引用了某些适合索引的列,从而可以提高查询性能.如果是这样,请创建一个适当的索引,然后再次使用 EXPLAIN 检查查询</p>
+</blockquote>
+<h3 id="keys"><a class="header-anchor" href="#keys">⚡</a>keys</h3>
+<p>实际用到的索引</p>
+<blockquote>
+<p>It is possible that key will name an index that is not present in the possible_keys value. This can happen if none of the possible_keys indexes are suitable for looking up rows, but all the columns selected by the query are columns of some other index. That is, the named index covers the selected columns, so although it is not used to determine which rows to retrieve, an index scan is more efficient than a data row scan.</p>
+<p>可能会显示一个 possible_keys 中不存在的索引.如果没有一个 possible_keys 索引适合查找行,但是查询选择的所有列都是其他索引的列,则可能发生这种情况.也就是说,这个索引覆盖了选定的列,因此尽管不使用索引来确定要检索的行,但索引扫描比数据行扫描更有效(<strong>索引覆盖的情况?</strong>)</p>
+</blockquote>
+<blockquote>
+<p>For InnoDB, a secondary index might cover the selected columns even if the query also selects the primary key because InnoDB stores the primary key value with each secondary index. If key is NULL, MySQL found no index to use for executing the query more efficiently.</p>
+<p>对于 InnoDB,即使查询也选择了主键,辅助索引也可能覆盖选定的列,因为 InnoDB 将主键值与每个辅助索引一起存储</p>
+</blockquote>
+<p>(可以用 force index,use index 或者 ignore index,选择:使用/建议/不使用索引)</p>
+<h3 id="key-len"><a class="header-anchor" href="#key-len">⚡</a>key_len</h3>
+<blockquote>
+<p>The key_len column indicates the length of the key that MySQL decided to use. The value of key_len enables you to determine how many parts of a multiple-part key MySQL actually uses. If the key column says NULL, the key_len column also says NULL.</p>
+<p>key_len 指示 MySQL 决定使用的索引的长度.key_len 的值使您能够确定 MySQL 实际使用的联合索引的多少部分</p>
+</blockquote>
+<h3 id="ref-v2"><a class="header-anchor" href="#ref-v2">⚡</a>ref</h3>
+<blockquote>
+<p>The ref column shows which columns or constants are compared to the index named in the key column to select rows from the table.</p>
+<p>ref 显示将哪些列或常量与 explain 中 key 列中列出的索引进行比较来从表中选择行</p>
+</blockquote>
+<p>即显示关联的字段.如果使用常数等值查询,则显示 const,如果是多个表连接查询,则会显示关联表的字段</p>
+<blockquote>
+<p>If the value is func, the value used is the result of some function. To see which function, use SHOW WARNINGS following EXPLAIN to see the extended EXPLAIN output. The function might actually be an operator such as an arithmetic operator.</p>
+<p>如果该值为 func,则使用的值是某些函数的结果.要查看哪个函数,在 EXPLAIN 之后使用 SHOW WARNINGS 来查看扩展的 EXPLAIN 输出.该函数实际上可能是算术运算符之类的运算符</p>
+</blockquote>
+<p>即如果是 func,说明条件判断时进行了数据类型转换或者使用了表达式或函数</p>
+<h3 id="rows"><a class="header-anchor" href="#rows">⚡</a>rows</h3>
+<blockquote>
+<p>The ref column shows which columns or constants are compared to the index named in the key column to select rows from the table.<br>
+For InnoDB tables, this number is an estimate, and may not always be exact.</p>
+<p>rows列指示MySQL认为执行查询必须检查的行数。<br>
+对于 InnoDB,此数字是估计值</p>
+</blockquote>
+<h3 id="filtered"><a class="header-anchor" href="#filtered">⚡</a>filtered</h3>
+<p>表示此查询条件所过滤的数据的百分比，将 rows 除以 filtered 可以估算出整个表数据行数。</p>
+<blockquote>
+<p>The filtered column indicates an estimated percentage of table rows that will be filtered by the table condition. The maximum value is 100, which means no filtering of rows occurred. Values decreasing from 100 indicate increasing amounts of filtering. rows shows the estimated number of rows examined and rows × filtered shows the number of rows that will be joined with the following table. For example, if rows is 1000 and filtered is 50.00 (50%), the number of rows to be joined with the following table is 1000 × 50% = 500.</p>
+<p>表示被条件过滤的行数的估计百分比.最大值为100,这表示未过滤行.值从100减小表示过滤量增加.rows 显示检查的估计行数，filtered 显示将与下表连接的行数.例如,如果 rows 是1000,filtered 是 50.00(50％),则与下表连接的行数是 1000×50％= 500。</p>
+</blockquote>
+<h3 id="extra"><a class="header-anchor" href="#extra">⚡</a>extra</h3>
+<blockquote>
+<p>This column contains additional information about how MySQL resolves the query</p>
+</blockquote>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/database/">database</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/7/26/hexo-%E5%8D%9A%E5%AE%A2(fluid%E4%B8%BB%E9%A2%98)%E5%8D%87%E7%BA%A7%E8%AE%B0%E5%BD%95/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">hexo 博客( fluid 主题)升级记录</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/7/17/%E8%AE%A1%E7%BD%91-TCP-IP/">
+                        <span class="hidden-mobile">计网-TCP/IP</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "MySQL 知识-- explain 执行计划&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+  <script>(function (i, s, o, g, r, a, m) {
+      i['DaoVoiceObject'] = r;
+      i[r] = i[r] ||
+        function () {
+          (i[r].q = i[r].q || []).push(arguments);
+        };
+      i[r].l = 1 * new Date();
+      a = s.createElement(o);
+      m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      a.charset = 'utf-8';
+      m.parentNode.insertBefore(a, m);
+    })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/a54a5523.js", 'daovoice');
+    daovoice('init', {
+      app_id: "a54a5523",
+    });
+    daovoice('update');
+  </script>
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

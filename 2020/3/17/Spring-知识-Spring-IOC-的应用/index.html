@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>Spring 知识 -- Spring IOC 的应用 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" false
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-03-17 20:43">
+      2020 三月 17, 星期二 , 8:43 晚上
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      35
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2020 八月 19, 星期三 , 12:35 凌晨
+                
+              </p>
+            
+            <article class="markdown-body">
+              <ol>
+<li>
+<p>Spring 实现IoC的思路和方法</p>
+ <a id="more"></a>
+<ol>
+<li>
+<p>Spring 实现 IoC 是通过配置信息来描述类与类之间的配置关系,然后由去解析这些配置信息</p>
+<p>步骤:</p>
+<ol>
+<li>
+<p>应用程序中提供类和依赖对象</p>
+</li>
+<li>
+<p>通过配置,把所有需要用到的类交给容器 (schema,annotation,Java configuration)</p>
+</li>
+<li>
+<p>再描述一遍类和依赖对象的关系</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>Spring IoC 使用例子:</p>
+<ol>
+<li>
+<p>方式一: schema</p>
+ <div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">beans</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- 声明类 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"dao"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ind.yinchao.ioc.test1.IndexDaoImpl"</span>/&gt;</span>
+
+    <span class="hljs-comment">&lt;!-- 声明类 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"service"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ind.yinchao.ioc.test1.IndexService"</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- 声明依赖对象 --&gt;</span>
+        <span class="hljs-comment">&lt;!-- 方法一: 基于 setter 方法,** name 和属性名无关,只和 setter 方法名有关** --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"dao"</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">"dao"</span>/&gt;</span>
+        <span class="hljs-comment">&lt;!-- 方法二: 基于构造函数 --&gt;</span>
+        <span class="hljs-comment">&lt;!-- &lt;constructor-arg ref="dao"/&gt;--&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">beans</span>&gt;</span></code></pre></div>
+<p>但是请注意,这里有一个很坑的点,或者说我基础不扎实的地方:</p>
+<blockquote>
+<p>当使用方法一的时候,不要写任何构造器,因为如果不写还好,JVM 可以自动给你生成默认的空构造方法</p>
+<p>但是如果写了带依赖参数的构造器,那么 JVM 将不会为你生成默认的空构造方法,这样使用 setter 注入会报错 <code>No default constructor found</code></p>
+<p>所以要么就不写带参数的构造方法(不和 <code>构造函数注入</code> 混用),要么,就再写上无参构造函数</p>
+</blockquote>
+ <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 在主函数里面使用 ClassPathXmlApplicationContext 传入这个 xml 配置文件</span>
+ClassPathXmlApplicationContext classPathXmlApplicationContext = <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:spring.xml"</span>);
+
+<span class="hljs-comment">// getBean 的参数是 service,和类名其实无关,之和 xml 的 id 有关</span>
+Service Service = (IndexService) classPathXmlApplicationContext.getBean(<span class="hljs-string">"service"</span>);
+service.test();</code></pre></div>
+</li>
+<li>
+<p>方式二: annotation ( 与 schema 或者 Java Configuration 集成)</p>
+<ol>
+<li>
+<p>方法一:annotation + schema</p>
+<ol>
+<li>
+<p>首先需要开启 Spring 对注解的支持:</p>
+<p>在 xml 里面写上 <code>&lt;context:component-scan base-package=&quot;ind.yinchao.ioc.test1&quot;/&gt;</code></p>
+<p>这样离不开 xml,不太好</p>
+</li>
+</ol>
+</li>
+<li>
+<p>方法二:annotation + Java Configuration 更改主函数的 Context (已经体现 <strong><code>自动装配</code></strong>)</p>
+<p>新建 Java 配置文件</p>
+ <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// @configuration 就是生命这是代替 xml 的配置文件</span>
+<span class="hljs-meta">@Configuration</span>()
+<span class="hljs-comment">// @componentScan 开启扫描</span>
+<span class="hljs-meta">@ComponentScan</span>(<span class="hljs-string">"ind.yinchao.ioc.test2"</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpringConfiguration</span></span>&#123;
+&#125;</code></pre></div>
+ <div class="hljs"><pre><code class="hljs java">AnnotationConfigApplicationContext annotationConfigApplicationContext = <span class="hljs-keyword">new</span> AnnotationConfigApplicationContext(SpringConfig<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;</code></pre></div>
+</li>
+</ol>
+<p>然后就可以使用注解了</p>
+ <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">//声明类</span>
+<span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Service</span></span>&#123;
+    <span class="hljs-comment">// 声明依赖关系</span>
+    <span class="hljs-meta">@Autowired</span>
+    Dao dao;
+&#125;
+
+&lt;!-- 声明类 --&gt;
+<span class="hljs-meta">@Component</span>(<span class="hljs-string">"dao"</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">DaoImpl</span></span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test</span><span class="hljs-params">()</span></span>&#123;
+        System.out.println(<span class="hljs-string">"daoImpl1);</span>
+<span class="hljs-string">    &#125;</span>
+<span class="hljs-string">&#125;</span></code></pre></div>
+</li>
+<li>
+<p>方式三: schema + annotation + Java Configuration 混合使用</p>
+<p>在 Java Configuration + annotation 的基础上,在 Java 配置文件类 SpringConfiguration 中加上 <code>@ImportResource(&quot;SpringConfiguration.xml&quot;)</code> 以启用 schema</p>
+</li>
+<li>
+<p>使用 <strong>schema</strong> 的问题:</p>
+<p>如果我们类与类之间有了依赖关系,那么为什么还要在声明类的配置中来再描述一遍依赖对象呢?这样不就冗余了吗</p>
+<p>解决:</p>
+<p>使用 Spring 的 <strong>自动装配</strong> 完成上面的第三步,不需要在第二步完成类的描述之后再去进行冗余的类与依赖对象的描述</p>
+<p>在 xml 配置文件的头部最后加上 <code>default-autowired = &quot;no|byType|byName|construct&quot;</code>,分别对应:</p>
+<ol>
+<li>
+<p>no|default: 不自动装配</p>
+</li>
+<li>
+<p>byType: 自动属性注入</p>
+<p>需要 set 方法</p>
+<p>type: 依赖属性的类型</p>
+</li>
+<li>
+<p>byName 自动名字注入:</p>
+<p>需要 set 方法</p>
+<p>name: set方法按一定规律的名字</p>
+<p>例如 setTest ,那么 xml 中对应的依赖类 id 就为 test</p>
+</li>
+<li>
+<p>自动通过构造方法注入:需要带参构造方法</p>
+ <div class="hljs"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 在主程序的配置入口处配置 最后加上 default-autowired="byType"--&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"dao"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ind.yinchao.ioc.test1.IndexDaoImpl"</span>/&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"service"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"ind.yinchao.ioc.test1.IndexService"</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"dao"</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">"dao"</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></code></pre></div>
+</li>
+</ol>
+</li>
+<li>
+<p>使用 annotation + Java Configuration 的问题 (schema 也类似,就不再举例)</p>
+<p>实现类有两个:</p>
+ <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Component</span>(<span class="hljs-string">"dao2.1"</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IndexDaoImpl1</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">IndexDao</span></span>&#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"impl2.1"</span>);
+    &#125;
+&#125;</code></pre></div>
+ <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Component</span>(<span class="hljs-string">"dao2.2"</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IndexDaoImpl2</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">IndexDao</span></span>&#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">"impl2.2"</span>);
+    &#125;
+&#125;</code></pre></div>
+<p>这时如果在 Service 类里面继续写依赖就会报错</p>
+ <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Service</span></span>&#123;
+    <span class="hljs-meta">@Autowired</span>
+    IndexDao dao
+&#125;</code></pre></div>
+<blockquote>
+<p>No qualifying bean of type ‘test2.IndexDao’ available: expected single matching bean but found 2: dao2.1,dao2.2</p>
+</blockquote>
+<p>因为 @Autowired 默认是根据 byType 查找,这里出现了两个 IndexDao 的实现,那么就有两个相同的类型,就会出错</p>
+<p>解决:</p>
+<ol>
+<li>
+<p>方法一: @Autowired 是先根据 byType 如果没有找到,会使用 byName</p>
+<p>这样,那我们只需要修改 Service 里面的依赖变量名 dao -&gt; indexDaoImpl1,这样就可以找到 IndexDaoImpl1 这个类了</p>
+<p>注意,和 setter 方法无关</p>
+</li>
+<li>
+<p>使用 @Resource 是根据 byName 查找的,解决方式同上</p>
+</li>
+<li>
+<p>虽然还是使用 @Resource ,这里我们还可以使用 @Qualifier 指定 Bean 的名字</p>
+</li>
+</ol>
+</li>
+<li>
+<p>作用域 Scope</p>
+<p>一个很坑的点: singleton bean 需要 prototype bean 的时候, 被依赖的 prototype bean 可能只会初始化一次,那么 prototype 就失效了</p>
+<p>解决</p>
+<ol>
+<li>
+<p>implement ApplicationContextAware</p>
+<p>需要用到 Spring 的 API 侵入性很强</p>
+</li>
+<li>
+<p>通过 @Lookup(“indexDaoImpl1”)注解</p>
+<p>@Lookup 写在一个 abstract 方法上,并返回依赖</p>
+<p>再将这个类设置为 abstract</p>
+<p>这个类就不需要 @Autowired 或者 @Resource 注解了,直接在外部调用 Service 的方法里面再调用那个 abstract 方法即可</p>
+<p>@Lookup(“indexDaoImpl1”),可以通过指定 bean 来防止有多个同类型的 type</p>
+<p>@Lookup() 实际上是<strong>依赖查找 DL</strong>!</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Bean 生命周期的<strong>回调</strong> (lifecycle callback)</p>
+<p>创建 Bean 时的回调 (销毁时同理)</p>
+<ol>
+<li>
+<p>方式一: 实现 InitializingBean 接口,重写 afterPropertiesSet 方法</p>
+</li>
+<li>
+<p>方法二: 对于基于 xml 的情况,可以在 bean 标签里加上</p>
+ <div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">default-init-method</span>=<span class="hljs-string">"init"</span>&gt;</span></code></pre></div>
+<p>并指定方法名</p>
+</li>
+<li>
+<p>方法三: 在方法上写一个注解 @PostConstruct</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Spring/">Spring</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/3/20/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E6%95%B0%E6%8D%AE%E8%BF%9E%E6%8E%A5%E6%B1%A0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据源和数据连接池</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/3/11/JDK(7%E5%92%8C8)%20%E6%BA%90%E7%A0%81%E6%90%AD%E5%BB%BA/">
+                        <span class="hidden-mobile">JDK(7和8) 源码搭建</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Spring 知识 -- Spring IOC 的应用&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+  <script>(function (i, s, o, g, r, a, m) {
+      i['DaoVoiceObject'] = r;
+      i[r] = i[r] ||
+        function () {
+          (i[r].q = i[r].q || []).push(arguments);
+        };
+      i[r].l = 1 * new Date();
+      a = s.createElement(o);
+      m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      a.charset = 'utf-8';
+      m.parentNode.insertBefore(a, m);
+    })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/a54a5523.js", 'daovoice');
+    daovoice('init', {
+      app_id: "a54a5523",
+    });
+    daovoice('update');
+  </script>
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

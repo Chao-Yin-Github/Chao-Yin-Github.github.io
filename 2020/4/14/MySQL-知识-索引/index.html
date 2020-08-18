@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -20,21 +20,25 @@
   <title>MySQL 知识--索引 ~ y·◑</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.18.1/styles/atom-one-dark-reasonable.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_ijqayz9ro8k.css">
-
-
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
@@ -42,7 +46,8 @@
 <!-- 自定义样式保持在最底部 -->
 
 
-<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
 </head>
 
 
@@ -66,38 +71,50 @@
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/">
-              <i class="iconfont icon-home-fill"></i>
-              首页</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
         
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/archives/">
-              <i class="iconfont icon-archive-fill"></i>
-              归档</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
         
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/tags/">
-              <i class="iconfont icon-tags-fill"></i>
-              标签</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
         
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/about/">
-              <i class="iconfont icon-user-fill"></i>
-              关于</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
         
         
           <li class="nav-item" id="search-btn">
@@ -122,43 +139,46 @@
 
             
               
-                <div class="mt-3 post-meta">
-                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-                  <time datetime="2020-04-14 18:35">
-                    2020 四月 14, 星期二 , 6:35 晚上
-                  </time>
-                </div>
-              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-04-14 18:35">
+      2020 四月 14, 星期二 , 6:35 晚上
+    </time>
+  </div>
 
-              <div class="mt-1">
-                
-                  
-                  <span class="post-meta mr-2">
-                    <i class="iconfont icon-chart"></i>
-                    2.3k 字
-                  </span>
-                
 
-                
-                  
-                  <span class="post-meta mr-2">
-                      <i class="iconfont icon-clock-fill"></i>
-                    
-                    
-                    48
-                     分钟
-                  </span>
-                
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
 
-                
-                  <!-- 不蒜子统计文章PV -->
-                  
-                  <span id="busuanzi_container_page_pv" class="post-meta" style="display: none">
-                    <i class="iconfont icon-eye" aria-hidden="true"></i>
-                    <span id="busuanzi_value_page_pv"></span> 次
-                  </span>
-                
-              </div>
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      49
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
             
           </div>
 
@@ -184,8 +204,10 @@
         <div class="py-5" id="board">
           <div class="post-content mx-auto" id="post">
             
-              <p class="note note-warning">
-                本文最后更新于：2020 四月 20, 星期一 , 1:45 凌晨
+              <p class="note note-info">
+                
+                  本文最后更新于：2020 七月 26, 星期日 , 6:32 晚上
+                
               </p>
             
             <article class="markdown-body">
@@ -196,8 +218,7 @@
 <p>注意,这里有一个很容易误解的点:</p>
 <blockquote>
 <p>这里说的是物理顺序,而不是物理上<strong>连续</strong></p>
-<p>一是因为页之间是通过循环双向链表连接的,可能都没有物理上的首尾结点的说法</p>
-<p>二是正是由于是循环双向链表,而且会有页分裂时候的复制过程,那么在物理地址上,就同样不是顺序的了</p>
+<p>主要是由于是双向链表,而且会有页分裂时候的复制过程,那么在物理地址上,就肯定不是顺序的了</p>
 </blockquote>
 <p>聚簇表示数据行和相邻的键值(逻辑上)紧凑地存储在一起</p>
 <p>因为无法同时把数据数据行存放在两个不同的地方,所以一个表中只能拥有<strong>一个聚集索引</strong></p>
@@ -324,6 +345,35 @@
 <p>这种操作类似 Insert Buffer,不同的是 Insert Buffer 是持久对象,还是 B+ 树结构</p>
 </li>
 </ul>
+<h3 id="哈希索引"><a class="header-anchor" href="#哈希索引">⚡</a>哈希索引</h3>
+<p>基于哈希表实现</p>
+<ul>
+<li>
+<p>缺点</p>
+<ol>
+<li>
+<p>哈希冲突,对于每一个 hash 值相同的数据,查找时,必须进行逐行比较,而插入时也要维护相同 hash 值的数据</p>
+</li>
+<li>
+<p>哈希索引只包含哈希值和行指针,而不存储字段值</p>
+<ol>
+<li>
+<p>索引无法实现索引覆盖,必须回表</p>
+</li>
+<li>
+<p>要么全部使用索引,要么不使用,无法使用部分索引加快查询速度</p>
+</li>
+<li>
+<p>索引数据无法排序</p>
+</li>
+<li>
+<p>必须精确匹配索引所有的列的查询才有效,不支持范围查询</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
 <h3 id="其它索引"><a class="header-anchor" href="#其它索引">⚡</a>其它索引</h3>
 <ul>
 <li>
@@ -331,9 +381,6 @@
 </li>
 <li>
 <p>唯一索引: 索引值唯一</p>
-</li>
-<li>
-<p>哈系索引: 基于哈系表实现,缺点是必须精确匹配索引所有的列的查询才有效,不支持范围查询,也不支持任何范围查询</p>
 </li>
 </ul>
 <h2 id="索引优化–建立高性能索引"><a class="header-anchor" href="#索引优化–建立高性能索引">⚡</a>索引优化–建立高性能索引</h2>
@@ -472,95 +519,71 @@
   
 
   <footer class="mt-5">
-    <div class="text-center py-3">
-        <div>
-            本站由 <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-            <i class="iconfont icon-love"></i>
-            <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-                <span>Fluid</span></a> 强力驱动
-        </div>
-
-        <div>
-            <span id="timeDate">载入天数...</span>
-            <span id="times">载入时分秒...</span>
-            <script>
-                var now = new Date();
-
-                function createtime() {
-                    var grt = new Date("08/5/2019 00:00:00"); //此处修改你的建站时间或者网站上线时间
-                    now.setTime(now.getTime() + 250);
-                    days = (now - grt) / 1000 / 60 / 60 / 24;
-                    dnum = Math.floor(days);
-                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                    hnum = Math.floor(hours);
-                    if (String(hnum).length == 1) {
-                        hnum = "0" + hnum;
-                    }
-                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                    mnum = Math.floor(minutes);
-                    if (String(mnum).length == 1) {
-                        mnum = "0" + mnum;
-                    }
-                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                    snum = Math.round(seconds);
-                    if (String(snum).length == 1) {
-                        snum = "0" + snum;
-                    }
-                    document.getElementById("timeDate").innerHTML = "本站已经存在&nbsp" + dnum + "&nbsp天";
-                    document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum +
-                        "&nbsp秒";
-                }
-                setInterval("createtime()", 250);
-            </script>
-        </div>
-
-        
-  <div>
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
     
-      <!-- 不蒜子统计PV -->
+  <div class="statistics">
+    
+    
+
+    
       
-      <span id="busuanzi_container_site_pv" style="display: none">
-      总访问量 <span id="busuanzi_value_site_pv"></span> 次
-    </span>
-    
-    
-      <!-- 不蒜子统计UV -->
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
       
-      <span id="busuanzi_container_site_uv" style="display: none">
-      总访客数 <span id="busuanzi_value_site_uv"></span> 人
-    </span>
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
     
   </div>
 
 
-        
+    
 
-        
-
-        <p id="hitokoto">:D 获取中...</p>
-        <script>
-            fetch('https://v1.hitokoto.cn')
-                .then(response => response.json())
-                .then(data => {
-                    const hitokoto = document.getElementById('hitokoto')
-                    hitokoto.innerText = data.hitokoto
-                })
-                .catch(console.error)
-        </script>
-    </div>
+    
+  </div>
 </footer>
 
 <!-- SCRIPTS -->
 <script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
 <script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
 <script  src="/js/main.js" ></script>
 
-
-  <script  src="/js/lazyload.js" ></script>
-
+<!-- Plugins -->
 
 
   
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
   <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
   <script>
     $(document).ready(function () {
@@ -569,7 +592,7 @@
 
       tocbot.init({
         tocSelector: '#tocbot',
-        contentSelector: '.post-content',
+        contentSelector: 'article.markdown-body',
         headingSelector: 'h1,h2,h3,h4,h5,h6',
         linkClass: 'tocbot-link',
         activeLinkClass: 'tocbot-active-link',
@@ -585,46 +608,6 @@
       }
     });
   </script>
-
-
-
-
-
-  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="/js/clipboard-use.js" ></script>
-
-
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-<!-- Plugins -->
-
-
-  
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
 
 
 
@@ -670,7 +653,7 @@
     var path = "/local-search.xml";
     var inputArea = document.querySelector("#local-search-input");
     inputArea.onclick = function () {
-      getSearchFile(path);
+      searchFunc(path, 'local-search-input', 'local-search-result');
       this.onclick = null
     }
   </script>
@@ -773,6 +756,33 @@
 
 
 
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 
 

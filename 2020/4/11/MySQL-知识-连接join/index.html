@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -20,21 +20,25 @@
   <title>MySQL 知识--连接join ~ y·◑</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.18.1/styles/atom-one-dark-reasonable.min.css" />
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+  
+
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_ijqayz9ro8k.css">
-
-
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
@@ -42,7 +46,8 @@
 <!-- 自定义样式保持在最底部 -->
 
 
-<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
 </head>
 
 
@@ -66,38 +71,50 @@
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/">
-              <i class="iconfont icon-home-fill"></i>
-              首页</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
         
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/archives/">
-              <i class="iconfont icon-archive-fill"></i>
-              归档</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
         
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/tags/">
-              <i class="iconfont icon-tags-fill"></i>
-              标签</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
         
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/about/">
-              <i class="iconfont icon-user-fill"></i>
-              关于</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
         
         
           <li class="nav-item" id="search-btn">
@@ -122,43 +139,46 @@
 
             
               
-                <div class="mt-3 post-meta">
-                  <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-                  <time datetime="2020-04-11 21:20">
-                    2020 四月 11, 星期六 , 9:20 晚上
-                  </time>
-                </div>
-              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-04-11 21:20">
+      2020 四月 11, 星期六 , 9:20 晚上
+    </time>
+  </div>
 
-              <div class="mt-1">
-                
-                  
-                  <span class="post-meta mr-2">
-                    <i class="iconfont icon-chart"></i>
-                    1.1k 字
-                  </span>
-                
 
-                
-                  
-                  <span class="post-meta mr-2">
-                      <i class="iconfont icon-clock-fill"></i>
-                    
-                    
-                    23
-                     分钟
-                  </span>
-                
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
 
-                
-                  <!-- 不蒜子统计文章PV -->
-                  
-                  <span id="busuanzi_container_page_pv" class="post-meta" style="display: none">
-                    <i class="iconfont icon-eye" aria-hidden="true"></i>
-                    <span id="busuanzi_value_page_pv"></span> 次
-                  </span>
-                
-              </div>
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
             
           </div>
 
@@ -184,14 +204,20 @@
         <div class="py-5" id="board">
           <div class="post-content mx-auto" id="post">
             
-              <p class="note note-warning">
-                本文最后更新于：2020 四月 20, 星期一 , 1:45 凌晨
+              <p class="note note-info">
+                
+                  本文最后更新于：2020 七月 18, 星期六 , 2:48 凌晨
+                
               </p>
             
             <article class="markdown-body">
               <ul>
 <li>
-<p>最笨拙的join就是多个表的for循环,以幂次增长</p>
+<p>在 MySQL 中，只有一种 Join 算法，也就是 Nested Loop Join，没有其他很多数据库所提供的Hash Join，也没有Sort Merge Join</p>
+<p>Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数据，然后一条一条的通过该结果集中的数据作为过滤条件到下一个表中查询数据，然后合并结果。如果还有第三个参与Join，则再通过前两个表的Join 结果集作为循环基础数据，再一次通过循环查询条件到第三个表中查询数据，如此往复。</p>
+</li>
+<li>
+<p>Nested Loop Join 就是多个表的for循环,以幂次增长</p>
   <a id="more"></a>
 <p>例如</p>
   <div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> t1 <span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> t2 <span class="hljs-keyword">on</span> t1.a = t2.a;
@@ -210,20 +236,45 @@
 &#125;</code></pre></div>
 </li>
 <li>
-<p>MySQL 就使用 <code>join buffer</code> 优化:</p>
+<p>MySQL 就使用 BNL 算法以及 <code>join buffer</code> 优化:</p>
+<p>BNL (Block Nested Loop Join)算法原理：将外层循环的行/结果集存入 join buffer,内存循环的每一行数据与整个 buffer 中的记录做比较,可以减少内层循环的扫描次数</p>
+<ul>
+<li>
+<p>适用条件</p>
+<p>join buffer 只有当我们的 join 类型为 ALL,index,rang 或者是index_merge 的时候才能够使用</p>
+</li>
+</ul>
   <!-- 因为如果是表比较小还好,如果表很大,那么一次性可能不能从磁盘全部把驱动表加载进内存,那么读到一定程度就需要把前面读到的从内存中删掉,然后再从磁盘继续读,这样驱动表就会被读取很多遍,有很大的 IO 开销 -->
-<p>上面这样效率肯定很低,因为当驱动表得到一条数据之后,就会在被驱动表里面找符合条件的数据,而被驱动表需要从磁盘加载到<strong>内存</strong>才能进行条件匹配</p>
+<p>直接嵌套查询效率肯定很低,因为当驱动表得到一条数据之后,就会在被驱动表里面找符合条件的数据,而被驱动表需要从磁盘加载到<strong>内存</strong>才能进行条件匹配</p>
 <p>而每次访问被驱动表,都要进行一次IO,并且在内存中的每一条记录只会和驱动表结果集的一条记录做匹配,之后就会被从内存中清除掉,然后再从驱动表结果集中拿出另一条记录,再一次把被驱动表的记录加载到内存中一遍</p>
 <p>周而复始，驱动表结果集中有多少条记录，就得把被驱动表从磁盘上加载到内存中多少次。所以我们可以在把被驱动表的记录加载到内存的时候，一次性和多条驱动表中的记录做匹配，这样就可以大大减少重复从磁盘上加载被驱动表的代价了</p>
 <p>MySQL 使用 join buffer 就是这么做的</p>
-<p>它不再是每次从驱动表取出一条数据就在另一个表里面找,而是取出一定大小之后,再一起在另一张表里找,这样就提高了效率</p>
+<p>它不再是每次从驱动表取出一条数据就在另一个表里面找,而是取出一定大小之后,再一起在另一张表里找,批量查找比单次查找效率高一些</p>
 <blockquote>
 <p>join buffer 就是执行连接查询前申请的一块固定大小的内存，先把若干条驱动表结果集中的记录装在这个 join buffer 中，然后开始扫描被驱动表，每一条被驱动表的记录一次性和 join buffer 中的多条驱动表记录做匹配，，所以这样可以显著减少被驱动表的 I/O 代价</p>
 <p>最好的情况是 join buffer 足够大，能容纳驱动表结果集中的所有记录，这样只需要访问一次被驱动表就可以完成连接操作了。这种加入了 join buffer 的嵌套循环连接算法称之为<strong>基于块的嵌套连接</strong>(Block Nested-Loop Join)算法</p>
 <p>另外需要注意的是，驱动表的记录并不是所有列都会被放到join buffer中，只有查询列表中的列和过滤条件中的列才会被放到join buffer中，所以再次提醒我们，最好不要把<code>*</code>作为查询列表，只需要把我们关心的列放到查询列表就好了，这样可以在join buffer中放置更多的记录</p>
 </blockquote>
-<p>join buffer 只有当我们的 join 类型为 ALL,index,rang 或者是index_merge 的时候才能够使用</p>
 <p>注意: join buffer 只是通过先查驱动表,在一起放到另一个表的条件里面,如果驱动表还是很多,应该还是会有多次读取驱动表的情况</p>
+<ul>
+<li>
+<p>join 优化总结:</p>
+<ol>
+<li>
+<p>让驱动表得到的数据尽可能的少,减少内层循环次数</p>
+</li>
+<li>
+<p>优化内层循环次数,</p>
+</li>
+<li>
+<p>被驱动表 join 字段加索引(使用 index nested loop join 优化)</p>
+</li>
+<li>
+<p>join buffer,并增大 buffer size</p>
+</li>
+</ol>
+</li>
+</ul>
 </li>
 <li>
 <p>消除外联接</p>
@@ -337,95 +388,71 @@
   
 
   <footer class="mt-5">
-    <div class="text-center py-3">
-        <div>
-            本站由 <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-            <i class="iconfont icon-love"></i>
-            <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-                <span>Fluid</span></a> 强力驱动
-        </div>
-
-        <div>
-            <span id="timeDate">载入天数...</span>
-            <span id="times">载入时分秒...</span>
-            <script>
-                var now = new Date();
-
-                function createtime() {
-                    var grt = new Date("08/5/2019 00:00:00"); //此处修改你的建站时间或者网站上线时间
-                    now.setTime(now.getTime() + 250);
-                    days = (now - grt) / 1000 / 60 / 60 / 24;
-                    dnum = Math.floor(days);
-                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                    hnum = Math.floor(hours);
-                    if (String(hnum).length == 1) {
-                        hnum = "0" + hnum;
-                    }
-                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                    mnum = Math.floor(minutes);
-                    if (String(mnum).length == 1) {
-                        mnum = "0" + mnum;
-                    }
-                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                    snum = Math.round(seconds);
-                    if (String(snum).length == 1) {
-                        snum = "0" + snum;
-                    }
-                    document.getElementById("timeDate").innerHTML = "本站已经存在&nbsp" + dnum + "&nbsp天";
-                    document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum +
-                        "&nbsp秒";
-                }
-                setInterval("createtime()", 250);
-            </script>
-        </div>
-
-        
-  <div>
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
     
-      <!-- 不蒜子统计PV -->
+  <div class="statistics">
+    
+    
+
+    
       
-      <span id="busuanzi_container_site_pv" style="display: none">
-      总访问量 <span id="busuanzi_value_site_pv"></span> 次
-    </span>
-    
-    
-      <!-- 不蒜子统计UV -->
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
       
-      <span id="busuanzi_container_site_uv" style="display: none">
-      总访客数 <span id="busuanzi_value_site_uv"></span> 人
-    </span>
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
     
   </div>
 
 
-        
+    
 
-        
-
-        <p id="hitokoto">:D 获取中...</p>
-        <script>
-            fetch('https://v1.hitokoto.cn')
-                .then(response => response.json())
-                .then(data => {
-                    const hitokoto = document.getElementById('hitokoto')
-                    hitokoto.innerText = data.hitokoto
-                })
-                .catch(console.error)
-        </script>
-    </div>
+    
+  </div>
 </footer>
 
 <!-- SCRIPTS -->
 <script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
 <script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
 <script  src="/js/main.js" ></script>
 
-
-  <script  src="/js/lazyload.js" ></script>
-
+<!-- Plugins -->
 
 
   
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
   <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
   <script>
     $(document).ready(function () {
@@ -434,7 +461,7 @@
 
       tocbot.init({
         tocSelector: '#tocbot',
-        contentSelector: '.post-content',
+        contentSelector: 'article.markdown-body',
         headingSelector: 'h1,h2,h3,h4,h5,h6',
         linkClass: 'tocbot-link',
         activeLinkClass: 'tocbot-active-link',
@@ -450,46 +477,6 @@
       }
     });
   </script>
-
-
-
-
-
-  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
-  <script  src="/js/clipboard-use.js" ></script>
-
-
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-<!-- Plugins -->
-
-
-  
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
 
 
 
@@ -535,7 +522,7 @@
     var path = "/local-search.xml";
     var inputArea = document.querySelector("#local-search-input");
     inputArea.onclick = function () {
-      getSearchFile(path);
+      searchFunc(path, 'local-search-input', 'local-search-result');
       this.onclick = null
     }
   </script>
@@ -638,6 +625,33 @@
 
 
 
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 
 

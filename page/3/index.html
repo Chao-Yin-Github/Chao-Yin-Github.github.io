@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -20,21 +20,16 @@
   <title>y·◑</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-
-  <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/9.18.1/styles/atom-one-dark-reasonable.min.css" />
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_fmb4a04yx8h.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_ijqayz9ro8k.css">
-
-
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
@@ -42,7 +37,8 @@
 <!-- 自定义样式保持在最底部 -->
 
 
-<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
 </head>
 
 
@@ -66,38 +62,50 @@
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/">
-              <i class="iconfont icon-home-fill"></i>
-              首页</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
         
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/archives/">
-              <i class="iconfont icon-archive-fill"></i>
-              归档</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
         
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/tags/">
-              <i class="iconfont icon-tags-fill"></i>
-              标签</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
         
           
           
           
-          <li class="nav-item">
-            <a class="nav-link" href="/about/">
-              <i class="iconfont icon-user-fill"></i>
-              关于</a>
-          </li>
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
         
         
           <li class="nav-item" id="search-btn">
@@ -149,131 +157,20 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/4/11/JVM-%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/">JVM 知识--内存溢出和内存泄漏</a>
+      <a class="index-header" href="/2020/4/30/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CAS/">并发知识-- CAS</a>
 
-      <a href="/2020/4/11/JVM-%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/" class="index-excerpt">
+      <a href="/2020/4/30/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CAS/" class="index-excerpt">
         
         
           
         
-        <div>内存溢出(MemoryOverflow)就是你要求分配的内存超出了系统给你的,导致系统无法再给你提供内存资源（内存资源耗尽）</div>
+        <div>CAS (Compare And Swap) (CompareAndSet): 比较并交换,比较并设定</div>
       </a>
 
       <div class="index-btm post-metas">
         
           <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-04-11
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/JVM/">JVM</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/3/31/JVM-%E7%9F%A5%E8%AF%86-OOM%E7%9A%84%E5%87%A0%E7%A7%8D%E6%83%85%E5%86%B5/">JVM 知识--OOM的几种情况</a>
-
-      <a href="/2020/3/31/JVM-%E7%9F%A5%E8%AF%86-OOM%E7%9A%84%E5%87%A0%E7%A7%8D%E6%83%85%E5%86%B5/" class="index-excerpt">
-        
-        
-          
-        
-        <div>
-
-堆
-
-
-内存溢出 (MemoryOverflow)</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-03-31
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/JVM/">JVM</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/3/30/JVM-%E7%9F%A5%E8%AF%86-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">JVM 知识--垃圾收集器</a>
-
-      <a href="/2020/3/30/JVM-%E7%9F%A5%E8%AF%86-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/" class="index-excerpt">
-        
-        
-          
-        
-        <div>基于分代收集理论</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-03-30
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/JVM/">JVM</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/3/29/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E7%A1%AC%E4%BB%B6%E5%86%85%E5%AD%98%E6%9E%B6%E6%9E%84/" target="_self">
-          <img src="/img/CPU.png" srcset="/img/loading.gif" alt="并发知识-硬件内存架构">
-        </a>
-      </div>
-    
-    <div class="col-12 col-md-8 mx-auto index-info">
-      <a class="index-header" href="/2020/3/29/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E7%A1%AC%E4%BB%B6%E5%86%85%E5%AD%98%E6%9E%B6%E6%9E%84/">并发知识-硬件内存架构</a>
-
-      <a href="/2020/3/29/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E7%A1%AC%E4%BB%B6%E5%86%85%E5%AD%98%E6%9E%B6%E6%9E%84/" class="index-excerpt">
-        
-        
-          
-        
-        <div>⚡CPU 工作机制
-CPU 速度快,但是数据存放到内存中,而内存相对较慢,所以 CPU 中间加上 cache 多级高速缓存来提升数据读取速度</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-03-29
+            <i class="iconfont icon-date"></i>&nbsp;2020-04-30
           </div>
         
         
@@ -283,7 +180,39 @@ CPU 速度快,但是数据存放到内存中,而内存相对较慢,所以 CPU �
             
               <a href="/tags/concurrent/">concurrent</a>
             
-              <a href="/tags/os/">os</a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%20(%E6%9D%82%E8%B0%88)%20%E9%AB%98%E5%B9%B6%E5%8F%91%E9%AB%98%E5%8F%AF%E7%94%A8-VS-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%A3%E7%A1%AE%E6%80%A7/">并发知识- (杂谈) 高并发高可用 VS 多线程正确性</a>
+
+      <a href="/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%20(%E6%9D%82%E8%B0%88)%20%E9%AB%98%E5%B9%B6%E5%8F%91%E9%AB%98%E5%8F%AF%E7%94%A8-VS-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%A3%E7%A1%AE%E6%80%A7/" class="index-excerpt">
+        
+        
+          
+        
+        <div>⚡写在前面
+文章是学习并发编程的时候,觉得并发编程难学,想到什么情况下需要用到并发编程,然后想到了一些情况,故记录之</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-04-23
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/concurrent/">concurrent</a>
             
           </div>
         
@@ -295,23 +224,20 @@ CPU 速度快,但是数据存放到内存中,而内存相对较慢,所以 CPU �
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/3/29/JVM-%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/">JVM 知识--JVM 内存区域</a>
+      <a class="index-header" href="/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-ReentrantLock/">并发知识-- ReentrantLock</a>
 
-      <a href="/2020/3/29/JVM-%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F/" class="index-excerpt">
+      <a href="/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-ReentrantLock/" class="index-excerpt">
         
         
           
         
-        <div>⚡Java 内存区域
-
-Java 虚拟机在执行 Java 程序的过程中将它所管理的内存区域分成若干个不同的数据区域,称为 Java 内存区域.(即运行时数据区)
-</div>
+        <div>如果并发度很大,那么就一定存在线程之前对锁的竞争,这时,如果是公平锁,那么先获取锁的线程先处理,后获取锁的排在一个等待队列,然后这个线程就 `park` 暂停,然后等待锁释放和通知,`unpark` 后,再去获取锁...</div>
       </a>
 
       <div class="index-btm post-metas">
         
           <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-03-29
+            <i class="iconfont icon-date"></i>&nbsp;2020-04-21
           </div>
         
         
@@ -319,7 +245,81 @@ Java 虚拟机在执行 Java 程序的过程中将它所管理的内存区域分
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/JVM/">JVM</a>
+              <a href="/tags/Java/">Java</a>
+            
+              <a href="/tags/concurrent/">concurrent</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-ICP-%E4%BC%98%E5%8C%96/">MySQL 知识-- ICP 优化</a>
+
+      <a href="/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-ICP-%E4%BC%98%E5%8C%96/" class="index-excerpt">
+        
+        
+          
+        
+        <div>Index Condition Pushdown (ICP)
+
+
+目的: 在取出索引的同时,提前判断 where 条件,从而提前过滤一部分不符合条件的记录</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-04-16
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/database/">database</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-MRR%20%E4%BC%98%E5%8C%96/">MySQL 知识-- MRR 优化</a>
+
+      <a href="/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-MRR%20%E4%BC%98%E5%8C%96/" class="index-excerpt">
+        
+        
+          
+        
+        <div>Multi-Range Read (MRR)
+
+
+目的:通过将随机 IO 排序,优化为顺序 IO 减少磁盘随机访问</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2020-04-16
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/database/">database</a>
             
           </div>
         
@@ -331,7 +331,7 @@ Java 虚拟机在执行 Java 程序的过程中将它所管理的内存区域分
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/2/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/2/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   
@@ -386,93 +386,57 @@ Java 虚拟机在执行 Java 程序的过程中将它所管理的内存区域分
   
 
   <footer class="mt-5">
-    <div class="text-center py-3">
-        <div>
-            本站由 <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
-            <i class="iconfont icon-love"></i>
-            <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
-                <span>Fluid</span></a> 强力驱动
-        </div>
-
-        <div>
-            <span id="timeDate">载入天数...</span>
-            <span id="times">载入时分秒...</span>
-            <script>
-                var now = new Date();
-
-                function createtime() {
-                    var grt = new Date("08/5/2019 00:00:00"); //此处修改你的建站时间或者网站上线时间
-                    now.setTime(now.getTime() + 250);
-                    days = (now - grt) / 1000 / 60 / 60 / 24;
-                    dnum = Math.floor(days);
-                    hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
-                    hnum = Math.floor(hours);
-                    if (String(hnum).length == 1) {
-                        hnum = "0" + hnum;
-                    }
-                    minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
-                    mnum = Math.floor(minutes);
-                    if (String(mnum).length == 1) {
-                        mnum = "0" + mnum;
-                    }
-                    seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
-                    snum = Math.round(seconds);
-                    if (String(snum).length == 1) {
-                        snum = "0" + snum;
-                    }
-                    document.getElementById("timeDate").innerHTML = "本站已经存在&nbsp" + dnum + "&nbsp天";
-                    document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum +
-                        "&nbsp秒";
-                }
-                setInterval("createtime()", 250);
-            </script>
-        </div>
-
-        
-  <div>
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
     
-      <!-- 不蒜子统计PV -->
+  <div class="statistics">
+    
+    
+
+    
       
-      <span id="busuanzi_container_site_pv" style="display: none">
-      总访问量 <span id="busuanzi_value_site_pv"></span> 次
-    </span>
-    
-    
-      <!-- 不蒜子统计UV -->
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
       
-      <span id="busuanzi_container_site_uv" style="display: none">
-      总访客数 <span id="busuanzi_value_site_uv"></span> 人
-    </span>
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
     
   </div>
 
 
-        
+    
 
-        
-
-        <p id="hitokoto">:D 获取中...</p>
-        <script>
-            fetch('https://v1.hitokoto.cn')
-                .then(response => response.json())
-                .then(data => {
-                    const hitokoto = document.getElementById('hitokoto')
-                    hitokoto.innerText = data.hitokoto
-                })
-                .catch(console.error)
-        </script>
-    </div>
+    
+  </div>
 </footer>
 
 <!-- SCRIPTS -->
 <script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
 <script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
 <script  src="/js/main.js" ></script>
 
+<!-- Plugins -->
 
-  <script  src="/js/lazyload.js" ></script>
 
-
+  
+    <script  src="/js/lazyload.js" ></script>
+  
 
 
 
@@ -486,31 +450,6 @@ Java 虚拟机在执行 Java 程序的过程中将它所管理的内存区域分
 
 
 
-<!-- Plugins -->
-
-
-  
-    <!-- Baidu Analytics -->
-    <script defer>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
 
 
 
@@ -534,21 +473,6 @@ Java 虚拟机在执行 Java 程序的过程中将它所管理的内存区域分
 
 
 
-  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
-  <script>
-    anchors.options = {
-      placement: "right",
-      visible: "hover",
-      
-    };
-    var el = "h1,h2,h3,h4,h5,h6".split(",");
-    var res = [];
-    for (item of el) {
-      res.push(".markdown-body > " + item)
-    }
-    anchors.add(res.join(", "))
-  </script>
-
 
 
   <script  src="/js/local-search.js" ></script>
@@ -556,7 +480,7 @@ Java 虚拟机在执行 Java 程序的过程中将它所管理的内存区域分
     var path = "/local-search.xml";
     var inputArea = document.querySelector("#local-search-input");
     inputArea.onclick = function () {
-      getSearchFile(path);
+      searchFunc(path, 'local-search-input', 'local-search-result');
       this.onclick = null
     }
   </script>
@@ -645,6 +569,33 @@ Java 虚拟机在执行 Java 程序的过程中将它所管理的内存区域分
 
 
 
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?533ab32d3ee1bd2399cf7631e49e3b5d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 
 

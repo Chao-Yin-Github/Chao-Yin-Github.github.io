@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://yme86.github.io/"/>
-  <updated>2020-08-18T17:15:21.170Z</updated>
+  <updated>2020-08-28T09:24:15.342Z</updated>
   <id>https://yme86.github.io/</id>
   
   <author>
@@ -15,6 +15,54 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring 知识 -- BeanFactory 和 FactoryBean</title>
+    <link href="https://yme86.github.io/2020/8/28/Spring-%E7%9F%A5%E8%AF%86-BeanFactory-%E5%92%8C-FactoryBean/"/>
+    <id>https://yme86.github.io/2020/8/28/Spring-%E7%9F%A5%E8%AF%86-BeanFactory-%E5%92%8C-FactoryBean/</id>
+    <published>2020-08-28T03:41:17.000Z</published>
+    <updated>2020-08-28T09:24:15.342Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;先说结论，他们的区别是：&lt;/p&gt;
+&lt;p&gt;FactoryBean 是一个接口，可以用于解决使用第三方依赖时，用户需要配置过多依赖的问题。&lt;br&gt;
+具体来说，它主要是第三方为了向使用方提供 Bean，然后使用方再去生成并配置好这个 FactoryBean 实例交给 Spring 管理，然后通过这个工厂 Bean 就能生成这个第三方需要使用的真正的 Bean 并交给 Spring 去管理了。&lt;/p&gt;
+&lt;p&gt;BeanFactory 是 Spring 容器产生 Bean 的顶层工厂接口，Spring IOC 容器中的 Bean 都由这个 BeanFactory 产生。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Spring" scheme="https://YME86.github.io/tags/Spring/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring 知识 -- Spring AOP</title>
+    <link href="https://yme86.github.io/2020/8/26/Spring-%E7%9F%A5%E8%AF%86-Spring-AOP/"/>
+    <id>https://yme86.github.io/2020/8/26/Spring-%E7%9F%A5%E8%AF%86-Spring-AOP/</id>
+    <published>2020-08-26T07:47:01.000Z</published>
+    <updated>2020-08-28T07:13:59.339Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;相关概念&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#相关概念&quot;&gt;⚡&lt;/a&gt;相关概念&lt;/h2&gt;
+&lt;h3 id=&quot;Aop是什么&quot;&gt;&lt;a class=&quot;header-anchor&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Spring" scheme="https://YME86.github.io/tags/Spring/"/>
+    
+  </entry>
   
   <entry>
     <title>Bug记录 -- MyBaits 报错 -- Cannot get Configuration as configuration factory was not set</title>
@@ -40,7 +88,7 @@
     <link href="https://yme86.github.io/2020/8/13/ORM-%E5%B8%A6%E6%9D%A5%E7%9A%84-N-1-%E9%97%AE%E9%A2%98/"/>
     <id>https://yme86.github.io/2020/8/13/ORM-%E5%B8%A6%E6%9D%A5%E7%9A%84-N-1-%E9%97%AE%E9%A2%98/</id>
     <published>2020-08-13T13:26:16.000Z</published>
-    <updated>2020-08-18T17:10:26.401Z</updated>
+    <updated>2020-08-25T14:24:41.345Z</updated>
     
     <summary type="html">
     
@@ -99,7 +147,7 @@
     <link href="https://yme86.github.io/2020/7/26/MySQL-%E7%9F%A5%E8%AF%86-explain-%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/"/>
     <id>https://yme86.github.io/2020/7/26/MySQL-%E7%9F%A5%E8%AF%86-explain-%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/</id>
     <published>2020-07-26T10:44:13.000Z</published>
-    <updated>2020-08-18T17:06:14.453Z</updated>
+    <updated>2020-08-25T15:23:22.504Z</updated>
     
     <summary type="html">
     
@@ -128,9 +176,9 @@
     
     
     
-      <category term="Interview" scheme="https://YME86.github.io/tags/Interview/"/>
-    
       <category term="net" scheme="https://YME86.github.io/tags/net/"/>
+    
+      <category term="Interview" scheme="https://YME86.github.io/tags/Interview/"/>
     
   </entry>
   
@@ -374,55 +422,6 @@
     
     
       <category term="JVM" scheme="https://YME86.github.io/tags/JVM/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL 常用指令</title>
-    <link href="https://yme86.github.io/2020/4/11/MySQL-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"/>
-    <id>https://yme86.github.io/2020/4/11/MySQL-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</id>
-    <published>2020-04-11T14:31:40.000Z</published>
-    <updated>2020-07-23T11:48:40.416Z</updated>
-    
-    <summary type="html">
-    
-      &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;修改字段 video 为 utf8mb4 编码&lt;/p&gt;
-  &lt;div class=&quot;hljs&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs sql&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;alter&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;table&lt;/span&gt; slaughter_sheep_info &lt;span class=&quot;hljs-keyword&quot;&gt;change&lt;/span&gt; video video &lt;span class=&quot;hljs-built_in&quot;&gt;varchar&lt;/span&gt;(&lt;span class=&quot;hljs-number&quot;&gt;250&lt;/span&gt;) &lt;span class=&quot;hljs-built_in&quot;&gt;character&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;set&lt;/span&gt; utf8mb4&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="shellCommand" scheme="https://YME86.github.io/tags/shellCommand/"/>
-    
-      <category term="SQL" scheme="https://YME86.github.io/tags/SQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL 知识--连接join</title>
-    <link href="https://yme86.github.io/2020/4/11/MySQL-%E7%9F%A5%E8%AF%86-%E8%BF%9E%E6%8E%A5join/"/>
-    <id>https://yme86.github.io/2020/4/11/MySQL-%E7%9F%A5%E8%AF%86-%E8%BF%9E%E6%8E%A5join/</id>
-    <published>2020-04-11T13:20:59.000Z</published>
-    <updated>2020-07-17T18:48:40.939Z</updated>
-    
-    <summary type="html">
-    
-      &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;在 MySQL 中，只有一种 Join 算法，也就是 Nested Loop Join，没有其他很多数据库所提供的Hash Join，也没有Sort Merge Join&lt;/p&gt;
-&lt;p&gt;Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数据，然后一条一条的通过该结果集中的数据作为过滤条件到下一个表中查询数据，然后合并结果。如果还有第三个参与Join，则再通过前两个表的Join 结果集作为循环基础数据，再一次通过循环查询条件到第三个表中查询数据，如此往复。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Nested Loop Join 就是多个表的for循环,以幂次增长&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="database" scheme="https://YME86.github.io/tags/database/"/>
     
   </entry>
   

@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>安装记录 -- Manjaro 双显卡驱动 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-08 15:31" pubdate>
+        2020 九月 08, 星期二 , 3:31 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      356 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      6
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">安装记录 -- Manjaro 双显卡驱动</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：3 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="主要步骤"><a class="header-anchor" href="#主要步骤">⚡</a>主要步骤</h2>
+<ol>
+<li>
+<p>查看当前所用显卡</p>
+ <div class="hljs"><pre><code class="hljs shell">glxinfo | grep "server glx vendor string"
+<span class="hljs-meta">#</span><span class="bash"> 如果出现以下信息则说明使用的 nvidia 显卡</span>
+<span class="hljs-meta">#</span><span class="bash"> server glx vendor string: NVIDIA Corporation</span>
+
+<span class="hljs-meta">#</span><span class="bash"> 如果显示 SGI 则为集显</span></code></pre></div>
+</li>
+<li>
+<p>首先安装闭源驱动，卸载预装驱动</p>
+<ul>
+<li>
+<p>如果可以进入图形界面，那么直接搜索 manjaro settings，找到 <code>硬件设定</code>，删除所有预装 nvidia 驱动</p>
+</li>
+<li>
+<p>如果不能进入，则输入命令 <code>mhwd -li</code> 查看安装的 nvidia 驱动</p>
+<p><img src="/img/nvidia1.png" srcset="/img/loading.gif" alt="nvidia1"></p>
+<p>使用命令手动卸载</p>
+  <div class="hljs"><pre><code class="hljs shell">sudo mhwd -r pci &lt;$driverName&gt;</code></pre></div>
+</li>
+<li>
+<p>自动安装</p>
+  <div class="hljs"><pre><code class="hljs shell">sudo mhwd -a pci nonfree 0300</code></pre></div>
+</li>
+</ul>
+<p>安装完成之后的效果：</p>
+<p><img src="/img/nvidia2.png" srcset="/img/loading.gif" alt="nvidia2"></p>
+<p><img src="/img/nvidia_settings.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li>
+<p>安装并配置显卡管理软件 optimus<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>, 电源管理软件 bbswitch</p>
+ <div class="hljs"><pre><code class="hljs shell">sudo pacman -S optimus-manager-qt optimus-manager bbswitch
+
+sudo systemctl enable optimus-manager.service
+
+optimus-manager --set-startup nvidia</code></pre></div>
+ <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 修改 /etc/optimus-manager/optimus-manager.conf 文件如下，没有则新建文件</span>
+
+[intel]
+DRI=3
+accel=
+driver=modesetting
+modeset=yes
+tearfree=
+
+[nvidia]
+DPI=96
+PAT=yes
+allow_external_gpus=no
+ignore_abi=no
+modeset=yes
+options=overclocking
+
+[optimus]
+auto_logout=yes
+pci_power_control=no
+pci_remove=no
+pci_reset=no
+startup_auto_battery_mode=nvidia
+startup_auto_extpower_mode=nvidia
+startup_mode=nvidia
+switching=bbswitch</code></pre></div>
+ <div class="hljs"><pre><code class="hljs shell">optimus-manager --switch nvidia</code></pre></div>
+<p>如果上面这行命令运行有问题则使用下面的方法</p>
+ <div class="hljs"><pre><code class="hljs shell">prime-offload
+
+optimus-manager --switch nvidia
+
+<span class="hljs-meta">#</span><span class="bash"> 然后会自动推出登录，如果没有退出登录要手动退出一下</span>
+<span class="hljs-meta">#</span><span class="bash"> 再次登录后</span>
+
+prime-switch
+prime-offload</code></pre></div>
+</li>
+</ol>
+<h2 id="一些错误记录"><a class="header-anchor" href="#一些错误记录">⚡</a>一些错误记录</h2>
+<ol>
+<li>如果删除驱动导致进入不了图形界面，可以使用其他 tty 进入命令行操作</li>
+</ol>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://github.com/Askannz/optimus-manager#important--gnome-and-gdm-users" target="_blank" rel="noopener">optimus-manager 参考文档</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/configuration/">configuration</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/9/21/Java-%E7%9F%A5%E8%AF%86-Java-%E4%B8%AD%E7%9A%84-String-%E7%9B%B8%E7%AD%89%EF%BC%9F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java 知识-- Java 中的 String 相等？</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/9/7/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-RocketMQ/">
+                        <span class="hidden-mobile">安装记录 -- RocketMQ</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

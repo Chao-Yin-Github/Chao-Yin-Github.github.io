@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>并发知识 -- CPU 硬件架构 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('http://cdn.yinchao.tech/CPU%20%E7%BB%93%E6%9E%84') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-13 15:32" pubdate>
+        2020 十二月 13, 星期日 , 3:32 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      31
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">并发知识 -- CPU 硬件架构</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：3 小时前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="CPU-硬件架构是什么样的"><a class="header-anchor" href="#CPU-硬件架构是什么样的">⚡</a>CPU 硬件架构是什么样的</h2>
+<p><img src="http://cdn.yinchao.tech/CPU%20%E7%BB%93%E6%9E%84" srcset="/img/loading.gif" alt="CPU 结构"></p>
+<p>CPU、Cache 以及内存间的简要交互过程：</p>
+<p>CPU 读取数据时，首先从寄存器中查找，如果没有找到，则会到 L1 Cache 中查找，如果 L1 Cache 中没有，那么会到 L2 Cache 中查找，L3 Cache 同理，如果 CPU 中没有找到，那么才会到主存中查找。</p>
+<p>而写入的时候，大部分 CPU 在写入数据时也会先写 Cache。其原因在于：</p>
+<ol>
+<li>
+<p>一方面是因为新存数据很可能会被再次使用，新写数据先写 Cache 能提高缓存命中率；</p>
+</li>
+<li>
+<p>另一方面 CPU 写 Cache 速度更快，从而写完之后 CPU 可以去干别的事情，能提高性能。</p>
+</li>
+</ol>
+<p>CPU 写数据如果 Cache 命中了，则为了保持 Cache 和主存一致有两种策略。</p>
+<ol>
+<li>
+<p>如果 CPU 写 Cache 每次都要更新主存，则称为 <code>Write-Through</code>，因为每次写 Cache 都伴随主存更新所以性能差，实际使用的也少；</p>
+</li>
+<li>
+<p>写 Cache 之后并不立即写主存而是等待一段时间能积累一些改动后再更新主存的策略称为 <code>Write-Back</code>，性能更好但为了保证写入的数据不丢使机制更加复杂。采用 Write Back 方式被修改的内存再从 Cache 移出(比如 Cache 不够需要腾点空间)时，如果被修改的 Cache Line 还未写入主存需要在被移出 Cache 时更新主存，为了能分辨出哪些 Cache 是被修改过哪些没有，又需要增加一个新的标志位在 Cache Line 中去标识。</p>
+</li>
+</ol>
+<p>CPU 写数据如果 Cache 未命中，则只能<strong>直接去更新主存</strong>。但更新完主存后又有两个选择，将刚修改的数据存入 Cache 还是不存。每次直接修改完主存都将主存被修改数据所在 Cache Line 存入 Cache 叫做 <code>Write-Allocate</code>。需要注意的是 Cache 存取的最小单位是 Cache Line。即使 CPU 只写一个字节，也需要将被修改字节所在附近 Cache Line 大小的一块内存完整的读入 Cache。如果 CPU 写主存的数据超过一个 Cache Line 大小，则不用再读主存原来内容，直接将新修改数据写入 Cache。相当于完全覆盖主存之前的数据。</p>
+<p>L1 Cache 中：</p>
+<ul>
+<li>
+<p>d-cache 缓存程序数据</p>
+</li>
+<li>
+<p>i-cache 缓存指令数据(只读)</p>
+</li>
+</ul>
+<p>L2、L3 Cache 不区分指令和程序数据，称为统一缓存</p>
+<h2 id="CPU-具体是如何查找的"><a class="header-anchor" href="#CPU-具体是如何查找的">⚡</a>CPU 具体是如何查找的</h2>
+<p>一个 Cache 由多个块(Cache Line)构成，查找的目标地址必须经过某种映射函数把主内存的地址定位到 Cache Line 中，这里有几种方案：</p>
+<h3 id="直接映射"><a class="header-anchor" href="#直接映射">⚡</a>直接映射</h3>
+<p>一个内存地址每次映射到固定的 Cache Line</p>
+<p>读 Cache 时对内存地址进行哈希(通常是按照 Cache Line 数量取模，即在二进制地址中取中间位)来定位 Cache Line，写 Cache 时如果有冲突则丢掉老的数据。</p>
+<p>缺点是内存地址大于 Cache Line 的范围，所以会有多个不同的内存地址映射到相同的 Cache 导致 Cache  淘汰换出频繁，可能不同的进程需要频繁的从主存中读取数据 Cache Line。</p>
+<h3 id="全相联映射"><a class="header-anchor" href="#全相联映射">⚡</a>全相联映射</h3>
+<p>内存地址可被的映射到任意的 Cache Line，读 Cache 时遍历整个 Cache Line 的地址，写 Cache 时，可以按照 LFU 或者 LRU 来淘汰旧的 Cache</p>
+<p>优点是灵活，Cache 利用率高，冲突概率低，</p>
+<p>缺点是设计和实现比较复杂，只适合小容量的 Cache 使用</p>
+<h3 id="组相联映射"><a class="header-anchor" href="#组相联映射">⚡</a>组相联映射</h3>
+<p>是上面两种办法的折中，将若干 Cache Line 分为 5个组，将目标地址分为t(标记位)，s(组索引)，b(块偏移)三个部分。组间直接映射，组内全相联。</p>
+<p><img src="http://cdn.yinchao.tech/CPU%20cache%20mapping%20method.png" srcset="/img/loading.gif" alt="CPU cache mapping method"></p>
+<p>B = 2^b</p>
+<p>S = 2^s</p>
+<p>现在来解释一下各个参数的意义：</p>
+<p>一个 cache 被分为 S 个组，每个组有 E 个 Cache Line，而一个 Cache Line 中，有 B 个存储单元，现代处理器中，这个存储单元一般是以字节(通常8个位)为单位的，也是最小的寻址单元。因此，在一个内存地址中，中间的 s 位决定了该单元被映射到哪一组，而最低的 b 位决定了该单元在 Cache Line 中的偏移量。valid 通常是一位，代表该 Cache Line 是否是有效的(当该 Cache Line 不存在内存映射时，当然是无效的)。tag就是内存地址的高t位，因为可能会有多个内存地址映射到同一个 Cache Line 中，所以该位是用来校验该 Cache Line 是否是CPU要访问的内存单元。</p>
+<p>当 tag 和 valid 校验成功时，我们称为 cache命中，这时只要将 cache 中的单元取出，放入CPU寄存器中即可。</p>
+<p>当 tag 或 valid 校验失败的时候，就说明要访问的内存单元(也可能是连续的一些单元，如 int 占4个字节，double 占8个字节)并不在cache中，这时就需要去内存中取了，这就是 cache 不命中的情况(cache miss)。当不命中的情况发生时，系统就会从内存中取得该单元，将其装入 cache 中，与此同时也放入 CPU 寄存器中，等待下一步处理。</p>
+<p>当 E=1 时， 每组只有一个 Cache Line。那么相隔 2^(s+b) 个单元的2个内存单元，会被映射到同一个 Cache Line 中。</p>
+<p>当 1&lt;E&lt;C/B 时，每组有 E 个 Cache Line，不同的地址，只要中间 s 位相同，那么就会被映射到同一组中，同一组中被映射到哪个 Cache Line 中是依赖于替换算法的。</p>
+<p>当 E=C/B，S=1 时，每个内存单元都能映射到任意的 Cache Line。带有这样cache的处理器几乎没有，因为这种映射机制需要昂贵复杂的硬件来支持。</p>
+<h2 id="CPU-为什么这么设计"><a class="header-anchor" href="#CPU-为什么这么设计">⚡</a>CPU 为什么这么设计</h2>
+<p>在 CPU 工作时直接使用寄存器中的数据，因为寄存器存在 CPU 的内部而且访问速度在内存设备中最快。</p>
+<p>但是由于寄存器小，不能存放大量数据，且造价昂贵。所以数据一般存放在内存中，但是内存的访问速度太慢，导致CPU在处理指令时往往花费很多时间在等待内存做准备工作，所以在寄存器和内存之间又加入了缓存，缓存比较小，但访问速度比主内存快得多。</p>
+<p>如果 CPU 总是访问内存中的同一址地的数据，此时缓存就可以把从内存提取的数据暂时保存起来，如果寄存器要取内存中同一位置的数据，直接从缓存中提取，无需直接从内存取。</p>
+<p>需要注意的是，寄存器并不每次数据都可以从缓存中取得数据，万一不是同一个内存地址中的数据，那寄存器还必须直接绕过缓存从内存中取数据。所以并不每次都得到缓存中取数据，这种现象有个专业的名称叫做<strong>缓存的命中率</strong>，从缓存中取就命中，不从缓存中取从内存中取，就没命中，可见缓存命中率的高低也会影响CPU执行性能。</p>
+<p>总而言之当一个 CPU 需要访问主存时，会先根据<strong>时间/空间局部性原理</strong>多读取一部分数据到CPU缓存(当然如果CPU缓存中存在需要的数据就会直接从缓存获取)，进而在读取CPU缓存到寄存器，当CPU需要写数据到主存时，同样会先刷新寄存器中的数据到CPU缓存，然后再把数据刷新到主内存中。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/concurrent/">concurrent</a>
+                    
+                      <a class="hover-with-bg" href="/tags/hardware/">hardware</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/13/Java-%E7%9F%A5%E8%AF%86-Java-%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java 知识 -- Java 与多线程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/13/MySQL-%E7%9F%A5%E8%AF%86-drop%E3%80%81delete-%E5%92%8C-truncate-%E7%9A%84%E5%8C%BA%E5%88%AB/">
+                        <span class="hidden-mobile">MySQL 知识 -- drop、delete 和 truncate 的区别</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

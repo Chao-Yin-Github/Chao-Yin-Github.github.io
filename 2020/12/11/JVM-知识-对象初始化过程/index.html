@@ -1,0 +1,433 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>JVM 知识 -- 对象初始化过程 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-11 22:32" pubdate>
+        2020 十二月 11, 星期五 , 10:32 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      16
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">JVM 知识 -- 对象初始化过程</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：7 天前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <ol>
+<li>
+<p>加载字节码中的文件到内存中的方法区</p>
+<p>虚拟机遇到 new 指令,首先去检查 new 指令的参数是否能在常量池中定位到一个类的符号引用,并且这个符号引用代表的类是否已被加载,解析和初始化过</p>
+<p>如果没有,那么先执行相应的类加载过程</p>
+</li>
+<li>
+<p>初始化 static 相关的成员变量和静态方法,称为<strong>类初始化</strong>(全部都在方法区)</p>
+<ol>
+<li>
+<p>先把所有的 static 部分(成员与方法)申请空间,然后再给每一个 static 成员由上至下分配初始值</p>
+</li>
+<li>
+<p>分配完空间之后,会有默认值,而不是指定的值</p>
+</li>
+<li>
+<p>这时才执行显式赋值,静态代码块对变量进行赋值,执行顺序与代码一致</p>
+</li>
+</ol>
+</li>
+<li>
+<p>通过 new 在堆内存中申请对象的内存空间,取得首地址</p>
+<p>在类加载检查通过后,要创建的对象所需的内存大小已经确定了,虚拟机将一块确定大小的内存从堆中划分出来分配给对象</p>
+<p>假设堆中所有用过的内存放在一边,空闲的内存放在另外一边,中间放一个指针作为分界点的指示器,那分配内存就是移动这个指针的过程,这种内存分配方式叫&quot;指针碰撞&quot;</p>
+<p>但如果堆中的内存,空闲的和使用过的是交互相错的,不是规整的,那么虚拟机必须维护一个队列,记录哪些内存块是可用的,分配的时候,查找表找到一块足够大的空间划分给对象,并更新表信息,这种方式叫&quot;空闲列表&quot;</p>
+<p>选择哪种分配方式是由堆是否规整决定的,而Java堆是否规则是由所采用的垃圾收集器是否带有压缩整理功能决定的</p>
+<ul>
+<li>
+<p>还需要考虑的一个问题是,在虚拟机中创建对象是否是一个非常频繁的行为</p>
+<p>即便是采用&quot;指针碰撞&quot;的方式,在并发的情况下,修改指针也不是线程安全的</p>
+<p>对于这个问题,有两种解决方法:</p>
+<ol>
+<li>
+<p>第一,对分配内存空间的操作进行同步处理 – 实际上虚拟机采用 CAS 加自旋的方式保证了更新操作的原子性</p>
+</li>
+<li>
+<p>第二,每个线程在堆中预先分配一小块内存,叫本地线程分配缓冲(TLAB)</p>
+<p>哪个线程要分配内存,就在哪个线程的 TLAB 上分配,只有 TLAB 用完并分配新的 TLAB 时,才需要同步锁定</p>
+<p>内存分配完成后,虚拟机需要将分配到的内存空间都初始化为零值(不包括对象头),如果使用 TLAB,这一过程也可以提前至 TLAB 分配时进行</p>
+<p>这一操作保证了对象的实例字段在 Java 代码中可以不赋初始值就可以直接使用,程序能访问到这些字段的数据类型所对应的零值</p>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>接下来,虚拟机要对对象进行必要的设置,例如这个对象属于哪个类,如何才能找到类的元数据信息,对象的哈希码,对象的 GC 分代年龄等信息</p>
+</li>
+</ol>
+<p>到现在为止,从 JVM 的角度来看,一个新的对象已经产生了</p>
+<p>但从 Java 程序来看,还需要对其执行 init 方法,所有字段都还是零值</p>
+<p>一般来说,执行 new 指令之后会接着执行 init 方法,把对象安照程序员的意愿进行初始化</p>
+<ol>
+<li>
+<p>构造方法压栈,依次执行以下的操作</p>
+<ol>
+<li>
+<p>把类的非静态成员变量加载到堆内存中并分配空间同时默认初始化,非静态成员方法加载到方法区中并分配空间,然后由上到下进行非静态成员变量的初始化</p>
+</li>
+<li>
+<p>用构造代码块和显示赋值对成员变量进行赋值,执行顺序与代码顺序一致</p>
+</li>
+<li>
+<p>执行构造函数</p>
+</li>
+</ol>
+</li>
+<li>
+<p>整个对象初始化完成，返回首地址值</p>
+</li>
+</ol>
+<p>如果有父类,则:</p>
+<p>先进行父类静态初始化,然后进行子类静态初始化(加载类文件的先后)</p>
+<p>在堆内存空间分配完毕后,然后父类对象初始化,在进行子类对象初始化</p>
+<p>(堆内存的创建,在父类对象的基础上加东西变成子类对象)</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JVM/">JVM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/12/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1%E7%9A%84%20hashcode/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JVM 知识 -- 对象的 hashcode</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/11/Java-%E7%9F%A5%E8%AF%86-synchronize/">
+                        <span class="hidden-mobile">Java 知识 -- synchronize</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>Spring 源码 -- Spring 初始化 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-08-31 15:54" pubdate>
+        2020 八月 31, 星期一 , 3:54 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      678 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Spring 源码 -- Spring 初始化</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：4 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="入口代码"><a class="header-anchor" href="#入口代码">⚡</a>入口代码</h2>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> ind;
+
+<span class="hljs-keyword">import</span> ind.config.SpringConfig;
+<span class="hljs-keyword">import</span> ind.dao.TestDao;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> yinchao</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Main</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span> <span class="hljs-params">(String[] args)</span> </span>&#123;
+        AnnotationConfigApplicationContext annotationConfigApplicationContext = <span class="hljs-keyword">new</span> AnnotationConfigApplicationContext(SpringConfig<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+        <span class="hljs-comment">/* refresh 方法用于初始化 Spring 容器 */</span>
+        annotationConfigApplicationContext.refresh();
+        TestDao bean = annotationConfigApplicationContext.getBean(TestDao<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+        bean.query();
+    &#125;
+&#125;</code></pre></div>
+<h2 id="调用链"><a class="header-anchor" href="#调用链">⚡</a>调用链</h2>
+<ol>
+<li>
+<p>AnnotationConfigApplicationContext</p>
+<p>这个类就完成了 Spring 的初始化</p>
+<p><img src="/img/AnnotationConfigApplicationContext1.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/img/AnnotationConfigApplicationContext2.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/img/AnnotationConfigApplicationContext3.png" srcset="/img/loading.gif" alt=""></p>
+<ol>
+<li>
+<p>先执行他的父类 GenericApplicationContext 的构造方法</p>
+<p>这个类是 Spring 上下文的环境</p>
+<ol>
+<li>
+<p>构造函数中一个成员变量 DefaultListableBeanFactory 被初始化</p>
+<p>这个类是 Spring 的 Bean 工厂，里面有很多生成 Bean 所需要的原料</p>
+<p>例如：用于存放 BeanName 和 <span id = "BeanDefinition">BeanDefinition</span> <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> 的 beanDefinitionMap</p>
+<p><img src="/img/BeanFactory1.png" srcset="/img/loading.gif" alt=""></p>
+<p>按照 Beam 的注册顺序组合的 BeanName 的 list</p>
+<p><img src="/img/BeanFactory2.png" srcset="/img/loading.gif" alt=""></p>
+<p>其他成员不一一列举 …</p>
+</li>
+</ol>
+</li>
+<li>
+<p>继续在 AnnotationConfigApplicationContext 构造函数中有一个成员 AnnotatedBeanDefinitionReader 开始初始化</p>
+<p>这个 reader 的作用就是作为一个注册器来向 Spring 注册一个 bean</p>
+<p><img src="/img/AnnotatedBeanDefinitionReader1.png" srcset="/img/loading.gif" alt="AnnotatedBeanDefinitionReader1"></p>
+<p>可以根据上图的 AnnotationConfigApplicationContext3 中看到，new AnnotatedBeanDefinitionReader(BeanDefinitionRegistry) 传入的参数是 <code>this</code>，即这个 AnnotationConfigApplicationContext 就是一个 BeanDefinitionRegistry，也可以通过图片 AnnotationConfigApplicationContext1 看到这个类本来就实现了 AnnotationConfigRegistry 接口 。</p>
+<ol>
+<li>
+<p>构造继续委托到 AnnotationConfigUtils 的 registerAnnotationConfigProcessors 方法</p>
+<p><img src="/img/AnnotatedBeanDefinitionReader2.png" srcset="/img/loading.gif" alt="AnnotatedBeanDefinitionReader2"></p>
+<p><img src="/img/AnnotationConfigUtils.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+</ol>
+</li>
+<li>
+<p>AnnotationConfigApplicationContext 构造函数中另一个成员 ClassPathBeanDefinitionScanner 开始初始化</p>
+<p>他能够扫描 BeanDefinition,能够扫描一个类或者包，并且转换成BeanDefinition</p>
+</li>
+</ol>
+</li>
+<li>
+<p>AnnotationConfigApplicationContext 构造函数结束，完成类初始化之后，调用 register 方法</p>
+<p><img src="/img/AnnotationConfigApplicationContext_register.png" srcset="/img/loading.gif" alt=""></p>
+<p>进一步调用</p>
+<p><img src="/img/AnnotatedBeanDefinitionReader_register.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li>
+<p>AnnotationConfigApplicationContext 调用 refresh() 方法</p>
+<p>这个方法主要是准备好 Bean 工厂，并实例化 Bean 对象</p>
+<p><img src="/img/AnnotationConfigApplicationContext_refresh.png" srcset="/img/loading.gif" alt=""></p>
+<ol>
+<li>
+<p>prepareBeanFactory() 方法</p>
+<p><img src="/img/AnnotationConfigApplicationContext_prepareBeanFactory.png" srcset="/img/loading.gif" alt=""></p>
+<p>最后的 addBeanPostProcessor 方法只是把一个 BeanPostProcessor 实例加入到 BeanFactory 里面维护的一个 BeanPostProcessor 后置处理器 list 列表中</p>
+<p>在 Bean 的实例化过程中会依次循环调用这个 list 中的 BeanPostProcessor 对象的方法</p>
+</li>
+<li>
+<p>invokeBeanFactoryPostProcessors() 方法</p>
+<p><img src="/img/AbstractApplicationContext_invokeBeanFactoryPostProcessors.png" srcset="/img/loading.gif" alt=""></p>
+<ol>
+<li>
+<p>最后循环调用接口的实现类的接口重写方法，例如对于 ConfigurationClassPostProcessor 类：</p>
+<p><img src="/img/ConfigurationClassPostProcessor_postProcessBeanDefinitionRegistry1.png" srcset="/img/loading.gif" alt=""></p>
+<p>主要函数逻辑：</p>
+<p><img src="/img/ConfigurationClassPostProcessor_postProcessBeanDefinitionRegistry2.png" srcset="/img/loading.gif" alt=""></p>
+<ol>
+<li>
+<p>checkConfigurationClassCandidate 方法</p>
+<p><img src="/img/ConfigurationClassUtils_checkConfigurationClassCandidate.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li>
+<p>isLiteConfigurationCandidate 方法</p>
+<p><img src="/img/ConfigurationClassUtils_isLiteConfigurationCandidate.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li>
+<p>又是一个空壳 parse 函数调用</p>
+<p><img src="/img/ConfigurationClassPostProcessor_parse.png" srcset="/img/loading.gif" alt="ConfigurationClassPostProcessor_parse"></p>
+<p>被调函数:</p>
+<p><img src="/img/ConfigurationClassPostProcessor_processConfigurationClass.png" srcset="/img/loading.gif" alt=""></p>
+<ol>
+<li>
+<p>继续调用 doProcessConfigurationClass 方法实现主要逻辑</p>
+<p><img src="/img/ConfigurationClassParser_doProcessConfigurationClass.png" srcset="/img/loading.gif" alt=""></p>
+<ol>
+<li>
+<p>parse 方法处理 @ComponentScan 注解的属性信息，例如 basePackage 等</p>
+<p><img src="/img/ComponentScanAnnotationParser_parse.png" srcset="/img/loading.gif" alt=""></p>
+<ol>
+<li>
+<p>doScan()</p>
+<p><img src="/img/ClassPathBeanDefinitionScanner_doScan.png" srcset="/img/loading.gif" alt=""></p>
+<ol>
+<li>
+<p>findCandidateComponents 方法又调用 scanCandidateComponents，而这个方法最后实现了扫描 Bean 的主要逻辑，可以自己模拟一遍，此处不特别展示</p>
+<p><img src="/img/ClassPathScanningCandidateComponentProvider_findCandidateComponents.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+<li>
+<p>其中调用的 registerBeanDefinition() 就是 BeanDefinitionReaderUtils 的 registerBeanDefinition 方法 (之前分析过)，将 Bean 加入到工厂里面</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>附录: Spring 扩展点<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>BeanDefinition: 是用于描述 Bean 的类。例如我们用 User.java (userName,password …) 是现实世界中对 <code>用户</code> 这个对象的抽象描述，而用 Class.java 来描述各种各样的 Java 类 (name,classLoader,useCaches …)，同理， BeanDefinition  (isPrimary,isLazyInit,getFactoryBeanName …) 就是用来描述交给 Spring 管理的 Bean。 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Spring 扩展点：</p>
+<ol>
+<li>BeanPostProcessor</li>
+<li>BeanFactoryPostProcessor</li>
+<li>BeanDefinitionRegistryPostProcessor</li>
+<li>FactoryBean</li>
+</ol>
+ <a href="#fnref2" class="footnote-backref">↩︎</a></li>
+</ol>
+</section>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Spring/">Spring</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/9/7/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-RocketMQ/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">安装记录 -- RocketMQ</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/8/28/Spring-%E7%9F%A5%E8%AF%86-BeanFactory-%E5%92%8C-FactoryBean/">
+                        <span class="hidden-mobile">Spring 知识 -- BeanFactory 和 FactoryBean</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

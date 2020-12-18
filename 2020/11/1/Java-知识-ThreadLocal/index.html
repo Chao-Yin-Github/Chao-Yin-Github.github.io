@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>Java 知识-- ThreadLocal ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-01 15:48" pubdate>
+        2020 十一月 01, 星期日 , 3:48 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      27
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Java 知识-- ThreadLocal</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：16 天前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="概念"><a class="header-anchor" href="#概念">⚡</a>概念</h2>
+<p>ThreadLocal 是线程本地变量</p>
+<p>ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。</p>
+<h2 id="应用场景"><a class="header-anchor" href="#应用场景">⚡</a>应用场景</h2>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConnectionManager</span> </span>&#123;
+     
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Connection connect = <span class="hljs-keyword">null</span>;
+     
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Connection <span class="hljs-title">openConnection</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(connect == <span class="hljs-keyword">null</span>)&#123;
+            connect = DriverManager.getConnection();
+        &#125;
+        <span class="hljs-keyword">return</span> connect;
+    &#125;
+     
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">closeConnection</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(connect!=<span class="hljs-keyword">null</span>)
+            connect.close();
+    &#125;
+&#125;</code></pre></div>
+<p>假设有这样一个数据库链接管理类，这段代码在单线程中使用是没有任何问题的，但是如果在多线程中使用呢？很显然，在多线程中使用会存在线程安全问题：第一，这里面的2个方法都没有进行同步，很可能在openConnection方法中会多次创建connect；第二，由于connect是共享变量，那么必然在调用connect的地方需要使用到同步来保障线程安全，因为很可能一个线程在使用connect进行数据库操作，而另外一个线程调用closeConnection关闭链接。</p>
+<p>所以出于线程安全的考虑，必须将这段代码的两个方法进行同步处理，并且在调用connect的地方需要进行同步处理。</p>
+<p>这样将会大大影响程序执行效率，因为一个线程在使用connect进行数据库操作的时候，其他线程只有等待。</p>
+<p>那么这地方到底需不需要将connect变量进行共享？事实上，是不需要的。假如每个线程中都有一个connect变量，各个线程之间对connect变量的访问实际上是没有依赖关系的，即一个线程不需要关心其他线程是否对这个connect进行了修改的。</p>
+<p>到这里，可能会有朋友想到，既然不需要在线程之间共享这个变量，可以直接这样处理，在每个需要使用数据库连接的方法中具体使用时才创建数据库链接，然后在方法调用完毕再释放这个连接。比如下面这样：</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConnectionManager</span> </span>&#123;
+
+    <span class="hljs-keyword">private</span> Connection connect = <span class="hljs-keyword">null</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Connection <span class="hljs-title">openConnection</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(connect == <span class="hljs-keyword">null</span>)&#123;
+            connect = DriverManager.getConnection();
+        &#125;
+        <span class="hljs-keyword">return</span> connect;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">closeConnection</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(connect!=<span class="hljs-keyword">null</span>)
+            connect.close();
+    &#125;
+&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dao</span></span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">()</span> </span>&#123;
+        ConnectionManager connectionManager = <span class="hljs-keyword">new</span> ConnectionManager();
+        Connection connection = connectionManager.openConnection();
+
+        <span class="hljs-comment">//使用connection进行操作</span>
+
+        connectionManager.closeConnection();
+    &#125;
+&#125;</code></pre></div>
+<p>这样处理确实也没有任何问题，由于每次都是在方法内部创建的连接，那么线程之间自然不存在线程安全问题。但是这样会有一个致命的影响：导致服务器压力非常大，并且严重影响程序执行性能。由于在方法中需要频繁地开启和关闭数据库连接，这样不尽严重影响程序执行效率，还可能导致服务器压力巨大。</p>
+<p>那么这种情况下使用ThreadLocal是再适合不过的了，因为ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响，这样一来就不存在线程安全问题，也不会严重影响程序执行性能。</p>
+<p>但是要注意，虽然ThreadLocal能够解决上面说的问题，但是由于在每个线程中都创建了副本，所以要考虑它对资源的消耗，比如内存的占用会比不使用ThreadLocal要大。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConnectionManager</span> </span>&#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ThreadLocal&lt;Connection&gt; con =
+            ThreadLocal.withInitial(()-&gt;&#123;
+                <span class="hljs-keyword">try</span> &#123;
+                    <span class="hljs-keyword">return</span> DriverManager.getConnection(<span class="hljs-string">"jdbc://"</span>, <span class="hljs-string">"root"</span>,<span class="hljs-string">"root"</span>);
+                &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;
+                    throwables.printStackTrace();
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+                &#125;
+            &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Connection <span class="hljs-title">openConnection</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> connect.get();
+    &#125;
+&#125;</code></pre></div>
+<p>综上：ThreadLocal 适用于变量在线程间隔离且在方法间共享的场景。即在不同线程中都希望用到这个变量但不希望出现多线程对这个变量产生任何影响，使用 ThreadLocal 之后，不同线程对于这个变量的操作都只在这个线程内部其作用，其他线程不可见。</p>
+<p>而且，ThreadLocal 只是将代码变得更加整齐简洁，通过方法间显示的传递对象自身，也可以达到相同的结果，只是方法间的耦合度较高，看起来不简洁。</p>
+<h2 id="原理"><a class="header-anchor" href="#原理">⚡</a>原理</h2>
+<p>首先看 ThreadLocal 的主要方法：</p>
+<p>get(),set(),remove()</p>
+<h3 id="get"><a class="header-anchor" href="#get">⚡</a>get</h3>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> T <span class="hljs-title">get</span><span class="hljs-params">()</span> </span>&#123;
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    <span class="hljs-keyword">if</span> (map != <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-comment">// 注意是 this 不是 t，说明 ThreadLocalMap 的 key 为 ThreadLocal 而非 Thread</span>
+        ThreadLocalMap.Entry e = map.getEntry(<span class="hljs-keyword">this</span>);
+        <span class="hljs-keyword">if</span> (e != <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-meta">@SuppressWarnings</span>(<span class="hljs-string">"unchecked"</span>)
+        T result = (T)e.value;
+        <span class="hljs-keyword">return</span> result;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> setInitialValue();
+&#125;
+
+<span class="hljs-function">ThreadLocalMap <span class="hljs-title">getMap</span><span class="hljs-params">(Thread t)</span> </span>&#123;
+  <span class="hljs-keyword">return</span> t.threadLocals;
+&#125;</code></pre></div>
+<p>当使用 ThreadLocal.get() 方法时，首先获取到当前线程的一个引用 t，然后通过 getMap 方法获取到这个线程内部的 ThreadLocalMap 变量 threadLocals，再从这个 threadLocals 变量中拿到这个 ThreadLocal 自己这个 key 所对应的 value</p>
+<h3 id="set"><a class="header-anchor" href="#set">⚡</a>set</h3>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">set</span><span class="hljs-params">(T value)</span> </span>&#123;
+  Thread t = Thread.currentThread();
+  ThreadLocalMap map = getMap(t);
+  <span class="hljs-keyword">if</span> (map != <span class="hljs-keyword">null</span>)
+    map.set(<span class="hljs-keyword">this</span>, value);
+  <span class="hljs-keyword">else</span>
+    createMap(t, value);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">createMap</span><span class="hljs-params">(Thread t, T firstValue)</span></span>&#123;
+    t.threadLocals = <span class="hljs-keyword">new</span> ThreadLocalMap(<span class="hljs-keyword">this</span>, firstValue);
+&#125;</code></pre></div>
+<p>如果当前线程的 threadLocals 不为空，则直接设置，为空则先创建 Map</p>
+<h3 id="remove"><a class="header-anchor" href="#remove">⚡</a>remove</h3>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">remove</span><span class="hljs-params">()</span> </span>&#123;
+    ThreadLocalMap m = getMap(Thread.currentThread());
+    <span class="hljs-keyword">if</span> (m != <span class="hljs-keyword">null</span>)
+        m.remove(<span class="hljs-keyword">this</span>);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">remove</span><span class="hljs-params">(ThreadLocal&lt;?&gt; key)</span> </span>&#123;
+    Entry[] tab = table;
+    <span class="hljs-keyword">int</span> len = tab.length;
+    <span class="hljs-keyword">int</span> i = key.threadLocalHashCode &amp; (len-<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">for</span> (Entry e = tab[i];
+         e != <span class="hljs-keyword">null</span>;
+         e = tab[i = nextIndex(i, len)]) &#123;
+        <span class="hljs-keyword">if</span> (e.get() == key) &#123;
+            e.clear();
+            expungeStaleEntry(i);
+            <span class="hljs-keyword">return</span>;
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+<p>注：<br>
+当 JVM GC 时，只是把 ThreadLocalMap 中的 key （WeakReference 弱引用）给回收掉了，value 值没有处理，所以这可能会造成内存泄漏甚至 OOM 内存溢出的问题，所以需要手动调用 ThreadLocal 的 remove 方法，保证 key 和 value 都被正确删除。</p>
+<h3 id="分析"><a class="header-anchor" href="#分析">⚡</a>分析</h3>
+<p>因为每个线程有且只有一个 ThreadLocalMap 对象，并且只有该线程自己可以访问它，其它线程不会访问该 ThreadLocalMap，自然也无法获取到 ThreadLocalMap 中存储的 ThreadLocal 为 key 所对应的 value，虽然 ThreadLocal 对象是线程都可以访问的，但是 TreadLocalMap 不会在多个线程中共享，即使是ThreadLocal 对象获取到的 value 副本也只和线程自己有关，和其他线程无关，也无法访问到，也就不存在线程安全的问题。</p>
+<p>小问题：</p>
+<p>ThreadLocalMap 是通过什么机制存储 ThreadLocal 呢？</p>
+<p><a href="http://www.jasongj.com/java/threadlocal/" target="_blank" rel="noopener"></a><br>
+<a href="https://droidyue.com/blog/2016/03/13/learning-threadlocal-in-java/" target="_blank" rel="noopener"></a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/concurrent/">concurrent</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/13/JVM-%E7%9F%A5%E8%AF%86-%E7%B1%BB%E5%8A%A0%E8%BD%BD/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JVM 知识 -- 类加载</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/1/JVM%E7%9F%A5%E8%AF%86-%E6%8C%87%E9%92%88%E3%80%81%E5%BC%95%E7%94%A8%E5%92%8C%E5%8F%A5%E6%9F%84/">
+                        <span class="hidden-mobile">JVM 知识-- 指针、引用和句柄</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

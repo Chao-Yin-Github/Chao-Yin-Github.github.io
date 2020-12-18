@@ -1,0 +1,489 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>分布式知识 -- 分布式数据存储 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-16 18:16" pubdate>
+        2020 十一月 16, 星期一 , 6:16 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      722 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">分布式知识 -- 分布式数据存储</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="系统评估标准"><a class="header-anchor" href="#系统评估标准">⚡</a>系统评估标准</h2>
+<h3 id="CAP-原则"><a class="header-anchor" href="#CAP-原则">⚡</a>CAP 原则</h3>
+<h3 id="BASE-理论"><a class="header-anchor" href="#BASE-理论">⚡</a>BASE 理论</h3>
+<h2 id="数据组织方式"><a class="header-anchor" href="#数据组织方式">⚡</a>数据组织方式</h2>
+<h3 id="数据存储层-（数据如何存储、查询）"><a class="header-anchor" href="#数据存储层-（数据如何存储、查询）">⚡</a>数据存储层 （数据如何存储、查询）</h3>
+<ol>
+<li>
+<p>分库分表</p>
+<p>垂直、水平切分</p>
+<ul>
+<li>
+<p>路由机制</p>
+<ol>
+<li>
+<p>取模算法</p>
+<p>按字段取模（对 hash 结果取余数 ( hash() mod N)，N为数据库实例数或子表数量）是最为常见的一种切分方式。</p>
+<p>缺点：</p>
+<p>当某一台机器宕机，本应该落在该数据库的请求就无法得到正确的处理，这时宕掉的实例会被踢出集群，此时算法变成hash(userId) mod N-1，用户信息可能就不再在同一个库中了。</p>
+</li>
+<li>
+<p>范围限定算法</p>
+<p>按照 时间区间 或 ID区间 来切分</p>
+<p>缺点：</p>
+<p>由于连续分片可能存在数据热点，比如按时间字段分片，可能某一段时间内订单骤增，可能会被频繁的读写，而有些分片存储的历史数据，则很少被查询</p>
+</li>
+</ol>
+</li>
+<li>
+<p>难点：</p>
+<ol>
+<li>
+<p>连接查询</p>
+</li>
+<li>
+<p>事务</p>
+</li>
+</ol>
+</li>
+<li>
+<p>分片</p>
+<ol>
+<li>
+<p>分片是将原本一张数据量较大的表 t_order 根据分片键，拆分生成数个表结构完全一致的小数据量表 t_order_0、t_order_1、···、t_order_n，每张表只存储原大表中的一部分数据，当执行一条SQL时会通过<code>分库策略</code>、<code>分片策略</code>将数据分散到不同的数据库、表内。</p>
+</li>
+<li>
+<p>分片算法</p>
+<p>分片算法可以理解成一种路由规则。</p>
+</li>
+<li>
+<p>分片策略只是一个概念，它由具体的分片算法和分片健组合而成，分片算法做具体的数据分片逻辑。</p>
+</li>
+<li>
+<p>分片流程</p>
+<p>SQL 解析 -&gt; 执⾏器优化 -&gt; SQL 路由 -&gt; SQL 改写 -&gt; SQL 执⾏ -&gt; 结果归并</p>
+</li>
+</ol>
+<p><a href="https://mp.weixin.qq.com/s?__biz=Mzg2OTA0Njk0OA==&amp;mid=2247494903&amp;idx=3&amp;sn=87a03269968e25823fd416c8a6449250&amp;chksm=cea1a33cf9d62a2ae4b8976f92ac0b2e00c7272041e113c2cd1d9cfd1f88b1a3f30b288e3fbd&amp;mpshare=1&amp;scene=24&amp;srcid=1103mCzqL3ZwT9fHvUo0esTT&amp;sharer_sharetime=1604389049080&amp;sharer_shareid=4c56eb61e6eb530e0101ff7173f2579b&amp;key=93ec0f8768e11f12c4f6a33fead1c5cc1b8c9b54bb790a948065660990b0a7a29f994ae93ac96e67bf6d9cc888a99c26d1eb71b3f28ec94d756dcf05424dd05f3e2e7f80ac502f5757733fbfa3f1b32e749800d08413135cf0321fc7600f1d5e577ce031cc31a5655bdaf29501185d226582812c6003f4cd386d29e4fafa0b63&amp;ascene=14&amp;uin=MzE0OTQxMDY2Mg%3D%3D&amp;devicetype=Windows+10+x64&amp;version=62090070&amp;lang=zh_CN&amp;exportkey=A7Yjd6p%2BUyHhfH2hyKXGt1k%3D&amp;pass_ticket=ovptXHHNLOzcpgrzsP%2FXOIR1yWePG%2FCNgAdqUNkG6KeZec0D%2FwUhrFycnQKaKAA0&amp;wx_header=0" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=Mzg2OTA0Njk0OA==&amp;mid=2247494903&amp;idx=3&amp;sn=87a03269968e25823fd416c8a6449250&amp;chksm=cea1a33cf9d62a2ae4b8976f92ac0b2e00c7272041e113c2cd1d9cfd1f88b1a3f30b288e3fbd&amp;mpshare=1&amp;scene=24&amp;srcid=1103mCzqL3ZwT9fHvUo0esTT&amp;sharer_sharetime=1604389049080&amp;sharer_shareid=4c56eb61e6eb530e0101ff7173f2579b&amp;key=93ec0f8768e11f12c4f6a33fead1c5cc1b8c9b54bb790a948065660990b0a7a29f994ae93ac96e67bf6d9cc888a99c26d1eb71b3f28ec94d756dcf05424dd05f3e2e7f80ac502f5757733fbfa3f1b32e749800d08413135cf0321fc7600f1d5e577ce031cc31a5655bdaf29501185d226582812c6003f4cd386d29e4fafa0b63&amp;ascene=14&amp;uin=MzE0OTQxMDY2Mg%3D%3D&amp;devicetype=Windows+10+x64&amp;version=62090070&amp;lang=zh_CN&amp;exportkey=A7Yjd6p%2BUyHhfH2hyKXGt1k%3D&amp;pass_ticket=ovptXHHNLOzcpgrzsP%2FXOIR1yWePG%2FCNgAdqUNkG6KeZec0D%2FwUhrFycnQKaKAA0&amp;wx_header=0</a></p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="数据缓存层"><a class="header-anchor" href="#数据缓存层">⚡</a>数据缓存层</h3>
+<p>redis 三种模式</p>
+<ol>
+<li>
+<p>主从 master-slave</p>
+<ol>
+<li>
+<p>一主一从</p>
+</li>
+<li>
+<p>一主多从</p>
+</li>
+<li>
+<p>树状主从</p>
+</li>
+</ol>
+</li>
+<li>
+<p>哨兵 sentinel</p>
+</li>
+<li>
+<p>集群 cluster</p>
+</li>
+</ol>
+<p>同步方式：</p>
+<p>解决问题：</p>
+<p>缺陷：</p>
+<hr>
+<h4 id="缓存出现的问题"><a class="header-anchor" href="#缓存出现的问题">⚡</a>缓存出现的问题</h4>
+<ol>
+<li>
+<p>大量 null 值使缓存失效</p>
+<p>解决：布隆过滤器</p>
+</li>
+</ol>
+<h3 id="事务"><a class="header-anchor" href="#事务">⚡</a>事务</h3>
+<h4 id="强一致性"><a class="header-anchor" href="#强一致性">⚡</a>强一致性</h4>
+<ol>
+<li>
+<p>二段式提交</p>
+</li>
+<li>
+<p>三段式提交</p>
+</li>
+<li>
+<p>分布式锁</p>
+</li>
+</ol>
+<h4 id="弱一致性（最终一致性）"><a class="header-anchor" href="#弱一致性（最终一致性）">⚡</a>弱一致性（最终一致性）</h4>
+<ol>
+<li>
+<p>Paxos</p>
+</li>
+<li>
+<p>Raft</p>
+</li>
+</ol>
+<p>提一句：分布式锁实际上是为了实线分布式进程同步使用的，和分布式事务本来关系不大，但是我们可以通过分布式锁完成分布式进程之间的通信进而实现分布式事务</p>
+<h3 id="数据分布"><a class="header-anchor" href="#数据分布">⚡</a>数据分布</h3>
+<ol>
+<li>
+<p>hash 值对实例数量进行取模</p>
+<p>虽然方便，但是存在实例数目增加或者减少的情况，不好</p>
+</li>
+<li>
+<p>一致性 Hash 算法</p>
+</li>
+</ol>
+<h3 id="故障恢复"><a class="header-anchor" href="#故障恢复">⚡</a>故障恢复</h3>
+<div class="hljs"><pre><code>自动选举</code></pre></div>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/distribute-system/">distribute system</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/21/Redis-%E7%9F%A5%E8%AF%86-%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E8%AE%BE%E7%BD%AE%E5%8F%8A%E8%BF%87%E6%9C%9F%E6%95%B0%E6%8D%AE%E5%88%A0%E9%99%A4%E3%80%81%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Redis-知识-过期时间设置及过期数据删除、内存淘汰策略</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/16/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">
+                        <span class="hidden-mobile">分布式知识 -- 布隆过滤器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

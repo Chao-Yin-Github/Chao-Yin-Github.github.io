@@ -1,0 +1,748 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>JVM 知识 -- 类加载 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-13 23:17" pubdate>
+        2020 十一月 13, 星期五 , 11:17 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      53
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">JVM 知识 -- 类加载</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="类生命周期"><a class="header-anchor" href="#类生命周期">⚡</a>类生命周期</h2>
+<ol>
+<li>
+<p>加载</p>
+<ol>
+<li>
+<p>通过全类名获取二进制字节流 (<strong>可操控性最强的阶段</strong>，例如通过自定义类加载器去网络上获取字节流加载)</p>
+</li>
+<li>
+<p>将字节流表示的静态存储结构变成方法区中运行时动态的存储结构</p>
+</li>
+<li>
+<p>在内存中生成一个 Class 对象，作为方法区内访问数据的入口</p>
+</li>
+</ol>
+</li>
+<li>
+<p>连接</p>
+<p><strong>注意：加载和连接阶段是交叉进行的</strong></p>
+<ol>
+<li>
+<p>验证</p>
+<ol>
+<li>
+<p>验证文件格式</p>
+<p>这是验证字节流是否符合 Class 文件格式的规范</p>
+<p>例如字节码开头的 <code>0xCAFEBABY</code>、主次版本号是否在 JVM 处理范围内</p>
+</li>
+<li>
+<p>验证元数据</p>
+<p>这是对字节码描述的信息进行语义分析，以保证其描述的信息符合 Java 语言规范的要求</p>
+<p>例如这个类是否有父类，这个类是否继承了不允许继承的类</p>
+</li>
+<li>
+<p>验证字节码</p>
+<p>这是最复杂的阶段，通过数据流和控制流确定程序语义是合法的</p>
+<p>例如保证任意时刻操作数栈和指令代码序列都能配合工作</p>
+</li>
+</ol>
+</li>
+<li>
+<p>准备</p>
+<p><strong>正式为类变量分配内存并设置初始值</strong></p>
+<p>注意：</p>
+<ol>
+<li>
+<p>只是类变量而非实例变量</p>
+</li>
+<li>
+<p>初始值指的是零值，具体指定的值在初始化阶段才会赋值</p>
+</li>
+<li>
+<p>上面的条件二在常量（被 final 修饰的变量）时不成立，在准备阶段就会赋予目标值。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>解析</p>
+<p><strong>JVM 将常量池中的符号引用替换为直接引用，也就是得到类或者字段、方法在内存中的指针或者偏移量</strong></p>
+<p>主要针对：类、接口、字段、类方法、接口方法、方法类型、方法句柄、调用限定符等</p>
+<p>直接引用是指向目标的指针、相对偏移量、间接定位到目标的句柄</p>
+<p>例如 JVM 要去调用某一个方法，需要知道这个方法在方法表中的偏移量，而每个类都有一个方法表</p>
+</li>
+</ol>
+</li>
+<li>
+<p>初始化</p>
+<p><strong>类加载的最后一个阶段</strong></p>
+<p>只有当下面几种情况才会初始化：</p>
+<ol>
+<li>
+<p>遇到 <code>new</code>，<code>getstatic</code>，<code>putstatic</code>，<code>invokestatic</code> 这几条字节码指令 (new 一个对象、读取静态字段、给静态字段赋值、调用类的静态方法)</p>
+</li>
+<li>
+<p>反射调用</p>
+<p><code>Class.forName()</code>,<code>newInstance()</code> 等</p>
+</li>
+<li>
+<p>初始化子类时先初始化父类</p>
+</li>
+<li>
+<p>包含 <code>main()</code> 方法的那个主类</p>
+</li>
+<li>
+<p>…</p>
+</li>
+</ol>
+</li>
+<li>
+<p>使用</p>
+</li>
+<li>
+<p>卸载</p>
+<p>一个类被卸载的必要条件：</p>
+<ol>
+<li>
+<p>堆上没有这个类的实例对象</p>
+</li>
+<li>
+<p>类没有被引用</p>
+</li>
+<li>
+<p>该类的类加载器已经被回收</p>
+<p>JDK 自带的类加载器加载 JDK 自带的类，不会被回收，只有自定义的类加载器的实例才可以被回收</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="类加载器"><a class="header-anchor" href="#类加载器">⚡</a>类加载器</h2>
+<h3 id="几种类加载器"><a class="header-anchor" href="#几种类加载器">⚡</a>几种类加载器</h3>
+<ol>
+<li>
+<p>BootstrapClassLoader（启动类加载器）</p>
+</li>
+<li>
+<p>ExtensionClassLoader（扩展类加载器）</p>
+</li>
+<li>
+<p>ApplicationClassLoader （应用程序类加载器、系统类加载器）</p>
+</li>
+<li>
+<p>自定义类加载器</p>
+<p>上面除了 BootstrapClassLoader 类加载器，其他的 ClassLoader 都必须继承自 <code>java.lang.ClassLoader</code> 类，而 Bootstrap ClassLoader 不继承自 ClassLoader，因为它不是一个普通的Java类，底层由C++编写，已嵌入到了JVM内核当中，当JVM启动后，Bootstrap ClassLoader 也随着启动</p>
+<p>(继承 ClassLoader 默认父类加载器是 ApplicationClassLoader)</p>
+<p>不继承 AppClassLoader 的原因是：它和 ExtensionClassLoader 都是 Launcher 的静态类，都是包访问路径权限。</p>
+</li>
+</ol>
+<h3 id="双亲委派模型"><a class="header-anchor" href="#双亲委派模型">⚡</a>双亲委派模型</h3>
+<ol>
+<li>
+<p>一个类被加载时，首先判断是否被加载过，如果没有则会先去委派父类加载器处理，因此所有的请求最终都会传到 BootstrapClassLoader 加载器，当父类加载器无法加载的时候才会向下交给子类加载器去加载，如果子类也不能加载就再向下委托，如果最后的子类加载器都无法加载则会抛出 <code>ClassNotFoundException</code></p>
+</li>
+<li>
+<p>注意：</p>
+<ol>
+<li>
+<p>双亲委派模型实际上不是有两个上级加载器的意思，父类加载器只有一个</p>
+</li>
+<li>
+<p>类加载器的父子关系并不是<strong>继承</strong>实现的，而是通过优先级实现的</p>
+</li>
+</ol>
+</li>
+<li>
+<p>为什么有双亲委派模型</p>
+<ol>
+<li>
+<p>安全</p>
+<p>当我们写一个自定义的 String 类型时，保证 JVM 加载的还是 JDK 自带的类，因为 BootstrapClassLoader 类加载器就能把这个类加载出来了，ApplicationClassLoader 不会去加载我们自定义的 String 类</p>
+<p>即使是我们自己用自定义类加载器去加载，也不会成功，因为 String 类在 JVM 启动时已经被 BootstrapClassLoader 加载了，不会二次重复加载</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="类加载器加载流程"><a class="header-anchor" href="#类加载器加载流程">⚡</a>类加载器加载流程</h3>
+<p>类加载器加载的时候，就是调用 <code>loadClass()</code> 方法：</p>
+<ol>
+<li>
+<p>首先检查这个类是否被加载过</p>
+</li>
+<li>
+<p>如果有，直接返回，否则开始加载</p>
+</li>
+<li>
+<p>找到父类加载器，如果不为空，说明父类加载器不是 BootstrapClassLoader，那么直接调用父类加载器的 <code>loadClass()</code> 方法；否则父类加载器就是 BootstrapClassLoader，</p>
+</li>
+</ol>
+<p><strong>注意</strong>：</p>
+<p>如果类加载器不同，那么即使是同一份字节码交给两个不同的类加载器去加载，得到的类也是不同的</p>
+<h3 id="为什么需要自定义类加载器（打破双亲委派）"><a class="header-anchor" href="#为什么需要自定义类加载器（打破双亲委派）">⚡</a>为什么需要自定义类加载器（打破双亲委派）</h3>
+<ol>
+<li>
+<p>字节码加密解密</p>
+</li>
+<li>
+<p>动态获取类(热部署)</p>
+</li>
+<li>
+<p>从特定源获取类(例如网络，而非本地文件系统)</p>
+</li>
+</ol>
+<p>例子：</p>
+<ol>
+<li>
+<p>例如 Tomcat 定义多个类加载器：</p>
+<ol>
+<li>
+<p>保证同一个服务器的两个 web 应用程序 Java 类库隔离</p>
+</li>
+<li>
+<p>保证同一个服务器的两个 web 应用程序 Java 类库可以共享</p>
+</li>
+<li>
+<p>保证服务器自身安全不被 web 应用程序影响</p>
+</li>
+</ol>
+</li>
+<li>
+<p>再比如数据库驱动类</p>
+<p><code>Class.forName(&quot;com.mysql.dj.Driver&quot;);</code></p>
+<hr>
+<p>先多说一句这段代码的原理是：mysql 驱动的 Driver 类里面有一个静态代码块，当 Driver 类被加载的时候这段静态代码块被执行，将 mysql 驱动实例注册到全局的 jdbc 驱动管理器里。</p>
+ <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Driver</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">NonRegisteringDriver</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">java</span>.<span class="hljs-title">sql</span>.<span class="hljs-title">Driver</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Driver</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> SQLException </span>&#123;
+    &#125;
+
+    <span class="hljs-keyword">static</span> &#123;
+        <span class="hljs-keyword">try</span> &#123;
+            DriverManager.registerDriver(<span class="hljs-keyword">new</span> Driver());<span class="hljs-comment">//首先new一个Driver对象，并将它注册到DriverManage中</span>
+        &#125; <span class="hljs-keyword">catch</span> (SQLException var1) &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(<span class="hljs-string">"Can't register driver!"</span>);
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+<p>而我们之后一般又会这样链接数据库</p>
+<p><code>Connection conn = DriverManager.getConnection(&quot;jdbc:mysql://localhost:3306/test&quot;, &quot;root&quot;, &quot;123456&quot;);</code></p>
+<hr>
+<p>上面的<code>Class.forName()</code> 方法是使用调用者 Class 对象的 ClassLoader 来加载目标类，但是这样其实没有打破双亲委派，具体的分析看最后的 SPI 扩展相关部分吧</p>
+</li>
+</ol>
+<h3 id="类加载器主要方法"><a class="header-anchor" href="#类加载器主要方法">⚡</a>类加载器主要方法</h3>
+<ol>
+<li>
+<p>loadClass</p>
+<p>加载类的方法入口，这个方法默认就遵循双亲委派模型加载类，如果想要破坏双亲委派模型，就要重写这里的方法</p>
+</li>
+<li>
+<p>findClass</p>
+<p>如果上面的 loadClass 方法都没有办法加载出来，就会调用这个类加载器自己的 findClass 方法加载。</p>
+<p>对于最下层的类加载器来说，如果此处还是返回为空，说明这个类无法找到</p>
+</li>
+<li>
+<p>defineClass</p>
+<p>如果类加载器加载了类，获取到字节码，就用这个方法将字节码转换为 Class 对象</p>
+</li>
+</ol>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ClassLoader</span> </span>&#123;
+
+  <span class="hljs-comment">// 加载入口，定义了双亲委派规则</span>
+  <span class="hljs-function">Class <span class="hljs-title">loadClass</span><span class="hljs-params">(String name)</span> </span>&#123;
+    <span class="hljs-comment">// 是否已经加载了</span>
+    Class t = <span class="hljs-keyword">this</span>.findFromLoaded(name);
+    <span class="hljs-keyword">if</span>(t == <span class="hljs-keyword">null</span>) &#123;
+      <span class="hljs-comment">// 交给双亲</span>
+      t = <span class="hljs-keyword">this</span>.parent.loadClass(name)
+    &#125;
+    <span class="hljs-keyword">if</span>(t == <span class="hljs-keyword">null</span>) &#123;
+      <span class="hljs-comment">// 双亲都不行，只能靠自己了</span>
+      t = <span class="hljs-keyword">this</span>.findClass(name);
+    &#125;
+    <span class="hljs-keyword">return</span> t;
+  &#125;
+  
+  <span class="hljs-comment">// 交给子类自己去实现</span>
+  <span class="hljs-function">Class <span class="hljs-title">findClass</span><span class="hljs-params">(String name)</span> </span>&#123;
+    <span class="hljs-keyword">throw</span> ClassNotFoundException();
+  &#125;
+  
+  <span class="hljs-comment">// 组装Class对象</span>
+  <span class="hljs-function">Class <span class="hljs-title">defineClass</span><span class="hljs-params">(<span class="hljs-keyword">byte</span>[] code, String name)</span> </span>&#123;
+    <span class="hljs-keyword">return</span> buildClassFromCode(code, name);
+  &#125;
+&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomClassLoader</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ClassLoader</span> </span>&#123;
+
+  <span class="hljs-function">Class <span class="hljs-title">findClass</span><span class="hljs-params">(String name)</span> </span>&#123;
+    <span class="hljs-comment">// 寻找字节码</span>
+    <span class="hljs-keyword">byte</span>[] code = findCodeFromSomewhere(name);
+    <span class="hljs-comment">// 组装Class对象</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.defineClass(code, name);
+  &#125;
+&#125;</code></pre></div>
+<hr>
+<h1>扩展： SPI</h1>
+<p>在高版本的JDK，已经不需要手动调用class.forName方法了，在DriverManager的源码中可以看到一个静态块</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Load the initial JDBC drivers by checking the System property</span>
+<span class="hljs-comment">     * jdbc.properties and then use the &#123;<span class="hljs-doctag">@code</span> ServiceLoader&#125; mechanism</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">static</span> &#123;
+        loadInitialDrivers();
+        println(<span class="hljs-string">"JDBC DriverManager initialized"</span>);
+    &#125;</code></pre></div>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">loadInitialDrivers</span><span class="hljs-params">()</span> </span>&#123;
+    String drivers;
+    <span class="hljs-keyword">try</span> &#123;
+        drivers = AccessController.doPrivileged(<span class="hljs-keyword">new</span> PrivilegedAction&lt;String&gt;() &#123;
+            <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+                <span class="hljs-keyword">return</span> System.getProperty(<span class="hljs-string">"jdbc.drivers"</span>);
+            &#125;
+        &#125;);
+    &#125; <span class="hljs-keyword">catch</span> (Exception ex) &#123;
+        drivers = <span class="hljs-keyword">null</span>;
+    &#125;
+    <span class="hljs-comment">// If the driver is packaged as a Service Provider, load it.</span>
+    <span class="hljs-comment">// Get all the drivers through the classloader</span>
+    <span class="hljs-comment">// exposed as a java.sql.Driver.class service.</span>
+    <span class="hljs-comment">// ServiceLoader.load() replaces the sun.misc.Providers()</span>
+
+    AccessController.doPrivileged(<span class="hljs-keyword">new</span> PrivilegedAction&lt;Void&gt;() &#123;
+        <span class="hljs-function"><span class="hljs-keyword">public</span> Void <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+
+            ServiceLoader&lt;Driver&gt; loadedDrivers = ServiceLoader.load(Driver<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+            Iterator&lt;Driver&gt; driversIterator = loadedDrivers.iterator();
+
+            <span class="hljs-comment">/* Load these drivers, so that they can be instantiated.</span>
+<span class="hljs-comment">             * It may be the case that the driver class may not be there</span>
+<span class="hljs-comment">             * i.e. there may be a packaged driver with the service class</span>
+<span class="hljs-comment">             * as implementation of java.sql.Driver but the actual class</span>
+<span class="hljs-comment">             * may be missing. In that case a java.util.ServiceConfigurationError</span>
+<span class="hljs-comment">             * will be thrown at runtime by the VM trying to locate</span>
+<span class="hljs-comment">             * and load the service.</span>
+<span class="hljs-comment">             *</span>
+<span class="hljs-comment">             * Adding a try catch block to catch those runtime errors</span>
+<span class="hljs-comment">             * if driver not available in classpath but it's</span>
+<span class="hljs-comment">             * packaged as service and that service is there in classpath.</span>
+<span class="hljs-comment">             */</span>
+            <span class="hljs-keyword">try</span>&#123;
+                <span class="hljs-keyword">while</span>(driversIterator.hasNext()) &#123;
+                    driversIterator.next();
+                &#125;
+            &#125; <span class="hljs-keyword">catch</span>(Throwable t) &#123;
+            <span class="hljs-comment">// Do nothing</span>
+            &#125;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        &#125;
+    &#125;);</code></pre></div>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;S&gt; <span class="hljs-function">ServiceLoader&lt;S&gt; <span class="hljs-title">load</span><span class="hljs-params">(Class&lt;S&gt; service)</span> </span>&#123;
+    <span class="hljs-comment">// 重点！！！</span>
+    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+    <span class="hljs-keyword">return</span> ServiceLoader.load(service, cl);
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;S&gt; <span class="hljs-function">ServiceLoader&lt;S&gt; <span class="hljs-title">load</span><span class="hljs-params">(Class&lt;S&gt; service,ClassLoader loader)</span></span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ServiceLoader&lt;&gt;(service, loader);
+&#125;</code></pre></div>
+<p>在 <code>loadInitialDrivers</code> 方法中，最重要的是 <code>ServiceLoader.load(Driver.class)</code>，这行代码可以把类路径下所有 jar 包中 <code>META-INF/services/java.sql.Driver</code> 文件中定义的类加载上来，此类必须继承自<code>java.sql.Driver</code>。</p>
+<p>其次，<code>driversIterator.next();</code>还会循环调用上面获取到所有的 Driver 的子类，调用 next 方法，最后调用下面的 nextService 方法：</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> S <span class="hljs-title">nextService</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">if</span> (!hasNextService())
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> NoSuchElementException();
+    String cn = nextName;
+    nextName = <span class="hljs-keyword">null</span>;
+    Class&lt;?&gt; c = <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">try</span> &#123;
+        <span class="hljs-comment">//重点！使用当前示例的成员变量loader加载，就是上面设置的ThreadContextClassLoader</span>
+        c = Class.forName(cn, <span class="hljs-keyword">false</span>, loader);
+    &#125; <span class="hljs-keyword">catch</span> (ClassNotFoundException x) &#123;
+        fail(service,
+             <span class="hljs-string">"Provider "</span> + cn + <span class="hljs-string">" not found"</span>);
+    &#125;
+    <span class="hljs-keyword">if</span> (!service.isAssignableFrom(c)) &#123;
+       fail(service,
+             <span class="hljs-string">"Provider "</span> + cn  + <span class="hljs-string">" not a subtype"</span>);
+    &#125;
+    <span class="hljs-keyword">try</span> &#123;
+        S p = service.cast(c.newInstance());
+        providers.put(cn, p);
+        <span class="hljs-keyword">return</span> p;
+    &#125; <span class="hljs-keyword">catch</span> (Throwable x) &#123;
+        fail(service,
+             <span class="hljs-string">"Provider "</span> + cn + <span class="hljs-string">" could not be instantiated"</span>,
+            x);
+    &#125;
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error();          <span class="hljs-comment">// This cannot happen</span>
+&#125;</code></pre></div>
+<p>上面的 <code>Class.forName()</code> 方法完成了在 BootstrapClassLoader 加载的类(Driver.class)中通过ThreadContextClassLoader 加载了应用程序的实现类。</p>
+<p>这段代码的重点就是 <code>Class.forName()</code></p>
+<p>也就是说，通过SPI的方式把程序员手动做的动作(<code>Class.forName()</code>)变成框架自动执行。</p>
+<p><a href="https://www.cnblogs.com/qingchen521/p/10331768.html" target="_blank" rel="noopener">相关博客</a></p>
+<p>所以，SPI (service provider interface)其实是一种标准，他定义了接口，而不同服务的厂商去实现这个接口，当用户需要使用的时候，就把相关的实现类放到指定的位置，应用程序会自动找到他们并加载</p>
+<p>相比 API，SPI 更接近服务调用方</p>
+<p>在 jdk6 里面引进的一个新的特性 ServiceLoader，从官方的文档来说，它主要是用来装载一系列的 service provider。而且 ServiceLoader 可以通过 service provider 的配置文件来装载指定的 service provider。当服务的提供者，提供了服务接口的一种实现之后，我们只需要在 jar 包的 META-INF/services/ 目录里同时创建一个以服务接口命名的文件。该文件里就是实现该服务接口的具体实现类。而当外部程序装配这个模块的时候，就能通过该 jar 包 META-INF/services/ 里的配置文件找到具体的实现类名，并装载实例化，完成模块的注入。</p>
+<p>所以，SPI 的<strong>思想</strong>是：接口的实现还是由服务提供者来实现，但是服务提供者只用在提交的 jar 包里的 META-INF/services 下根据平台定义的接口新建文件，并添加进相应的实现类内容就好，而服务调用者根据标准接口通过本地服务发现加载具体服务提供商。</p>
+<p>这样做的<strong>好处</strong>是：实现解耦，使得第三方服务模块的装配控制的逻辑与调用者的业务代码分离，而不是耦合在一起。应用程序可以根据实际业务情况启用框架扩展或替换框架组件。</p>
+<p>常用场景有：</p>
+<ol>
+<li>
+<p>数据库驱动实现类加载</p>
+<p>JDBC 加载不同的数据库驱动</p>
+</li>
+<li>
+<p>日志门面接口加载</p>
+<p>Slf4j 加载不同日志实现</p>
+</li>
+<li>
+<p>Spring</p>
+</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JVM/">JVM</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/16/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">分布式知识 -- 布隆过滤器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/1/Java-%E7%9F%A5%E8%AF%86-ThreadLocal/">
+                        <span class="hidden-mobile">Java 知识-- ThreadLocal</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

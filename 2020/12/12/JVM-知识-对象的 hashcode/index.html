@@ -1,0 +1,437 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>JVM 知识 -- 对象的 hashcode ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('http://cdn.yinchao.tech/java_object_hashCode.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-12 00:48" pubdate>
+        2020 十二月 12, 星期六 , 12:48 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">JVM 知识 -- 对象的 hashcode</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 分钟前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="方法流程"><a class="header-anchor" href="#方法流程">⚡</a>方法流程</h2>
+<p>hashCode 有时会被误认为返回的就是对象的存储地址，事实上这种看法是不全面的，确实有些JVM在实现时是直接返回对象的存储地址，但是大多时候并不是这样，只能说可能存储地址有一定关联。</p>
+<!-- more -->
+<p>java.lang.Object#hashCode()方法是 native 方法，最终会调用 ObjectSynchronizer::FastHashCode 方法获取hashcode，Hot Spot 虚拟机执行流程如下:</p>
+<p><img src="http://cdn.yinchao.tech/java_object_hashCode.jpg" srcset="/img/loading.gif" alt="java_object_hashCode"></p>
+<p>具体到计算hashcode时，会涉及到 <code>get_next_hash</code> 方法（在 synchronizer.cpp 中，用于计算新的 hashcode）和 <code>hash</code> 方法（在 markOop.hpp 中，用于获取已有的 hashcode）</p>
+<p>其中，<code>hash</code> 方法的实现是先获取该对象的标记字对象，然后对该标记字对象的的地址做位移和逻辑与操作，以结果作为hashcode</p>
+<p>而 <code>get_next_hash</code> 方法会根据传给 JVM 的参数 <code>-XX:hashCode=n</code> 来选择使用哪种方法生成对象的hashcode：</p>
+<ul>
+<li>hashCode=0，使用系统生成的随机数作为hashcode</li>
+<li>hashCode=1，对对象地址做移位和逻辑操作，生成 hashcode</li>
+<li>hashCode=2，所有的hashcode都等于1</li>
+<li>hashCode=3，用一个自增序列给hashcode赋值</li>
+<li>hashCode=4，以对象地址作为hashcode</li>
+<li>hashCode=其他，复杂的位操作</li>
+</ul>
+<blockquote>
+<p>所以，其实 hashCode() 方法和 JVM 具体实现甚至与用户的参数设置有关，除了和地址相关之外，还有使用随机数，自增序列的选择</p>
+</blockquote>
+<p>hashcode 默认存储在对象的对象头</p>
+<p><img src="http://cdn.yinchao.tech/%E5%AF%B9%E8%B1%A1%E5%A4%B4.png" srcset="/img/loading.gif" alt="对象头"></p>
+<p>hashcode 默认存储在对象的对象头，但是 ⬇</p>
+<h2 id="注意"><a class="header-anchor" href="#注意">⚡</a>注意</h2>
+<ol>
+<li>
+<p>hashcode 采用延迟加载的方式生成。只有调用 hashCode() 方法时，才会写入对象头。若一个类的 hashCode() 方法被<strong>重写</strong>，对象头中将<strong>不存储</strong> hashcode 信息。</p>
+</li>
+<li>
+<p>当该对象的锁状态不是默认状态时，对象的 hashcode 不存储在对象头</p>
+<p>当是轻量级锁/重量级锁时，JVM 会将对象的 Mark Word 复制一份到栈帧的 Lock Record 中。等线程释放该对象时，再重新复制给对象。</p>
+</li>
+<li>
+<p>如果一个对象头中存在 hashcode,则无法使用偏向锁。</p>
+<p>综合上面两条，即：如果在锁对象加锁前计算了 hashCode ，且 hashCode 方法没有被重写，那么会把 hashCode 存储到 Mark Word 中，加锁时因为无法存放线程 id (偏向锁)或锁记录地址(轻量级锁)，不会使用偏向锁</p>
+<p>但是会使用轻量级锁。(如上面所说，把 Mark Word 复制到栈帧的 Lock Record 中)</p>
+</li>
+</ol>
+<h2 id="问题"><a class="header-anchor" href="#问题">⚡</a>问题</h2>
+<ol>
+<li>
+<p>hashCode 既然可以生成为什么要放在对象头里？</p>
+<p>因为当一个对象的 hashCode() 方法<strong>未被重写</strong>时，调用这个方法可能会返回一个由随机数算法生成的值。因为一个对象的 hashCode 不可变，所以需要存到对象头中。当再次调用该方法时，会直接返回对象头中的 hashCode，而如果不存储这个 hashCode，同一对象每次调用 hashCode 方法得到的值就都会不相同。</p>
+</li>
+</ol>
+<h2 id="String-实现-hashCode-方法"><a class="header-anchor" href="#String-实现-hashCode-方法">⚡</a>String 实现 hashCode 方法</h2>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">hashCode</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">int</span> h = hash;
+    <span class="hljs-keyword">if</span> (h == <span class="hljs-number">0</span> &amp;&amp; value.length &gt; <span class="hljs-number">0</span>) &#123;
+        <span class="hljs-keyword">char</span> val[] = value;
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; value.length; i++) &#123;
+            h = <span class="hljs-number">31</span> * h + val[i];
+        &#125;
+        hash = h;
+    &#125;
+    <span class="hljs-keyword">return</span> h;
+&#125;</code></pre></div>
+<p>可以看出，相同的字符串调用hashCode()方法，得到的值是一样的，与内存地址、进程、机器无关。代码似乎很简单，但是一定要归纳出来他的实现过程。<br>
+hash = val[0]*31<sup>{n-1}+val[1]*31</sup>{n-2}+…+val[n-1]<br>
+注：n为字符串长度。</p>
+<p>如果字符串相等，hashcode 必然一样；如果 hashcode 一样，字符串不一定相等，因为计算时可能发生溢出。</p>
+<ul>
+<li>
+<p>为什么计算时选择31？</p>
+<ul>
+<li>
+<p>31是个奇质数，不大不小，一般质数非常适合hash计算，偶数相当于移位运算，容易溢出，数据信息丢失。如果太小，则产生的哈希值区间小；太大则容易溢出，数据信息丢失。</p>
+</li>
+<li>
+<p>31 * i == (i &lt;&lt; 5) - i 。非常易于维护，将移位代替乘除，会有性能的提升，并且JVM执行时能够自动优化成这个样子。</p>
+</li>
+<li>
+<p>通过实验计算，选用31后出现hash冲的概率相比于其他数字要小</p>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JVM/">JVM</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/13/MySQL-%E7%9F%A5%E8%AF%86-drop%E3%80%81delete-%E5%92%8C-truncate-%E7%9A%84%E5%8C%BA%E5%88%AB/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL 知识 -- drop、delete 和 truncate 的区别</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/11/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1%E5%88%9D%E5%A7%8B%E5%8C%96%E8%BF%87%E7%A8%8B/">
+                        <span class="hidden-mobile">JVM 知识 -- 对象初始化过程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>安装记录 -- RocketMQ ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-07 22:27" pubdate>
+        2020 九月 07, 星期一 , 10:27 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      531 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">安装记录 -- RocketMQ</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：3 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="下载-RocketMQ-二进制包"><a class="header-anchor" href="#下载-RocketMQ-二进制包">⚡</a>下载 RocketMQ 二进制包</h2>
+<p><a href="https://www.apache.org/dyn/closer.cgi?path=rocketmq/" target="_blank" rel="noopener">下载地址</a></p>
+<p>找到一个镜像的 bin 文件下载到 opt 路径下</p>
+<div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 创建软链接</span>
+ln -s /opt/rocketmq-all-4.7.1-bin-release rocketMQ</code></pre></div>
+<h2 id="测试"><a class="header-anchor" href="#测试">⚡</a>测试</h2>
+<p><a href="https://rocketmq.apache.org/docs/quick-start/" target="_blank" rel="noopener">官方文档：快速开始</a></p>
+<ol>
+<li>
+<p>开启 name server</p>
+ <div class="hljs"><pre><code class="hljs shell">cd /opt/rocketMQ/bin
+sh mqnamesrv
+tail -f ~/logs/rocketmqlogs/namesrv.log
+<span class="hljs-meta">#</span><span class="bash"> The Name Server boot success...</span></code></pre></div>
+</li>
+<li>
+<p>开启 broker</p>
+ <div class="hljs"><pre><code class="hljs shell">sh mqbroker -n localhost:9876
+tail -f ~/logs/rocketmqlogs/broker.log 
+<span class="hljs-meta">#</span><span class="bash"> The broker[%s, 172.30.30.233:10911] boot success...</span></code></pre></div>
+</li>
+<li>
+<p>发送/接收消息</p>
+ <div class="hljs"><pre><code class="hljs shell">export NAMESRV_ADDR=localhost:9876
+sh tools.sh org.apache.rocketmq.example.quickstart.Producer
+<span class="hljs-meta">#</span><span class="bash"> SendResult [sendStatus=SEND_OK, msgId= ...</span>
+
+sh tools.sh org.apache.rocketmq.example.quickstart.Consumer
+<span class="hljs-meta">#</span><span class="bash"> ConsumeMessageThread_%d Receive New Messages: [MessageExt...</span></code></pre></div>
+</li>
+<li>
+<p>关闭 server</p>
+ <div class="hljs"><pre><code class="hljs shell">sh mqshutdown broker
+<span class="hljs-meta">#</span><span class="bash"> The mqbroker(36695) is running...</span>
+<span class="hljs-meta">#</span><span class="bash"> Send shutdown request to mqbroker(36695) OK</span>
+
+sh mqshutdown namesrv
+<span class="hljs-meta">#</span><span class="bash"> The mqnamesrv(36664) is running...</span>
+<span class="hljs-meta">#</span><span class="bash"> Send shutdown request to mqnamesrv(36664) OK</span></code></pre></div>
+</li>
+</ol>
+<h2 id="后续开发设置"><a class="header-anchor" href="#后续开发设置">⚡</a>后续开发设置</h2>
+<p>如果上面测试通过那程序就没问题了，但是每次手动开启很麻烦，我们就需要将 RocketMQ 加入开机启动项</p>
+<ol>
+<li>
+<p>新增 service 文件</p>
+ <div class="hljs"><pre><code class="hljs shell"><span class="hljs-meta">#</span><span class="bash"> 进入 /usr/lib/systemd/system/文件夹</span>
+cd /usr/lib/systemd/system
+sudo vim rocketmq-broker.service</code></pre></div>
+ <div class="hljs"><pre><code class="hljs conf"># 文件内容
+[Unit]
+Description&#x3D;RocketMQ-broker
+After&#x3D;network.target
+
+[Service]
+Type &#x3D; simple
+ExecStart&#x3D;&#x2F;opt&#x2F;rocketMQ&#x2F;bin&#x2F;mqbroker -n localhost:9876
+ExecStop&#x3D;&#x2F;opt&#x2F;rocketMQ&#x2F;bin&#x2F;mqshutdown broker
+PrivateTmp&#x3D;true
+
+[Install]
+WantedBy&#x3D;multi-user.target</code></pre></div>
+ <div class="hljs"><pre><code class="hljs shell">sudo vim rocketmq-namesrv.service
+
+<span class="hljs-meta">#</span><span class="bash"> 文件内容</span>
+[Unit]
+Description=RocketMQ-namesrv
+After=network.target
+
+[Service]
+Type = simple
+ExecStart=/opt/rocketMQ/bin/mqnamesrv
+ExecStop=/opt/rocketMQ/bin/mqshutdown namesrv
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target</code></pre></div>
+<p>修改 /etc/profiles 文件，在最后增加</p>
+ <div class="hljs"><pre><code class="hljs shell">export NAMESRV_ADDR=localhost:9876
+export ROCKETMQ_HOME=/opt/rocketMQ</code></pre></div>
+</li>
+<li>
+<p>修改程序中的 sh 脚本文件</p>
+<p>正常情况下，直接使用命令</p>
+ <div class="hljs"><pre><code class="hljs shell"> sudo systemctl start rocketmq-broker.service
+ sudo systemctl start rocketmq-namesrv.service
+
+<span class="hljs-meta">#</span><span class="bash"> 查看启动情况</span>
+sudo systemctl status rocketmq-broker.service
+sudo systemctl status rocketmq-namesrv.service</code></pre></div>
+<p>一般这样就可以正常启动了，但是这里有些问题，RocketMQ 使用的 JDK 版本有问题，需要修改程序文件</p>
+ <div class="hljs"><pre><code class="hljs shell">cd /opt/rocketMQ/bin
+vim runserver.sh</code></pre></div>
+<p>找到原文件和这个部分类似的地方，修改为如下配置</p>
+ <div class="hljs"><pre><code class="hljs shell">[ ! -e "$JAVA_HOME/bin/java" ] &amp;&amp; JAVA_HOME=/opt/jdk
+<span class="hljs-meta">#</span><span class="bash">[ ! -e <span class="hljs-string">"<span class="hljs-variable">$JAVA_HOME</span>/bin/java"</span> ] &amp;&amp; JAVA_HOME=/usr/java</span>
+<span class="hljs-meta">#</span><span class="bash">[ ! -e <span class="hljs-string">"<span class="hljs-variable">$JAVA_HOME</span>/bin/java"</span> ] &amp;&amp; error_exit <span class="hljs-string">"Please set the JAVA_HOME variable in your environment, We need java(x64)!"</span></span></code></pre></div>
+<p>同理，对于 <a href="http://runbroker.sh" target="_blank" rel="noopener">runbroker.sh</a> 文件也类似</p>
+<p><a href="https://stackoverflow.com/questions/42311180/rocketmq-quickstart-runbroker-sh-setting-too-large-java-heap" target="_blank" rel="noopener">如果发现 broker 被系统kill，结局方案：调小 jvm 堆</a></p>
+</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/configuration/">configuration</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/9/8/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-Manjaro-%E5%8F%8C%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">安装记录 -- Manjaro 双显卡驱动</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/8/31/Spring-%E6%BA%90%E7%A0%81-Spring-%E5%88%9D%E5%A7%8B%E5%8C%96/">
+                        <span class="hidden-mobile">Spring 源码 -- Spring 初始化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

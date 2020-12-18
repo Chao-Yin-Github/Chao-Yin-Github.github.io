@@ -1,0 +1,491 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>Java 知识 -- volatile ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-10 23:00" pubdate>
+        2020 十二月 10, 星期四 , 11:00 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      26
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Java 知识 -- volatile</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：8 分钟前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="特性"><a class="header-anchor" href="#特性">⚡</a>特性</h2>
+<p>volatile 关键字可以实现并发编程中的<code>有序性</code>和<code>可见性</code>，但是无法保证<code>原子性</code></p>
+<p>volatile 关键字首先具有&quot;易变性&quot;，声明为 volatile 变量编译器会强制要求读内存，相关语句不会直接使用上一条语句对应的的寄存器内容，而是重新从内存中读取。</p>
+<p>其次具有&quot;不可优化性&quot;，volatile 告诉编译器，不要对这个变量进行各种激进的优化，甚至将变量直接消除，保证代码中的指令一定会被执行。</p>
+<p>最后具有&quot;顺序性&quot;，能够保证 volatile 变量间的顺序性，编译器不会进行乱序优化。不过要注意与非 volatile 变量之间的操作，还是可能被编译器重排序的。</p>
+<p>需要注意的是其含义跟原子操作无关，比如：volatile int a; a++; 其中 a++ 操作实际对应三条汇编指令实现”读-改-写“操作（RMW），并非原子的。</p>
+<p>volatile 的读性能消耗与普通变量几乎相同，但是写操作稍慢，是因为它需要在写入之后加入的 StoreLoad 这个内存屏障的性能开销特别大。</p>
+<h2 id="使用场景"><a class="header-anchor" href="#使用场景">⚡</a>使用场景</h2>
+<ul>
+<li>
+<p>DCL单例</p>
+</li>
+<li>
+<p>标志位</p>
+</li>
+<li>
+<p>并发集合 ConcurrentHashMap 中 table 数组和 Node 节点中的 val 和 next 数据成员</p>
+</li>
+</ul>
+<h2 id="实现原理"><a class="header-anchor" href="#实现原理">⚡</a>实现原理</h2>
+<p>Java 语言中 volatile 变量可以被看作是一种轻量级的同步，因为其还附带了 acquire 和 release 语义。实际上也是从 JDK5 以后才通过这个措施进行完善，其 volatile 变量具有 synchronized 的可见性特性，但是不具备原子特性。</p>
+<p>在 Java 程序运行的时候，即 JVM 执行 volatile 变量的时候动态的处理：</p>
+<ul>
+<li>
+<p>在每个volatile写操作的前面插入一个StoreStore屏障。</p>
+</li>
+<li>
+<p>在每个volatile写操作的后面插入一个StoreLoad屏障。</p>
+</li>
+<li>
+<p>在每个volatile读操作的<strong>后</strong>面插入一个LoadLoad屏障。</p>
+</li>
+<li>
+<p>在每个volatile读操作的后面插入一个LoadStore屏障。</p>
+</li>
+</ul>
+<p><img src="http://cdn.yinchao.tech/JVM%20%20volatile%20%E5%8A%A0%E5%85%A5%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C%E5%9B%BE.jpg" srcset="/img/loading.gif" alt="JVM  volatile 加入内存屏障图"></p>
+<h3 id="内存屏障又是在哪里加入进来的呢？"><a class="header-anchor" href="#内存屏障又是在哪里加入进来的呢？">⚡</a>内存屏障又是在哪里加入进来的呢？</h3>
+<p>JVM 级别或者说是编译器级别的内存屏障</p>
+<p><img src="http://cdn.yinchao.tech/JVM-memory-barrier1" srcset="/img/loading.gif" alt="JVM-memory-barrier1"></p>
+<p><img src="http://cdn.yinchao.tech/JVM-memory-barrier2" srcset="/img/loading.gif" alt="JVM-memory-barrier"></p>
+<p><img src="http://cdn.yinchao.tech/JVM-memory-barrier3" srcset="/img/loading.gif" alt="JVM-memory-barrier"></p>
+<p><img src="http://cdn.yinchao.tech/JVM-memory-barrier4" srcset="/img/loading.gif" alt="JVM-memory-barrier"></p>
+<p><img src="http://cdn.yinchao.tech/JVM-memory-barrier5" srcset="/img/loading.gif" alt="JVM-memory-barrier"></p>
+<p>CPU 提供了三种内存屏障系统原语:</p>
+<ul>
+<li>
+<p>sfence</p>
+</li>
+<li>
+<p>mfence</p>
+</li>
+<li>
+<p>lfence</p>
+</li>
+</ul>
+<p>实际上 volatile 底层没有使用 CPU 的原语，原因是：不是大多数 CPU 都支持的上面的系统指令</p>
+<p>volatile 关键字<strong>写入的时候</strong>才使用 Lock 指令的原因是：大多数 CPU 都支持</p>
+<p>同理，volatile 关键字在读取的时候没有直接使用 CPU 的原语的原因也是可能会跨平台而不支持的问题，所以在 C++ 层面处理</p>
+<ol>
+<li>
+<p>首先这是在写入 volatile 变量之后才会加入 lock指令</p>
+<p>Java 语言中由 volatile 修饰的变量，赋值后多执行了一个&quot;load addl $0x0, (%esp)&quot; 操作，这个操作相当于一个 lock 指令</p>
+<p>根据 Intel x64 CPU 官方文档：</p>
+<blockquote>
+<p>Intel® 64 and IA-32 Architectures Software Developer’s Manual</p>
+<p>8.1.2.2 Software Controlled Bus Locking</p>
+<p>For the P6 family processors, locked operations serialize all outstanding load and store operations (that is, wait for them to complete). This rule is also true for the Pentium 4 and Intel Xeon processors, with one exception. Load operations that reference weakly ordered memory types (such as the WC memory type) may not be serialized.</p>
+</blockquote>
+<p>其中</p>
+<blockquote>
+<p>locked operations serialize all outstanding load and store operations</p>
+</blockquote>
+<p>说明其实LOCK指令前缀包含了MFENCE的效果，而MFENCE保证插入StoreLoad</p>
+<p>而具体的内存屏障的种类由执行这段程序的 CPU 硬件决定</p>
+<p><a href="https://www.menina.cn/article/97" target="_blank" rel="noopener">出处</a></p>
+<p>Lock 指令有两种实现方式：</p>
+<ol>
+<li>
+<p>如果是现代 CPU 并且数据已经被CPU缓存了，并且是要写回到主存的，则可以用cache locking处理问题。</p>
+<p>Intel使用&quot;Cache Locking&quot;机制，其实质是 Ringbus + MESI协议。</p>
+<p>其步骤是：若干个CPU核心通过ringbus连到一起。每个核心都维护自己的Cache的状态。如果对于同一份内存数据在多个核里都有 cache，则状态都为S（shared）。一旦有一核心改了这个数据（状态变成了M），其他核心就能瞬间通过ringbus感知到 这个修改，从而把自己的cache状态变成I（Invalid），并且从标记为M的cache中读过来。同时，这个数据会被原子的写回到主存。最终，cache的状态又会变为S。</p>
+<p>这相当于给cache本身单独做了一套总线（要不怎么叫ring bus），避免了真的锁总线。</p>
+</li>
+<li>
+<p>第一种条件不满足，那么还是得锁总线。</p>
+</li>
+</ol>
+<p>因此，lock到底用锁总线，还是用cache locking，完全是看当时的情况。当然能用后者的就肯定用后者。</p>
+</li>
+<li>
+<p>对于 volatile 读来说</p>
+<p><img src="http://cdn.yinchao.tech/JVM-memory-barrier6" srcset="/img/loading.gif" alt="JVM-memory-barrier"></p>
+<p><img src="http://cdn.yinchao.tech/JVM-memory-barrier7" srcset="/img/loading.gif" alt="JVM-memory-barrier"></p>
+<p>而 obj-&gt;obj_field_acquire(field_offset) 放法实际上就是：</p>
+ <div class="hljs"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">inline</span> jint <span class="hljs-title">OrderAccess::load_acquire</span><span class="hljs-params">(<span class="hljs-keyword">volatile</span> jint* p)</span> </span>&#123; <span class="hljs-keyword">return</span> *p; &#125;</code></pre></div>
+<p>读取实际上是基于 C++ 的 volatile 实现</p>
+<p><a href="https://juejin.cn/post/6844903555850059790" target="_blank" rel="noopener">出处</a></p>
+</li>
+</ol>
+<h2 id="volatile-使用条件"><a class="header-anchor" href="#volatile-使用条件">⚡</a>volatile 使用条件</h2>
+<p>Java实践中仅满足下面这些条件才应该使用volatile关键字：</p>
+<ol>
+<li>
+<p>变量写入操作不依赖变量当前值，或确保只有一个线程更新变量的值</p>
+</li>
+<li>
+<p>该变量不会与其他变量一起纳入</p>
+</li>
+<li>
+<p>变量并未被锁保护</p>
+</li>
+</ol>
+<h2 id="注意"><a class="header-anchor" href="#注意">⚡</a>注意</h2>
+<ol>
+<li>
+<p>错误：volatile 读取之前在读取之前加入读屏障刷新到主存，volatile 写之后加入写屏障刷入到主存</p>
+<p>首先，这里加入内存屏障的位置其实恰好相反，写入是在写入之前加入屏障禁止指令重排，读取也是在读取之后加入内存屏障来禁止指令重排</p>
+<p>其次，从缓存刷入到主存并不是由内存屏障去处理的，这是通过 MESI 协议决定的，内存屏障仅仅只是决定 Store Buffer 刷入 Cache Line</p>
+<p>这个其实很好理解，CPU 使用数据是必须是在 Cache Line 或者寄存器里面，那直接刷入内存其实没有意义，因为要读取的时候还是需要从内存当中去读数据到 Cache Line，而真正的刷入主存的意思应该是刷入到 JMM 意义上的主存（即 CPU 的 Cache Line 或者寄存器），这样才能保证变量的可见性</p>
+</li>
+<li>
+<p>对于 volatile 变量的读写，在字节码其实并不能体现出来，只是在字节码标记 volatile 变量，而真正起作用是在字节码转化为汇编指令的时候根据 CPU 的特性来加入内存屏障</p>
+</li>
+<li>
+<p>volatile 读取的免费的吗？</p>
+<p>不是。因为它会禁止指令重排，以及禁止其它的各种的优化</p>
+</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JVM/">JVM</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/concurrent/">concurrent</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/11/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1%E5%A4%B4/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JVM 知识--对象头</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/21/Redis-%E7%9F%A5%E8%AF%86-Redis-%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/">
+                        <span class="hidden-mobile">Redis 知识 -- Redis 持久化方式</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

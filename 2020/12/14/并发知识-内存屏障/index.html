@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>并发知识 -- 内存屏障 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-14 01:13" pubdate>
+        2020 十二月 14, 星期一 , 1:13 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      29
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">并发知识 -- 内存屏障</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：3 分钟前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="CPU-提供多种内存屏障"><a class="header-anchor" href="#CPU-提供多种内存屏障">⚡</a>CPU 提供多种内存屏障</h2>
+<ul>
+<li>
+<p>LoadLoad: 相当于<code>读屏障</code>: 任何读屏障前的读操作都会先于该屏障后的读操作完成</p>
+</li>
+<li>
+<p>LoadStore: 任何该屏障前的读操作都会先于该屏障后的写操作完成</p>
+</li>
+<li>
+<p>StoreLoad: 任何该屏障前的写操作都会先于该屏障后的读操作完成</p>
+<p>对于 StoreLoad 实际上是一个性能开销最大的屏障，因为 StoreLoad 必须同时兼顾读和写，并且对于这两个操作必须全部完成</p>
+<p>StoreLoad 相当于一个全屏障，其他内存屏障能够做到的它都能够做到</p>
+<p>可能会觉得 LoadStore 也是要兼顾读写，但是它只是保证读在写之前完成，但是并不关心写在什么时候完成</p>
+</li>
+<li>
+<p>StoreStore: 相当于<code>写屏障</code>: 任何写屏障前的写操作都会先于该屏障后的写操作完成</p>
+</li>
+</ul>
+<h3 id="为什么内存屏障能保证可见性和有序性呢？"><a class="header-anchor" href="#为什么内存屏障能保证可见性和有序性呢？">⚡</a>为什么内存屏障能保证可见性和有序性呢？</h3>
+<p>原因其实就在问题里，为了保证可见性，我们使用内存屏障保证数据的可见，为了保证有序性，我们使用内存屏障限制指令重排</p>
+<p>对于保证数据可见性，在<a href="http://blog.yinchao.tech/2020/12/17/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CPU-%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/#%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E9%97%AE%E9%A2%98" target="_blank" rel="noopener">上一篇博客</a>里面其实一直使用的都是内存屏障的可见性的功能，使得数据一定可见，但是没有提到内存屏障还有一个限制指令重排序的重要功能，例如：</p>
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span> </span>&#123;
+    a = <span class="hljs-number">1</span>;
+    smp_wmb()
+    b = <span class="hljs-number">1</span>;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bar</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">while</span> (b == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;
+    smp_rmb()
+    assert(a == <span class="hljs-number">1</span>)
+&#125;</code></pre></div>
+<p>这是之前加入了两个内存屏障，使得 CPU0 先刷新 store buffer 中的数据， CPU1 也类似，先处理 Invalid Queue 的指令，但是，其实如果不加这两个内存屏障，CPU 也有可能对其指令进行指令重排序，也可能使我们得到不一致的结果，例如：</p>
+<p>假设上面的代码中内存屏障没有限制指令重排序的功能，那么代码 foo 可能会被优化成先去执行 b =1 后去执行 a = 1，那么即使在 b = 1 之前加入了写屏障，也失去了效果，因为这个写屏障之前没有任何操作，写屏障相当于作废了，从而当另一个 CPU 执行 while 循环并退出的时候，读到 a 的值就是 0 （第一个 CPU 还没有执行到 a = 1 这条指令，或者就算执行到了，也在 Store Buffer 里面，并没有刷新到 Cache Line），造成数据不一致的情况</p>
+<p>而如果 foo 函数的 b =1 前面加入了 StoreStore 屏障，这样 a = 1 就不可能就会在 b =1 后面执行，因为 a = 1 是一个写操作，如果把 a = 1 放到 b = 1 之后执行，按么就违背了 StoreStore 屏障。类似的，在 b = 1 后面要加入 StoreLoad 屏障，保证前面的读操作在 volatile 写之前完成，由此可以看出，内存屏障也限制了指令重排。</p>
+<p>当然，可能会有疑问，如果没有在 b = 1 前面加入 StoreStore 屏障，而仅仅是在 b = 1 后面加入 StoreLoad 屏障，那么 a = 1 还是有可能会被重排序到后面去，导致结果不正确。所以，为了保证程序的有序性和可见性，Java 中 volatile 关键字要在写之前和写之后加入这些内存屏障。</p>
+<p>当然，可能还有疑问，如果在 b = 1 之前加入 StoreStore 屏障就可以实现禁止指令重排，那么为什么还要在 b = 1 之后加入 StoreLoad 内存屏障呢？答案是，对于编译器来说，发现一个最优布置来最小化插入屏障的总数是几乎不可能的，所以JVM 采用 <strong>保守策略</strong>，每次 volatile 变量读写之前和之后都会加入内存屏障以保证 volatile 的内存语义。</p>
+<h2 id="内存屏障具体实现方式"><a class="header-anchor" href="#内存屏障具体实现方式">⚡</a>内存屏障具体实现方式</h2>
+<ol>
+<li>
+<p>可见性是通过对 CPU 的 Store Buffer 和 Invalid Queue 中标记的数据进行处理实现的，具体的方式移步<a href="http://blog.yinchao.tech/2020/12/17/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CPU-%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/" target="_blank" rel="noopener"></a></p>
+</li>
+<li>
+<p>禁止重排序我认为是在 CPU 执行的规定，看到内存屏障就不再取后面的指令。</p>
+</li>
+</ol>
+<h2 id="内存屏障在-JVM-的应用"><a class="header-anchor" href="#内存屏障在-JVM-的应用">⚡</a>内存屏障在 JVM 的应用</h2>
+<p>volatile 关键字的应用上面已经提到</p>
+<h3 id="Atomic-的-LazySet"><a class="header-anchor" href="#Atomic-的-LazySet">⚡</a>Atomic 的 LazySet</h3>
+<p>Atomic 下的 LazySet 操作。拿最常见的 AtomicInteger 为例，里面的状态 value 是个 volatile 的 int，普通的 set 就是将这个状态修改为目标值，修改后因为有 Barrier 的关系会让其它 CPU 可见。而 lazySet 与 set 对比是这样：</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">set</span><span class="hljs-params">(<span class="hljs-keyword">int</span> newValue)</span> </span>&#123;
+    value = newValue;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">lazySet</span><span class="hljs-params">(<span class="hljs-keyword">int</span> newValue)</span> </span>&#123;
+    unsafe.putOrderedInt(<span class="hljs-keyword">this</span>, valueOffset, newValue);
+&#125;</code></pre></div>
+<p>对于 unsafe.putOrderedInt() 的内容 Java 完全没给出解释，但从添加 lazySet()这个功能的地方：<a href="https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6275329" target="_blank" rel="noopener">Bug ID: JDK-6275329 Add lazySet methods to atomic classes</a>，能看出来其作用是在写入 volatile 状态前增加 StoreStore Barrier。它只保证本次写入不会重排到前面写入之前，但本次写入什么时候能刷写到内存是不做要求的，从而是一次轻量级的写入操作，在特定场景能优化性能。</p>
+<h3 id="ConcurrentLinkedQueue-下的黑科技"><a class="header-anchor" href="#ConcurrentLinkedQueue-下的黑科技">⚡</a>ConcurrentLinkedQueue 下的黑科技</h3>
+<p>比如现在有 a b c d 四个 volatile 变量，如果无脑执行:</p>
+<div class="hljs"><pre><code class="hljs java">a = <span class="hljs-number">1</span>;
+b = <span class="hljs-number">2</span>;
+c = <span class="hljs-number">3</span>;
+d = <span class="hljs-number">4</span>;</code></pre></div>
+<p>会在每个语句中间加上 Barrier。直接上面这样写可能还好，都是 StoreStore 的 Barrier，但如果写 volatile 之后又有一些读 volatile 操作，可能 Barrier 就会提升至最重的 StoreLoad Barrier，开销就会很大。而如果对开始的 a b c 写入都是用写普通变量的方式写入，只对最后的 d 用 volatile 方式更新，即只在 d = 4前带上写 Barrier，保证 d = 4 被其它 CPU 看见时，a、b、c 的值也能被别的 CPU 看见。这么一来就能减少 Barrier 的数量，提高性能。</p>
+<p>上面介绍的 unsafe.putObject 的方法，用来将一个 volatile 变量以普通变量方式更新，即不使用 Barrier。用这个 putObject 就能做到上面提到的优化。</p>
+<p>ConcurrentLinkedQueue 是 Java 标准库提供的<strong>无锁队列</strong>，它里面也用到了这个黑科技。因为是链表，所以里面有个叫 Node 的类用来存放数据，Node 连起来就构成链表。Node 内有个被 volatile 修饰的变量指向 Node 存放的数据。Node 的部分代码如下：</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span>&lt;<span class="hljs-title">E</span>&gt; </span>&#123;
+    <span class="hljs-keyword">volatile</span> E item;
+    <span class="hljs-keyword">volatile</span> Node&lt;E&gt; next;
+    Node(E item) &#123;
+        UNSAFE.putObject(<span class="hljs-keyword">this</span>, itemOffset, item);
+    &#125;
+    ....
+&#125;</code></pre></div>
+<p>因为 Node 被构造出来后它得通过 cas 操作队尾 Node 的 next 引用接入链表，接入成功之后才需要被其它 CPU 看到，在 Node 刚构造出来的时候，Node 内的 item 实际不会被任何别的线程访问，所以看到 Node 的构造函数可以直接用 putObject 更新 item，等后续 cas 操作队列队尾 Node 的 next 时候再以 volatile 方式更新 next，从而带上 Barrier，更新完成后 next 的更新包括 Node 内 item 的更新就都被别的 CPU 看到了。从而减少操作 volatile 变量的开销。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/concurrent/">concurrent</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/14/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">并发知识 -- 指令重排</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/13/OS-%E7%9F%A5%E8%AF%86-%E5%86%85%E6%A0%B8/">
+                        <span class="hidden-mobile">OS 知识 -- 内核</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    <%- partial('_partial/statistics.ejs') %>
+    <%- partial('_partial/beian.ejs') %>
+    <% if(theme.web_analytics.cnzz) { %>
+      <!-- cnzz Analytics Icon -->
+      <span id="cnzz_stat_icon_<%- theme.web_analytics.cnzz %>" style="display: none"></span>
+    <% } %>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<%- partial('_partial/scripts.ejs') %>
+
+
+</body>
+</html>

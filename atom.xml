@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://yme86.github.io/"/>
-  <updated>2020-08-28T09:24:15.342Z</updated>
+  <updated>2020-12-18T13:43:15.240Z</updated>
   <id>https://yme86.github.io/</id>
   
   <author>
@@ -17,257 +17,15 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Spring 知识 -- BeanFactory 和 FactoryBean</title>
-    <link href="https://yme86.github.io/2020/8/28/Spring-%E7%9F%A5%E8%AF%86-BeanFactory-%E5%92%8C-FactoryBean/"/>
-    <id>https://yme86.github.io/2020/8/28/Spring-%E7%9F%A5%E8%AF%86-BeanFactory-%E5%92%8C-FactoryBean/</id>
-    <published>2020-08-28T03:41:17.000Z</published>
-    <updated>2020-08-28T09:24:15.342Z</updated>
+    <title>并发知识 -- 内存模型</title>
+    <link href="https://yme86.github.io/2020/12/18/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/"/>
+    <id>https://yme86.github.io/2020/12/18/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/</id>
+    <published>2020-12-18T12:22:43.000Z</published>
+    <updated>2020-12-18T13:43:15.240Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;先说结论，他们的区别是：&lt;/p&gt;
-&lt;p&gt;FactoryBean 是一个接口，可以用于解决使用第三方依赖时，用户需要配置过多依赖的问题。&lt;br&gt;
-具体来说，它主要是第三方为了向使用方提供 Bean，然后使用方再去生成并配置好这个 FactoryBean 实例交给 Spring 管理，然后通过这个工厂 Bean 就能生成这个第三方需要使用的真正的 Bean 并交给 Spring 去管理了。&lt;/p&gt;
-&lt;p&gt;BeanFactory 是 Spring 容器产生 Bean 的顶层工厂接口，Spring IOC 容器中的 Bean 都由这个 BeanFactory 产生。&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="Spring" scheme="https://YME86.github.io/tags/Spring/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring 知识 -- Spring AOP</title>
-    <link href="https://yme86.github.io/2020/8/26/Spring-%E7%9F%A5%E8%AF%86-Spring-AOP/"/>
-    <id>https://yme86.github.io/2020/8/26/Spring-%E7%9F%A5%E8%AF%86-Spring-AOP/</id>
-    <published>2020-08-26T07:47:01.000Z</published>
-    <updated>2020-08-28T07:13:59.339Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;相关概念&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#相关概念&quot;&gt;⚡&lt;/a&gt;相关概念&lt;/h2&gt;
-&lt;h3 id=&quot;Aop是什么&quot;&gt;&lt;a class=&quot;header-anchor&quot;
-        
-      
-    
-    </summary>
-    
-    
-    
-      <category term="Spring" scheme="https://YME86.github.io/tags/Spring/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Bug记录 -- MyBaits 报错 -- Cannot get Configuration as configuration factory was not set</title>
-    <link href="https://yme86.github.io/2020/8/14/Bug%E8%AE%B0%E5%BD%95-MyBaits-%E6%8A%A5%E9%94%99-Cannot-get-Configuration-as-configuration-factory-was-not-set/"/>
-    <id>https://yme86.github.io/2020/8/14/Bug%E8%AE%B0%E5%BD%95-MyBaits-%E6%8A%A5%E9%94%99-Cannot-get-Configuration-as-configuration-factory-was-not-set/</id>
-    <published>2020-08-14T15:17:40.000Z</published>
-    <updated>2020-08-18T17:15:21.170Z</updated>
-    
-    <summary type="html">
-    
-      MyBatis 报错 `Cannot get Configuration as configuration factory was not set`
-    
-    </summary>
-    
-    
-    
-      <category term="Bug" scheme="https://YME86.github.io/tags/Bug/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ORM 带来的 N+1 问题</title>
-    <link href="https://yme86.github.io/2020/8/13/ORM-%E5%B8%A6%E6%9D%A5%E7%9A%84-N-1-%E9%97%AE%E9%A2%98/"/>
-    <id>https://yme86.github.io/2020/8/13/ORM-%E5%B8%A6%E6%9D%A5%E7%9A%84-N-1-%E9%97%AE%E9%A2%98/</id>
-    <published>2020-08-13T13:26:16.000Z</published>
-    <updated>2020-08-25T14:24:41.345Z</updated>
-    
-    <summary type="html">
-    
-      数据库复杂业务带来的查询效率问题解决
-    
-    </summary>
-    
-    
-    
-      <category term="util" scheme="https://YME86.github.io/tags/util/"/>
-    
-      <category term="database" scheme="https://YME86.github.io/tags/database/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL 知识-- 相关子查询优化</title>
-    <link href="https://yme86.github.io/2020/7/27/MySQL-%E7%9F%A5%E8%AF%86-%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/"/>
-    <id>https://yme86.github.io/2020/7/27/MySQL-%E7%9F%A5%E8%AF%86-%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</id>
-    <published>2020-07-27T08:27:50.000Z</published>
-    <updated>2020-08-18T17:12:40.478Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;相关子查询的-MySQL-错误优化-MySQL-5-7-以后不适用&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#相关子查询的-MySQL-错误优化-MySQL-5-7-以后不适用&quot;&gt;⚡&lt;/a&gt;相关子查询的 MySQL 错误优化(MySQL 5.7 以后不适用)&lt;/h2&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="database" scheme="https://YME86.github.io/tags/database/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hexo 博客( fluid 主题)升级记录</title>
-    <link href="https://yme86.github.io/2020/7/26/hexo-%E5%8D%9A%E5%AE%A2(fluid%E4%B8%BB%E9%A2%98)%E5%8D%87%E7%BA%A7%E8%AE%B0%E5%BD%95/"/>
-    <id>https://yme86.github.io/2020/7/26/hexo-%E5%8D%9A%E5%AE%A2(fluid%E4%B8%BB%E9%A2%98)%E5%8D%87%E7%BA%A7%E8%AE%B0%E5%BD%95/</id>
-    <published>2020-07-26T13:48:50.000Z</published>
-    <updated>2020-08-18T17:12:00.020Z</updated>
-    
-    <summary type="html">
-    
-      fluid 升级记录
-    
-    </summary>
-    
-    
-    
-      <category term="configuration" scheme="https://YME86.github.io/tags/configuration/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL 知识-- explain 执行计划</title>
-    <link href="https://yme86.github.io/2020/7/26/MySQL-%E7%9F%A5%E8%AF%86-explain-%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/"/>
-    <id>https://yme86.github.io/2020/7/26/MySQL-%E7%9F%A5%E8%AF%86-explain-%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92/</id>
-    <published>2020-07-26T10:44:13.000Z</published>
-    <updated>2020-08-25T15:23:22.504Z</updated>
-    
-    <summary type="html">
-    
-      MySQL explain 执行计划的相关字段说明
-    
-    </summary>
-    
-    
-    
-      <category term="database" scheme="https://YME86.github.io/tags/database/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计网-TCP/IP</title>
-    <link href="https://yme86.github.io/2020/7/17/%E8%AE%A1%E7%BD%91-TCP-IP/"/>
-    <id>https://yme86.github.io/2020/7/17/%E8%AE%A1%E7%BD%91-TCP-IP/</id>
-    <published>2020-07-17T09:20:43.000Z</published>
-    <updated>2020-08-18T17:09:08.031Z</updated>
-    
-    <summary type="html">
-    
-      TCP/IP 相关常见问题
-    
-    </summary>
-    
-    
-    
-      <category term="Interview" scheme="https://YME86.github.io/tags/Interview/"/>
-    
-      <category term="net" scheme="https://YME86.github.io/tags/net/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计网-HTTP</title>
-    <link href="https://yme86.github.io/2020/7/17/%E8%AE%A1%E7%BD%91-HTTP/"/>
-    <id>https://yme86.github.io/2020/7/17/%E8%AE%A1%E7%BD%91-HTTP/</id>
-    <published>2020-07-17T09:20:30.000Z</published>
-    <updated>2020-08-18T17:09:00.337Z</updated>
-    
-    <summary type="html">
-    
-      HTTP 相关常见问题
-    
-    </summary>
-    
-    
-    
-      <category term="net" scheme="https://YME86.github.io/tags/net/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>计网-HTTPS</title>
-    <link href="https://yme86.github.io/2020/7/17/%E8%AE%A1%E7%BD%91-HTTPS/"/>
-    <id>https://yme86.github.io/2020/7/17/%E8%AE%A1%E7%BD%91-HTTPS/</id>
-    <published>2020-07-17T09:17:28.000Z</published>
-    <updated>2020-08-18T17:09:05.681Z</updated>
-    
-    <summary type="html">
-    
-      HTTPS 相关常见问题
-    
-    </summary>
-    
-    
-    
-      <category term="net" scheme="https://YME86.github.io/tags/net/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL 知识 -- BKA 优化</title>
-    <link href="https://yme86.github.io/2020/5/25/MySQL-%E7%9F%A5%E8%AF%86-BKA-%E4%BC%98%E5%8C%96/"/>
-    <id>https://yme86.github.io/2020/5/25/MySQL-%E7%9F%A5%E8%AF%86-BKA-%E4%BC%98%E5%8C%96/</id>
-    <published>2020-05-25T12:03:12.000Z</published>
-    <updated>2020-08-18T16:41:02.898Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Batched Kay Access&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="database" scheme="https://YME86.github.io/tags/database/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java 知识-- Unsafe</title>
-    <link href="https://yme86.github.io/2020/4/30/Java-%E7%9F%A5%E8%AF%86-Unsafe/"/>
-    <id>https://yme86.github.io/2020/4/30/Java-%E7%9F%A5%E8%AF%86-Unsafe/</id>
-    <published>2020-04-30T04:05:27.000Z</published>
-    <updated>2020-08-18T15:57:39.303Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;关于-unsafe&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#关于-unsafe&quot;&gt;⚡&lt;/a&gt;关于 unsafe&lt;/h2&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="Java" scheme="https://YME86.github.io/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>并发知识-- CAS</title>
-    <link href="https://yme86.github.io/2020/4/30/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CAS/"/>
-    <id>https://yme86.github.io/2020/4/30/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CAS/</id>
-    <published>2020-04-30T02:00:48.000Z</published>
-    <updated>2020-08-18T15:57:56.492Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;CAS (Compare And Swap) (CompareAndSet): 比较并交换,比较并设定&lt;/p&gt;
+      关于多种内存模型的介绍
     
     </summary>
     
@@ -278,16 +36,78 @@
   </entry>
   
   <entry>
-    <title>并发知识- (杂谈) 高并发高可用 VS 多线程正确性</title>
-    <link href="https://yme86.github.io/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%20(%E6%9D%82%E8%B0%88)%20%E9%AB%98%E5%B9%B6%E5%8F%91%E9%AB%98%E5%8F%AF%E7%94%A8-VS-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%A3%E7%A1%AE%E6%80%A7/"/>
-    <id>https://yme86.github.io/2020/4/23/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%20(%E6%9D%82%E8%B0%88)%20%E9%AB%98%E5%B9%B6%E5%8F%91%E9%AB%98%E5%8F%AF%E7%94%A8-VS-%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%A3%E7%A1%AE%E6%80%A7/</id>
-    <published>2020-04-23T03:44:27.000Z</published>
-    <updated>2020-07-17T18:48:40.942Z</updated>
+    <title>Java 知识 -- happens-before 原则</title>
+    <link href="https://yme86.github.io/2020/12/18/Java-%E7%9F%A5%E8%AF%86-happens-before-%E5%8E%9F%E5%88%99/"/>
+    <id>https://yme86.github.io/2020/12/18/Java-%E7%9F%A5%E8%AF%86-happens-before-%E5%8E%9F%E5%88%99/</id>
+    <published>2020-12-18T12:12:46.000Z</published>
+    <updated>2020-12-18T13:49:31.480Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;写在前面&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#写在前面&quot;&gt;⚡&lt;/a&gt;写在前面&lt;/h2&gt;
-&lt;p&gt;文章是学习并发编程的时候,觉得并发编程难学,想到什么情况下需要用到并发编程,然后想到了一些情况,故记录之&lt;/p&gt;
+      Java 内存模型中的 happens-before 原则
+    
+    </summary>
+    
+    
+    
+      <category term="concurrent" scheme="https://YME86.github.io/tags/concurrent/"/>
+    
+      <category term="java" scheme="https://YME86.github.io/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>并发知识 -- CPU 缓存一致性</title>
+    <link href="https://yme86.github.io/2020/12/17/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CPU-%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/"/>
+    <id>https://yme86.github.io/2020/12/17/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CPU-%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/</id>
+    <published>2020-12-17T11:55:31.000Z</published>
+    <updated>2020-12-18T14:07:21.248Z</updated>
+    
+    <summary type="html">
+    
+      多个 CPU 如何解决缓存一致性问题
+    
+    </summary>
+    
+    
+    
+      <category term="concurrent" scheme="https://YME86.github.io/tags/concurrent/"/>
+    
+      <category term="hardware" scheme="https://YME86.github.io/tags/hardware/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>操作系统知识 -- 程序局部性原理</title>
+    <link href="https://yme86.github.io/2020/12/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86-%E7%A8%8B%E5%BA%8F%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86/"/>
+    <id>https://yme86.github.io/2020/12/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86-%E7%A8%8B%E5%BA%8F%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86/</id>
+    <published>2020-12-14T04:22:22.000Z</published>
+    <updated>2020-12-18T12:03:38.298Z</updated>
+    
+    <summary type="html">
+    
+      程序局部性原理概念及其应用分支预测
+    
+    </summary>
+    
+    
+    
+      <category term="hardware" scheme="https://YME86.github.io/tags/hardware/"/>
+    
+      <category term="OS" scheme="https://YME86.github.io/tags/OS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>并发知识 -- 指令重排</title>
+    <link href="https://yme86.github.io/2020/12/14/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92/"/>
+    <id>https://yme86.github.io/2020/12/14/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92/</id>
+    <published>2020-12-13T17:16:35.000Z</published>
+    <updated>2020-12-18T16:06:40.185Z</updated>
+    
+    <summary type="html">
+    
+      指令重排的集中类型和Java 禁止指令重排的方式
     
     </summary>
     
@@ -298,130 +118,316 @@
   </entry>
   
   <entry>
-    <title>并发知识-- ReentrantLock</title>
-    <link href="https://yme86.github.io/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-ReentrantLock/"/>
-    <id>https://yme86.github.io/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-ReentrantLock/</id>
-    <published>2020-04-21T08:51:16.000Z</published>
-    <updated>2020-08-18T16:02:24.401Z</updated>
+    <title>并发知识 -- 内存屏障</title>
+    <link href="https://yme86.github.io/2020/12/14/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C/"/>
+    <id>https://yme86.github.io/2020/12/14/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C/</id>
+    <published>2020-12-13T17:13:16.000Z</published>
+    <updated>2020-12-18T16:10:15.795Z</updated>
     
     <summary type="html">
     
-      如果并发度很大,那么就一定存在线程之前对锁的竞争,这时,如果是公平锁,那么先获取锁的线程先处理,后获取锁的排在一个等待队列,然后这个线程就 `park` 暂停,然后等待锁释放和通知,`unpark` 后,再去获取锁...
+      内存屏障原理和应用场景
     
     </summary>
     
     
-    
-      <category term="Java" scheme="https://YME86.github.io/tags/Java/"/>
     
       <category term="concurrent" scheme="https://YME86.github.io/tags/concurrent/"/>
     
   </entry>
   
   <entry>
-    <title>MySQL 知识-- ICP 优化</title>
-    <link href="https://yme86.github.io/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-ICP-%E4%BC%98%E5%8C%96/"/>
-    <id>https://yme86.github.io/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-ICP-%E4%BC%98%E5%8C%96/</id>
-    <published>2020-04-16T13:16:14.000Z</published>
-    <updated>2020-07-26T10:31:15.246Z</updated>
+    <title>OS 知识 -- 内核</title>
+    <link href="https://yme86.github.io/2020/12/13/OS-%E7%9F%A5%E8%AF%86-%E5%86%85%E6%A0%B8/"/>
+    <id>https://yme86.github.io/2020/12/13/OS-%E7%9F%A5%E8%AF%86-%E5%86%85%E6%A0%B8/</id>
+    <published>2020-12-13T15:37:48.000Z</published>
+    <updated>2020-12-13T15:38:26.611Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;Index Condition Pushdown (ICP)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;目的: 在取出索引的同时,提前判断 where 条件,从而提前过滤一部分不符合条件的记录&lt;/p&gt;
+      
+      
+        
+        
+          &lt;h2 id=&quot;什么是内核&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#什么是内核&quot;&gt;⚡&lt;/a&gt;什么是内核&lt;/h2&gt;
+&lt;h2 id=&quot;用户态和内核态&quot;&gt;&lt;a class=&quot;header-anchor&quot;
+        
+      
     
     </summary>
     
     
     
-      <category term="database" scheme="https://YME86.github.io/tags/database/"/>
+      <category term="os" scheme="https://YME86.github.io/tags/os/"/>
     
   </entry>
   
   <entry>
-    <title>MySQL 知识-- MRR 优化</title>
-    <link href="https://yme86.github.io/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-MRR%20%E4%BC%98%E5%8C%96/"/>
-    <id>https://yme86.github.io/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-MRR%20%E4%BC%98%E5%8C%96/</id>
-    <published>2020-04-16T12:47:54.000Z</published>
-    <updated>2020-07-17T18:48:40.939Z</updated>
+    <title>Java 知识 -- Java 与多线程</title>
+    <link href="https://yme86.github.io/2020/12/13/Java-%E7%9F%A5%E8%AF%86-Java-%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    <id>https://yme86.github.io/2020/12/13/Java-%E7%9F%A5%E8%AF%86-Java-%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/</id>
+    <published>2020-12-13T15:35:28.000Z</published>
+    <updated>2020-12-18T16:10:34.668Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;Multi-Range Read (MRR)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;目的:通过将随机 IO 排序,优化为顺序 IO 减少磁盘随机访问&lt;/p&gt;
+      Java 多线程编程模型
     
     </summary>
     
     
     
-      <category term="database" scheme="https://YME86.github.io/tags/database/"/>
+      <category term="concurrent" scheme="https://YME86.github.io/tags/concurrent/"/>
+    
+      <category term="java" scheme="https://YME86.github.io/tags/java/"/>
     
   </entry>
   
   <entry>
-    <title>MySQL 知识-- InnoDB 和 MyISAM</title>
-    <link href="https://yme86.github.io/2020/4/15/MySQL-%E7%9F%A5%E8%AF%86-InnoDB-%E5%92%8C-MyISAM/"/>
-    <id>https://yme86.github.io/2020/4/15/MySQL-%E7%9F%A5%E8%AF%86-InnoDB-%E5%92%8C-MyISAM/</id>
-    <published>2020-04-15T08:30:00.000Z</published>
-    <updated>2020-08-14T15:22:19.070Z</updated>
+    <title>并发知识 -- CPU 硬件架构</title>
+    <link href="https://yme86.github.io/2020/12/13/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CPU-%E7%A1%AC%E4%BB%B6%E6%9E%B6%E6%9E%84/"/>
+    <id>https://yme86.github.io/2020/12/13/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CPU-%E7%A1%AC%E4%BB%B6%E6%9E%B6%E6%9E%84/</id>
+    <published>2020-12-13T07:32:26.000Z</published>
+    <updated>2020-12-18T13:07:28.567Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;区别&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#区别&quot;&gt;⚡&lt;/a&gt;区别&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;InnoDB 支持事务,MyISAM 不支持事务&lt;/p&gt;
+      CPU 硬件架构以及一些相关概念
     
     </summary>
     
     
     
-      <category term="database" scheme="https://YME86.github.io/tags/database/"/>
+      <category term="concurrent" scheme="https://YME86.github.io/tags/concurrent/"/>
+    
+      <category term="hardware" scheme="https://YME86.github.io/tags/hardware/"/>
     
   </entry>
   
   <entry>
-    <title>MySQL 知识--索引</title>
-    <link href="https://yme86.github.io/2020/4/14/MySQL-%E7%9F%A5%E8%AF%86-%E7%B4%A2%E5%BC%95/"/>
-    <id>https://yme86.github.io/2020/4/14/MySQL-%E7%9F%A5%E8%AF%86-%E7%B4%A2%E5%BC%95/</id>
-    <published>2020-04-14T10:35:00.000Z</published>
-    <updated>2020-07-26T10:32:56.040Z</updated>
+    <title>MySQL 知识 -- drop、delete 和 truncate 的区别</title>
+    <link href="https://yme86.github.io/2020/12/13/MySQL-%E7%9F%A5%E8%AF%86-drop%E3%80%81delete-%E5%92%8C-truncate-%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>https://yme86.github.io/2020/12/13/MySQL-%E7%9F%A5%E8%AF%86-drop%E3%80%81delete-%E5%92%8C-truncate-%E7%9A%84%E5%8C%BA%E5%88%AB/</id>
+    <published>2020-12-13T05:28:05.000Z</published>
+    <updated>2020-12-18T16:11:01.335Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;几种索引&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#几种索引&quot;&gt;⚡&lt;/a&gt;几种索引&lt;/h2&gt;
-&lt;h3 id=&quot;聚集索引-聚簇索引-cluster-index-主键索引&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#聚集索引-聚簇索引-cluster-index-主键索引&quot;&gt;⚡&lt;/a&gt;聚集索引 (聚簇索引 cluster index)(主键索引)&lt;/h3&gt;
-&lt;p&gt;聚集索引数据行的&lt;strong&gt;物理顺序&lt;/strong&gt;与列值(一般是主键列)的逻辑顺序相同&lt;/p&gt;
+      MySQL 几种删除方式的区别
     
     </summary>
     
     
     
-      <category term="database" scheme="https://YME86.github.io/tags/database/"/>
+      <category term="MySQL" scheme="https://YME86.github.io/tags/MySQL/"/>
     
   </entry>
   
   <entry>
-    <title>JVM 知识--JVM 和 JMM</title>
-    <link href="https://yme86.github.io/2020/4/14/JVM-%E7%9F%A5%E8%AF%86-JVM-%E5%92%8C-JMM/"/>
-    <id>https://yme86.github.io/2020/4/14/JVM-%E7%9F%A5%E8%AF%86-JVM-%E5%92%8C-JMM/</id>
-    <published>2020-04-14T05:35:03.000Z</published>
-    <updated>2020-07-17T18:48:40.939Z</updated>
+    <title>JVM 知识 -- 对象的 hashcode</title>
+    <link href="https://yme86.github.io/2020/12/12/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1%E7%9A%84%20hashcode/"/>
+    <id>https://yme86.github.io/2020/12/12/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1%E7%9A%84%20hashcode/</id>
+    <published>2020-12-11T16:48:30.000Z</published>
+    <updated>2020-12-18T16:11:42.681Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;JMM-解释&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#JMM-解释&quot;&gt;⚡&lt;/a&gt;JMM 解释&lt;/h2&gt;
-&lt;p&gt;JMM (Java Memory Model) 定义了 Java 虚拟机(JVM)在计算机内存(RAM)中的工作方式。JVM 是整个计算机虚拟模型，所以 JMM 隶属于 JVM&lt;/p&gt;
+      查看对象的 hashcode 和 JVM 生成 hashcode 的几种方式
     
     </summary>
     
     
     
       <category term="JVM" scheme="https://YME86.github.io/tags/JVM/"/>
+    
+      <category term="Java" scheme="https://YME86.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM 知识 -- 对象初始化过程</title>
+    <link href="https://yme86.github.io/2020/12/11/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1%E5%88%9D%E5%A7%8B%E5%8C%96%E8%BF%87%E7%A8%8B/"/>
+    <id>https://yme86.github.io/2020/12/11/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1%E5%88%9D%E5%A7%8B%E5%8C%96%E8%BF%87%E7%A8%8B/</id>
+    <published>2020-12-11T14:32:22.000Z</published>
+    <updated>2020-12-11T14:35:59.346Z</updated>
+    
+    <summary type="html">
+    
+      Java 中一个对象是如何被初始化的
+    
+    </summary>
+    
+    
+    
+      <category term="JVM" scheme="https://YME86.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java 知识 -- synchronize</title>
+    <link href="https://yme86.github.io/2020/12/11/Java-%E7%9F%A5%E8%AF%86-synchronize/"/>
+    <id>https://yme86.github.io/2020/12/11/Java-%E7%9F%A5%E8%AF%86-synchronize/</id>
+    <published>2020-12-11T08:29:57.000Z</published>
+    <updated>2020-12-12T09:30:32.578Z</updated>
+    
+    <summary type="html">
+    
+      Java 中 synchronize 关键字原理
+    
+    </summary>
+    
+    
+    
+      <category term="JVM" scheme="https://YME86.github.io/tags/JVM/"/>
+    
+      <category term="Java" scheme="https://YME86.github.io/tags/Java/"/>
+    
+      <category term="concurrent" scheme="https://YME86.github.io/tags/concurrent/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java 知识 -- 锁</title>
+    <link href="https://yme86.github.io/2020/12/11/Java%20%E7%9F%A5%E8%AF%86-%E9%94%81/"/>
+    <id>https://yme86.github.io/2020/12/11/Java%20%E7%9F%A5%E8%AF%86-%E9%94%81/</id>
+    <published>2020-12-10T17:22:28.000Z</published>
+    <updated>2020-12-11T14:20:05.349Z</updated>
+    
+    <summary type="html">
+    
+      Java 中的锁
+    
+    </summary>
+    
+    
+    
+      <category term="Java" scheme="https://YME86.github.io/tags/Java/"/>
+    
+      <category term="concurrent" scheme="https://YME86.github.io/tags/concurrent/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM 知识--对象头</title>
+    <link href="https://yme86.github.io/2020/12/11/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1%E5%A4%B4/"/>
+    <id>https://yme86.github.io/2020/12/11/JVM-%E7%9F%A5%E8%AF%86-%E5%AF%B9%E8%B1%A1%E5%A4%B4/</id>
+    <published>2020-12-10T16:58:35.000Z</published>
+    <updated>2020-12-11T17:08:34.982Z</updated>
+    
+    <summary type="html">
+    
+      JVM 中一个对象的组成
+    
+    </summary>
+    
+    
+    
+      <category term="JVM" scheme="https://YME86.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java 知识 -- volatile</title>
+    <link href="https://yme86.github.io/2020/12/10/Java-%E7%9F%A5%E8%AF%86-volatile/"/>
+    <id>https://yme86.github.io/2020/12/10/Java-%E7%9F%A5%E8%AF%86-volatile/</id>
+    <published>2020-12-10T15:00:27.000Z</published>
+    <updated>2020-12-18T16:05:12.668Z</updated>
+    
+    <summary type="html">
+    
+      volatile 关键字概念，特性，使用场景以及原理
+    
+    </summary>
+    
+    
+    
+      <category term="JVM" scheme="https://YME86.github.io/tags/JVM/"/>
+    
+      <category term="Java" scheme="https://YME86.github.io/tags/Java/"/>
+    
+      <category term="concurrent" scheme="https://YME86.github.io/tags/concurrent/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Redis 知识 -- Redis 持久化方式</title>
+    <link href="https://yme86.github.io/2020/11/21/Redis-%E7%9F%A5%E8%AF%86-Redis-%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/"/>
+    <id>https://yme86.github.io/2020/11/21/Redis-%E7%9F%A5%E8%AF%86-Redis-%E6%8C%81%E4%B9%85%E5%8C%96%E6%96%B9%E5%BC%8F/</id>
+    <published>2020-11-21T11:55:29.000Z</published>
+    <updated>2020-11-21T12:39:55.667Z</updated>
+    
+    <summary type="html">
+    
+      Redis 持久化的两种方式比较
+    
+    </summary>
+    
+    
+    
+      <category term="redis" scheme="https://YME86.github.io/tags/redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Redis-知识-过期时间设置及过期数据删除、内存淘汰策略</title>
+    <link href="https://yme86.github.io/2020/11/21/Redis-%E7%9F%A5%E8%AF%86-%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E8%AE%BE%E7%BD%AE%E5%8F%8A%E8%BF%87%E6%9C%9F%E6%95%B0%E6%8D%AE%E5%88%A0%E9%99%A4%E3%80%81%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/"/>
+    <id>https://yme86.github.io/2020/11/21/Redis-%E7%9F%A5%E8%AF%86-%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E8%AE%BE%E7%BD%AE%E5%8F%8A%E8%BF%87%E6%9C%9F%E6%95%B0%E6%8D%AE%E5%88%A0%E9%99%A4%E3%80%81%E5%86%85%E5%AD%98%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/</id>
+    <published>2020-11-21T10:58:18.000Z</published>
+    <updated>2020-11-21T12:56:21.276Z</updated>
+    
+    <summary type="html">
+    
+      Redis 过期时间设置及过期数据删除、内存淘汰策略
+    
+    </summary>
+    
+    
+    
+      <category term="redis" scheme="https://YME86.github.io/tags/redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分布式知识 -- 分布式数据存储</title>
+    <link href="https://yme86.github.io/2020/11/16/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7/"/>
+    <id>https://yme86.github.io/2020/11/16/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7/</id>
+    <published>2020-11-16T10:16:32.000Z</published>
+    <updated>2020-11-16T13:28:44.921Z</updated>
+    
+    <summary type="html">
+    
+      关于分布式数据存储
+    
+    </summary>
+    
+    
+    
+      <category term="distribute system" scheme="https://YME86.github.io/tags/distribute-system/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分布式知识 -- 布隆过滤器</title>
+    <link href="https://yme86.github.io/2020/11/16/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/"/>
+    <id>https://yme86.github.io/2020/11/16/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/</id>
+    <published>2020-11-16T07:38:26.000Z</published>
+    <updated>2020-11-16T07:38:48.636Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;a href=&quot;https://juejin.im/post/6844904007790673933&quot; target=&quot;_blank&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="distribute system" scheme="https://YME86.github.io/tags/distribute-system/"/>
     
   </entry>
   

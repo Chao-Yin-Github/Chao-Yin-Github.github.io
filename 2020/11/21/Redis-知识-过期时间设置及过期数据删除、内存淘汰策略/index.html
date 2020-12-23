@@ -171,7 +171,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.5k 字
+      1.7k 字
     </span>
   
 
@@ -181,7 +181,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      22
+      25
        分钟
     </span>
   
@@ -227,7 +227,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 个月前
+                  本文最后更新于：4 天前
                 
               </p>
             
@@ -329,6 +329,24 @@
 <p>noeviction 禁止淘汰数据</p>
 </li>
 </ol>
+<h2 id="使用场景"><a class="header-anchor" href="#使用场景">⚡</a>使用场景</h2>
+<ul>
+<li>
+<p>如果不确定具体的业务特征, 那么 allkeys-lru 是一个很好的选择。因为设置 expire 会消耗额外的内存, 所以使用 allkeys-lru 策略, 可以更高效地利用内存, 因为这样就可以不再设置过期时间了。</p>
+</li>
+<li>
+<p>如果分为热数据与冷数据(把冷数据清除掉，保证 redis 中是热点数据)，推荐使用 allkeys-lru 策略。</p>
+</li>
+<li>
+<p>如果需要循环读写所有的 key，或者各个 key 的访问频率差不多，可以使用 allkeys-random 策略，即读写所有元素的概率差不多。</p>
+</li>
+<li>
+<p>假如要让 Redis 根据 TTL 来筛选需要删除的 key，请使用 volatile-ttl 策略。</p>
+</li>
+<li>
+<p>volatile-lru 和 volatile-random 策略主要应用场景是: 既有<strong>缓存</strong>,又有<strong>持久化的 key</strong>。一般来说，像这类场景，应该使用两个单独的 Redis 实例。</p>
+</li>
+</ul>
 
             </div>
             <hr>

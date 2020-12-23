@@ -165,16 +165,16 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/8/28/Spring-%E7%9F%A5%E8%AF%86-BeanFactory-%E5%92%8C-FactoryBean/">Spring 知识 -- BeanFactory 和 FactoryBean</a>
+        <a href="/2020/10/20/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-%E5%88%86%E5%B8%83%E5%BC%8F%E6%A6%82%E5%BF%B5/">分布式知识 -- 分布式概念</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/8/28/Spring-%E7%9F%A5%E8%AF%86-BeanFactory-%E5%92%8C-FactoryBean/">
+        <a href="/2020/10/20/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-%E5%88%86%E5%B8%83%E5%BC%8F%E6%A6%82%E5%BF%B5/">
           
           
             
           
-          Spring BeanFactory 和 FactoryBean 的区别
+          分布式概念
         </a>
       </p>
 
@@ -182,8 +182,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-28 11:41" pubdate>
-              2020-08-28
+            <time datetime="2020-10-20 18:17" pubdate>
+              2020-10-20
             </time>
           </div>
         
@@ -192,7 +192,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Spring/">Spring</a>
+              <a href="/tags/distribute-system/">distribute system</a>
             
           </div>
         
@@ -205,16 +205,49 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/8/26/Spring-%E7%9F%A5%E8%AF%86-Spring-AOP/">Spring 知识 -- Spring AOP</a>
+        <a href="/2020/10/11/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-RPC%20%E5%92%8C%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">分布式知识 -- RPC 和消息队列</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/8/26/Spring-%E7%9F%A5%E8%AF%86-Spring-AOP/">
+        <a href="/2020/10/11/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-RPC%20%E5%92%8C%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">
           
           
             
           
-          AOP 相关概念，Spring AOP 的使用方式及注意要点
+          ⚡RPC 作用
+
+
+解决不同主机通信问题
+
+
+解决接口寻址问题
+
+
+⚡消息队列作用
+
+
+应用服务解偶
+
+
+流量限制
+
+
+异步通信
+
+
+⚡RPC 和消息队列的区别
+
+
+RPC是调用模式，MQ是实现模式。
+
+
+二者侧重点不一样，RPC侧重两端，MQ侧重中间（中间件）
+
+
+RPC 底层通常没有队列，而消息队列一定有
+
+
+RPC指的是远程调用，也就是说，调用的函数不在同一内存空间内，强调的是远程，具体怎么
         </a>
       </p>
 
@@ -222,8 +255,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-26 15:47" pubdate>
-              2020-08-26
+            <time datetime="2020-10-11 17:12" pubdate>
+              2020-10-11
             </time>
           </div>
         
@@ -232,7 +265,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Spring/">Spring</a>
+              <a href="/tags/distribute-system/">distribute system</a>
             
           </div>
         
@@ -245,16 +278,30 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/8/14/Bug%E8%AE%B0%E5%BD%95-MyBaits-%E6%8A%A5%E9%94%99-Cannot-get-Configuration-as-configuration-factory-was-not-set/">Bug记录 -- MyBaits 报错 -- Cannot get Configuration as configuration factory was not set</a>
+        <a href="/2020/9/21/Java-%E7%9F%A5%E8%AF%86-Java-%E4%B8%AD%E7%9A%84-String-%E7%9B%B8%E7%AD%89%EF%BC%9F/">Java 知识-- Java 中的 String 相等？</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/8/14/Bug%E8%AE%B0%E5%BD%95-MyBaits-%E6%8A%A5%E9%94%99-Cannot-get-Configuration-as-configuration-factory-was-not-set/">
+        <a href="/2020/9/21/Java-%E7%9F%A5%E8%AF%86-Java-%E4%B8%AD%E7%9A%84-String-%E7%9B%B8%E7%AD%89%EF%BC%9F/">
           
           
             
           
-          MyBatis 报错 `Cannot get Configuration as configuration factory was not set`
+          (本文基于 JDK 1.7 及以上)
+
+
+test1
+  String str1 = “hello word";
+
+String str2 ="hello" +" word";
+
+System.out.println(str1==str2);
+// true
+这种情况下编译器会对 str2 进行优化，直接优化成 “hello word”,str1==st2
+
+
+test2
+  String s1 
         </a>
       </p>
 
@@ -262,8 +309,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-14 23:17" pubdate>
-              2020-08-14
+            <time datetime="2020-09-21 11:56" pubdate>
+              2020-09-21
             </time>
           </div>
         
@@ -272,55 +319,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Bug/">Bug</a>
+              <a href="/tags/JVM/">JVM</a>
             
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/8/13/ORM%E8%A7%A3%E5%86%B3%E4%B8%9A%E5%8A%A1%E9%9C%80%E6%B1%82%E5%B8%A6%E6%9D%A5%E7%9A%84-N-1-%E9%97%AE%E9%A2%98/" target="_self">
-          <img src="/img/ORM_N+!_Problem9.svg" srcset="/img/loading.gif" alt="ORM 解决业务需求带来的 N+1 问题">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/8/13/ORM%E8%A7%A3%E5%86%B3%E4%B8%9A%E5%8A%A1%E9%9C%80%E6%B1%82%E5%B8%A6%E6%9D%A5%E7%9A%84-N-1-%E9%97%AE%E9%A2%98/">ORM 解决业务需求带来的 N+1 问题</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/8/13/ORM%E8%A7%A3%E5%86%B3%E4%B8%9A%E5%8A%A1%E9%9C%80%E6%B1%82%E5%B8%A6%E6%9D%A5%E7%9A%84-N-1-%E9%97%AE%E9%A2%98/">
-          
-          
-            
-          
-          数据库复杂业务带来的查询效率问题解决
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-13 21:26" pubdate>
-              2020-08-13
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/util/">util</a>
-            
-              <a href="/tags/database/">database</a>
+              <a href="/tags/Java/">Java</a>
             
           </div>
         
@@ -333,16 +334,16 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/7/27/MySQL-%E7%9F%A5%E8%AF%86-%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">MySQL 知识-- 相关子查询优化</a>
+        <a href="/2020/9/8/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-Manjaro-%E5%8F%8C%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8/">安装记录 -- Manjaro 双显卡驱动</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/7/27/MySQL-%E7%9F%A5%E8%AF%86-%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/">
+        <a href="/2020/9/8/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-Manjaro-%E5%8F%8C%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8/">
           
           
             
           
-          ⚡相关子查询的 MySQL 错误优化(MySQL 5.7 以后不适用)
+          Manjaro Linux 独显配置
         </a>
       </p>
 
@@ -350,8 +351,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-07-27 16:27" pubdate>
-              2020-07-27
+            <time datetime="2020-09-08 15:31" pubdate>
+              2020-09-08
             </time>
           </div>
         
@@ -360,7 +361,59 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/MySQL/">MySQL</a>
+              <a href="/tags/configuration/">configuration</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/9/7/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-RocketMQ/">安装记录 -- RocketMQ</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/9/7/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-RocketMQ/">
+          
+          
+            
+          
+          ⚡下载 RocketMQ 二进制包
+下载地址
+找到一个镜像的 bin 文件下载到 opt 路径下
+# 创建软链接
+ln -s /opt/rocketmq-all-4.7.1-bin-release rocketMQ
+⚡测试
+官方文档：快速开始
+
+
+开启 name server
+ cd /opt/rocketMQ/bin
+sh mqnamesrv
+tail -f ~/logs/rocketmqlog
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-09-07 22:27" pubdate>
+              2020-09-07
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/configuration/">configuration</a>
             
           </div>
         
@@ -372,7 +425,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/6/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/8/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/6/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/8/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

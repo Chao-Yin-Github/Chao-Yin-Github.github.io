@@ -165,16 +165,26 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/12/18/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">并发知识 -- 内存模型</a>
+        <a href="/2020/12/23/MySQL-%E7%9F%A5%E8%AF%86-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/">MySQL 知识 -- 并发控制</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/12/18/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
+        <a href="/2020/12/23/MySQL-%E7%9F%A5%E8%AF%86-%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6/">
           
           
             
           
-          关于多种内存模型的介绍
+          ⚡并发控制
+
+
+悲观并发控制
+
+
+乐观并发控制
+
+
+MVCC (Multi-Version Concurrency Control)
+多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。而未提交读隔离级别总是读取最新的数据行，无需使用 MVCC。
         </a>
       </p>
 
@@ -182,8 +192,53 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-18 20:22" pubdate>
-              2020-12-18
+            <time datetime="2020-12-23 13:35" pubdate>
+              2020-12-23
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/23/MySQL-%E7%9F%A5%E8%AF%86-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E7%89%B9%E6%80%A7/">MySQL 知识 -- 数据库事务特性</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/23/MySQL-%E7%9F%A5%E8%AF%86-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1%E7%89%B9%E6%80%A7/">
+          
+          
+            
+          
+          ⚡事务的特性
+
+
+A(Atomic) 原子性
+事务开始后所有操作,要么全部做完,要么全部不做,不可能停滞在中间环节
+事务执行过程中出错,会回滚到事务开始前的状态,所有的操作就像没有发生一样
+
+
+C(Consistency) 一致性
+指事务将数据库从一种状态转变为另一种一致的的状态
+事务开始前和结束后,数据库的完整性约束没有被破坏
+
+这个特性可能最难理解,其实一致性的C是目标,AID 是手段来保证一
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-23 13:32" pubdate>
+              2020-12-23
             </time>
           </div>
         
@@ -192,7 +247,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/concurrent/">concurrent</a>
+              <a href="/tags/MySQL/">MySQL</a>
             
           </div>
         
@@ -205,16 +260,20 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/12/18/Java-%E7%9F%A5%E8%AF%86-happens-before-%E5%8E%9F%E5%88%99/">Java 知识 -- happens-before 原则</a>
+        <a href="/2020/12/23/MySQL-%E7%9F%A5%E8%AF%86-%E9%94%81/">MySQL 知识 -- 锁</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/12/18/Java-%E7%9F%A5%E8%AF%86-happens-before-%E5%8E%9F%E5%88%99/">
+        <a href="/2020/12/23/MySQL-%E7%9F%A5%E8%AF%86-%E9%94%81/">
           
           
             
           
-          Java 内存模型中的 happens-before 原则
+          ⚡MySQL 锁
+MySQL中有着Lock和Latch的概念，在数据库中，这两者都可以被称为“锁”，但是两者有着截然不同的含义。
+
+
+Latch一般称为闩锁(轻量级的锁),因为其要求锁定的时间必须非常短。若持续的时间长，则应用的性能会非常差，在InnoDB引擎中，Latch又可以分为 mutex（互斥量）和rwlock（读写锁）。其目的是用来保证并发线程操作临界资源的正确性，并且通常没有死锁检测的
         </a>
       </p>
 
@@ -222,8 +281,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-18 20:12" pubdate>
-              2020-12-18
+            <time datetime="2020-12-23 13:21" pubdate>
+              2020-12-23
             </time>
           </div>
         
@@ -232,9 +291,62 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/concurrent/">concurrent</a>
+              <a href="/tags/MySQL/">MySQL</a>
             
-              <a href="/tags/java/">java</a>
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/12/23/MySQL-%E7%9F%A5%E8%AF%86-%E4%BA%8B%E7%89%A9%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%BB%A5%E5%8F%8A%E4%BC%9A%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/">MySQL 知识 -- 事物隔离级别以及会导致的问题</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/12/23/MySQL-%E7%9F%A5%E8%AF%86-%E4%BA%8B%E7%89%A9%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%BB%A5%E5%8F%8A%E4%BC%9A%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/">
+          
+          
+            
+          
+          ⚡事物的隔离级别
+
+
+读未提交 (Read Uncommitted)
+读到未提交的事务的数据，造成脏读的问题
+
+
+读已提交 (Read committed)
+读到已提交事务的数据，但是如果这个事务内多次读的话，会造成读到的数据不一致的情况，造成不可重复读的问题
+
+
+重复读 (Repeatable read)
+读不到已提交事务的数据，但是会出现数据不一致的情况
+
+
+串行化 (Serializable
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-12-23 13:20" pubdate>
+              2020-12-23
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
             
           </div>
         
@@ -246,23 +358,23 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/12/17/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CPU-%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/" target="_self">
-          <img src="http://cdn.yinchao.tech/cache-with-store-buffer.png" srcset="/img/loading.gif" alt="并发知识 -- CPU 缓存一致性">
+        <a href="/2020/12/20/Java-%E7%9F%A5%E8%AF%86-synchronize/" target="_self">
+          <img src="http://cdn.yinchao.tech/%E5%AF%B9%E8%B1%A1%E5%A4%B4.png" srcset="/img/loading.gif" alt="Java 知识 -- synchronize 关键字原理">
         </a>
       </div>
     
     <article class="col-12 col-md-8 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/12/17/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CPU-%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/">并发知识 -- CPU 缓存一致性</a>
+        <a href="/2020/12/20/Java-%E7%9F%A5%E8%AF%86-synchronize/">Java 知识 -- synchronize 关键字原理</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/12/17/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-CPU-%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7/">
+        <a href="/2020/12/20/Java-%E7%9F%A5%E8%AF%86-synchronize/">
           
           
             
           
-          多个 CPU 如何解决缓存一致性问题
+          Java 中 synchronize 关键字原理
         </a>
       </p>
 
@@ -270,8 +382,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-17 19:55" pubdate>
-              2020-12-17
+            <time datetime="2020-12-20 16:29" pubdate>
+              2020-12-20
             </time>
           </div>
         
@@ -280,89 +392,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/concurrent/">concurrent</a>
+              <a href="/tags/JVM/">JVM</a>
             
-              <a href="/tags/hardware/">hardware</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/12/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86-%E7%A8%8B%E5%BA%8F%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86/">操作系统知识 -- 程序局部性原理</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86-%E7%A8%8B%E5%BA%8F%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86/">
-          
-          
-            
-          
-          程序局部性原理概念及其应用分支预测
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-14 12:22" pubdate>
-              2020-12-14
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/hardware/">hardware</a>
-            
-              <a href="/tags/OS/">OS</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/12/14/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92/">并发知识 -- 指令重排</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/14/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92/">
-          
-          
-            
-          
-          指令重排的集中类型和Java 禁止指令重排的方式
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-14 01:16" pubdate>
-              2020-12-14
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
+              <a href="/tags/Java/">Java</a>
             
               <a href="/tags/concurrent/">concurrent</a>
             
@@ -376,7 +408,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

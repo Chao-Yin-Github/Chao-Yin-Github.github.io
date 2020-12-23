@@ -171,7 +171,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      2.6k 字
     </span>
   
 
@@ -181,7 +181,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      29
+      39
        分钟
     </span>
   
@@ -227,7 +227,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：15 分钟前
+                  本文最后更新于：4 天前
                 
               </p>
             
@@ -272,6 +272,24 @@
 <p>操作系统的线程状态：</p>
 <p>新建、可运行、运行、阻塞、终止</p>
 <p><a href="https://gitee.com/bangiao_admin/Concurrentcy/blob/master/%E7%AC%94%E8%AE%B0/01.Java%E5%92%8C%E7%BA%BF%E7%A8%8B.md" target="_blank" rel="noopener"></a></p>
+<h2 id="Java-与协程"><a class="header-anchor" href="#Java-与协程">⚡</a>Java 与协程</h2>
+<h3 id="协程的优势"><a class="header-anchor" href="#协程的优势">⚡</a>协程的优势</h3>
+<ol>
+<li>
+<p><strong>切换、调度</strong>成本高昂</p>
+<p>以前处理一个请求可以允许花费很长时间在单体应用中，具有这种线程切换的成本也是无伤大雅的，但现在在每个请求本身的执行时间变得很短、数量变得很多的前提下，用户线程切换的开销甚至可能会接近用于计算本身的开销，这就会造成严重的浪费。</p>
+</li>
+<li>
+<p>系统能<strong>容纳的线程数量</strong>也很有限。</p>
+<p>协程的优势主要在于它比LWP(Java 的线程——轻量级线程)要轻的多, 在64位Linux上HotSpot的线程栈容量默认是1MB，此外内核数据结构（Kernel Data Structures）还会额外消耗16KB内存, 而一个协程的栈通常在几百个字节到几KB之间，所以Java虚拟机里线程池容量达到两百就已经不算小了，而很多支持协程的应用中，同时并存的协程数量可数以十万计</p>
+</li>
+</ol>
+<h2 id="协程的劣势"><a class="header-anchor" href="#协程的劣势">⚡</a>协程的劣势</h2>
+<p>协程当然也有它的局限，需要在应用层面实现的内容（调用栈、调度器这些）特别多, 除此之外，协程在最初，甚至在今天很多语言和框架中会被设计成协同式调度，这样在语言运行平台或者框架上的调度器就可以做得非常简单, 但是这种方法存在很严重的问题。</p>
+<p>具体到Java语言，还会有一些别的限制，譬如 HotSpot 这样的虚拟机，Java调用栈跟本地调用栈是做在一起的。如果在协程中调用了本地方法，还能否正常切换协程而不影响整个线程？另外，如果协程中遇传统的线程同步措施会怎样？譬如虽然 Kotlin 提供的协程实现，一旦遭遇 synchronize 关键字，那挂起来的仍将是整个线程</p>
+<h2 id="协程的实现"><a class="header-anchor" href="#协程的实现">⚡</a>协程的实现</h2>
+<p>不依赖虚拟机来实现协程是完全可能的，Kotlin 语言的协程就已经证明了这一点。</p>
+<p>Quasar 协程库的实现原理是<strong>字节码注入</strong>，在字节码层面对当前被调用函数中的所有局部变量进行保存和恢复。这种不依赖Java虚拟机的现场保护虽然能够工作，但很影响性能，对即时编译器的干扰也非常大，而且必须要求用户手动标注每一个函数是否会在协程上下文被调用。</p>
 
             </div>
             <hr>
@@ -297,9 +315,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/13/OS-%E7%9F%A5%E8%AF%86-%E5%86%85%E6%A0%B8/">
+                      <a href="/2020/12/14/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">OS 知识 -- 内核</span>
+                        <span class="hidden-mobile">并发知识 -- 内存屏障</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

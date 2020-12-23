@@ -1,0 +1,878 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.ico">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#FDD962">
+  <meta name="description" content="殷超的个人博客">
+  <meta name="author" content="Yin Chao">
+  <meta name="keywords" content="">
+  <title>Java 知识 -- synchronize 关键字原理 ~ y·◑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark-reasonable.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="y·◑" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 110vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong><img src="/img/avatar.jpg" srcset="/img/loading.gif" style="width:20px; height:20px;"> c</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/img/post.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      Yin Chao
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-12-20 16:29" pubdate>
+        2020 十二月 20, 星期日 , 4:29 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      43
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Java 知识 -- synchronize 关键字原理</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：3 天前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="预备知识1：对象头的标记字-MarkWord"><a class="header-anchor" href="#预备知识1：对象头的标记字-MarkWord">⚡</a>预备知识1：对象头的标记字 MarkWord</h2>
+<p><img src="http://cdn.yinchao.tech/%E5%AF%B9%E8%B1%A1%E5%A4%B4.png" srcset="/img/loading.gif" alt="对象头"></p>
+<h2 id="预备知识2：轻量级锁的实现机制：锁记录-Lock-Record"><a class="header-anchor" href="#预备知识2：轻量级锁的实现机制：锁记录-Lock-Record">⚡</a>预备知识2：轻量级锁的实现机制：锁记录 Lock Record</h2>
+<p>锁记录的位置：栈的栈帧中的一部分</p>
+<p><img src="http://cdn.yinchao.tech/synchronized-lock-record-position.png" srcset="/img/loading.gif" alt="synchronized-lock-record-position"></p>
+<p>将锁对象的 Mark Word 复制到锁记录中，这个复制过来的记录叫做 Displaced Mark Word。具体来讲，是将 Mark Word 放到锁记录的 displaced_header 属性中。</p>
+<p><img src="http://cdn.yinchao.tech/synchronize-lock-record.png" srcset="/img/loading.gif" alt="synchronize-lock-record"></p>
+<p>当虚拟机使用 CAS 操作尝试将锁对象的 Mark Word 更新为指向锁记录的指针。如果更新成功，这个线程就真正获得了该对象的锁：</p>
+<p><img src="http://cdn.yinchao.tech/synchronize-light-weight-lock-acquire.png" srcset="/img/loading.gif" alt="synchronize-light-weight-lock-acquire"></p>
+<p>重入的情况：</p>
+<p><img src="http://cdn.yinchao.tech/synchronize-light-weight-lock-reentrant.png" srcset="/img/loading.gif" alt="synchronize-light-weight-lock-reentrant"></p>
+<p>为什么JVM选择在线程栈中添加 Displaced Mark word 为 null 的 Lock Record 来表示重入计数呢？</p>
+<p>首先，锁重入次数是一定要记录下来的，因为每次解锁都需要对应一次加锁，解锁次数等于加锁次数时，该锁才真正的被释放，也就是在解锁时需要用到说锁重入次数的。</p>
+<p>一个简单的方案是将锁重入次数记录在对象头的 Mark Word 中，但 JDK 很明显没有这么做，原因是对象头的空间有限，轻量级锁已经占了62位了，没法存储重入次数。</p>
+<p>另一个方案是只创建一个 Lock Record 并在其中记录重入次数，Hotspot没有这样做的原因可能是考虑到效率的因素：每次重入获得锁都需要遍历该线程的栈找到对应的Lock Record，然后修改它的值，效率太低。所以 JDK 就使用每次增加 Lock Record 的方式了</p>
+<h2 id="锁的几种状态"><a class="header-anchor" href="#锁的几种状态">⚡</a>锁的几种状态</h2>
+<ol>
+<li>
+<p>无锁可偏向</p>
+</li>
+<li>
+<p>无锁不可偏向</p>
+</li>
+<li>
+<p>偏向锁</p>
+</li>
+<li>
+<p>轻量级锁</p>
+</li>
+<li>
+<p>重量锁</p>
+</li>
+</ol>
+<h3 id="偏向锁"><a class="header-anchor" href="#偏向锁">⚡</a>偏向锁</h3>
+<ul>
+<li>
+<p>作用：如果一个线程连续不停的获取锁，那么获取的过程中如果没有发生竞态，那么可以跳过繁重的同步过程，直接就获得锁执行，这样可以大大提高<strong>一个对象在一段很长的时间内都只被一个线程用做锁对象场景下的性能</strong></p>
+<p>因为轻量级锁的获取及释放依赖多次 CAS 原子指令，而偏向锁只需要在置换 ThreadID 的时候依赖一次 CAS 原子指令（由于一旦出现多线程竞争的情况就必须撤销偏向锁，所以偏向锁的撤销操作的性能损耗必须小于节省下来的CAS原子指令的性能消耗）。</p>
+</li>
+<li>
+<p>锁特性：不用实际加锁，偏向某一个线程</p>
+</li>
+</ul>
+<h3 id="轻量级锁"><a class="header-anchor" href="#轻量级锁">⚡</a>轻量级锁</h3>
+<ul>
+<li>
+<p>作用：在并发不高的情况下，存在多个线程交替执行，只有少量竞争，通过自旋和 CAS 处理加锁部分，防止出现系统调用而影响效率</p>
+<p>偏向锁是在只有一个线程执行同步块时提高性能，而轻量级锁是为了在线程交替执行同步块时提高性能</p>
+</li>
+<li>
+<p>特性：获取锁的线程执行，等待的线程通过 CAS + 自旋的方式等待</p>
+</li>
+</ul>
+<h3 id="重量级锁"><a class="header-anchor" href="#重量级锁">⚡</a>重量级锁</h3>
+<ul>
+<li>
+<p>作用：通过系统调用阻塞等待线程</p>
+</li>
+<li>
+<p>特性：通过 mutex 函数进行系统调用</p>
+</li>
+</ul>
+<p>传统的方式就是重量级锁，说是重量级的原因是同步的方式是一种悲观锁，会导致线程的状态切换，而线程状态的切换是一个很影响效率的操作。</p>
+<h2 id="具体流程"><a class="header-anchor" href="#具体流程">⚡</a>具体流程</h2>
+<p><img src="http://cdn.yinchao.tech/synchronize-over-all.png" srcset="/img/loading.gif" alt="synchronize-over-all"></p>
+<h3 id="无锁可偏向到有锁已偏向"><a class="header-anchor" href="#无锁可偏向到有锁已偏向">⚡</a>无锁可偏向到有锁已偏向</h3>
+<p>首先一个新的对象处于无锁可偏向状态(101)，这个时候如果有个线程 A 来获取这个对象锁，那么就通过 CAS 设置这个线程的线程 id，如果成功则锁对象进入有锁已偏向状态(001),下次当这个线程 A 在此获取这个锁的时候，只要状态没有发生变化，所需要的开销就是一次指针的比较运算，而这个运算是非常轻量的。而如果 CAS 获取锁失败，说明存在多线程竞争，那么会进一步进行锁升级为轻量级锁。</p>
+<p>而这个线程 A 会再次进入同步块，在经过一些额外的检查之后，会往当前线程栈中<strong>添加一条 Displaced Mark Word 为 null 的 Lock Record</strong>，然后程序继续向下执行。</p>
+<p>如果这个线程执行结束，并<strong>不会主动进行偏向锁的释放</strong>。</p>
+<h3 id="偏向锁到轻量级锁"><a class="header-anchor" href="#偏向锁到轻量级锁">⚡</a>偏向锁到轻量级锁</h3>
+<p>如果存在另外一个线程 B 也来加锁，那么锁的偏向状态会结束，触发偏向锁的撤销并升级的逻辑，这个时候可以根据线程 A 的执行情况分为如下两种（持有锁的线程是线程 A，竞争的是线程 B）：</p>
+<ol>
+<li>
+<p>线程 B 到达的时候，线程 A 已经结束</p>
+</li>
+<li>
+<p>线程 B 到达的时候，线程 A 还没有终止</p>
+</li>
+</ol>
+<p>无论是哪种情况，由于<strong>偏向锁不会主动释放</strong>，此时锁对象都处于有锁已偏向(101)的状态</p>
+<p>由于对象的状态是有锁已偏向，但是又不是偏向的 B 线程，所以都会经历一个锁升级过程，但是还有不同的的地方：JVM 会在安全点 safe point 检查偏向的线程是否存活。</p>
+<ol>
+<li>
+<p>如果线程 A 还存活，那么线程 A 会进行偏向锁的撤销以及升级为轻量级锁的流程。</p>
+<p>偏向锁撤销时会将线程栈中最近一条 Lock Record 的 obj 字段设置为 null，但是不会修改锁对象头的线程 id 为 0</p>
+<p>此时 JVM 会在线程的栈空间新建一个 Lock Record (Displaced Mark Word) 的空间，用于存储对象之前的 mark word，然后将使用 CAS 操作尝试将对象的 Mark Word 更新指向原线程 A 栈中的 Lock Record 空间（注意，此时 JVM 还是会偏向线程 A），此时这个线程 A 就继续拥有了该对象的轻量级锁，并且将锁对象的 Mark Word 的锁标志位改为轻量级锁状态(?00)。</p>
+</li>
+<li>
+<p>如果线程 A 不存活，那么线程 B 同样也会进入轻量级锁的升级过程，而不会通过 CAS 获取偏向锁。</p>
+<p>之所以线程 B 会进入轻量级锁而不重新获取偏向锁，其直接原因是：上面说过的偏向锁并不会主动撤销，此时锁状态是有锁已偏向状态(101)</p>
+<p>本质原因则是：</p>
+<p>最开始使用偏向锁是因为在很多场景下，加了synchronized的方法或代码块在运行过程中其实还是<strong>单线程</strong>使用（比如一些工具类为了保证其提供方法的线程安全会加synchronized，但在我们的应用中可能就是单线程使用），所以JVM为了提高性能加入了偏向锁机制。</p>
+<p>而线程 B 需要加锁时，Mark Word 已经置为有锁已偏向状态(001)，就代表该锁对象已经被多个线程使用，已经不满足偏向锁的适用场景了。</p>
+<p>如果下次获得锁的时候还设置为无锁可偏向状态(101)，那可能会有频繁的锁状态在不同的有锁已偏向偏向状态切换，导致性可能比重量级锁还低。</p>
+</li>
+</ol>
+<p>综上：偏向锁升级的时机为：当锁已经偏向某个线程 A 后，只要有另一个线程 B 尝试获取锁，则该偏向锁就会升级成轻量级锁。当然这个说法并不绝对，因为还有批量重偏向这一机制。</p>
+<h3 id="轻量级锁的升级或者降级"><a class="header-anchor" href="#轻量级锁的升级或者降级">⚡</a>轻量级锁的升级或者降级</h3>
+<p><img src="http://cdn.yinchao.tech/synchronize-light-weight-lock.png" srcset="/img/loading.gif" alt="synchronize-light-weight-lock"></p>
+<h4 id="加锁流程"><a class="header-anchor" href="#加锁流程">⚡</a>加锁流程</h4>
+<ol>
+<li>
+<p>在线程栈中创建一个 Lock Record，将其 obj（即上图的Object reference）字段指向锁对象。</p>
+</li>
+<li>
+<p>JVM 将锁对象的对象头的 Mark Word 复制到 Lock Record 的 Displaced Mark Word 中，其中由于是线程私有的栈帧，所以<strong>没有用到 CAS</strong></p>
+</li>
+<li>
+<p>JVM 使用 CAS 操作尝试将锁对象的 Mark Word 更新为指向锁记录的指针。如果更新成功，这个线程就获得了该对象的锁；如果失败，会进入下方 4 判断是否重入。<strong>其中进行 CAS 的旧值是 Mark Word 的值，预期值是 Lock Record 的地址</strong></p>
+</li>
+<li>
+<p>如果是当前线程已经持有该锁了，代表这是一次锁重入。JVM 会新增一个 Lock Record 并设置 Displaced Mark Word 为 null，obj 指向锁对象，这样做起到了一个重入计数器的作用。</p>
+</li>
+<li>
+<p>如果当前线程没有持有该锁，那么加锁失败，而加锁失败会膨胀，然后会升级成重量级锁，<strong>然后再尝试 CAS +自旋加锁，失败超过一定次数后，再进入阻塞队列等待</strong>(所以其实这个 CAS + 自旋的过程是重量级锁而不是轻量级锁的情况下的策略)</p>
+</li>
+</ol>
+<h4 id="解锁流程"><a class="header-anchor" href="#解锁流程">⚡</a>解锁流程</h4>
+<p>当有其他线程尝试获得轻量级锁时，是根据遍历偏向线程的 Lock Record 来确定该线程是否还在执行同步块中的代码。</p>
+<ol>
+<li>
+<p>遍历线程栈,找到所有 obj 字段等于当前锁对象的 Lock Record。</p>
+</li>
+<li>
+<p>如果 Lock Record 的 Displaced Mark Word 为 null，代表这是一次重入，通过 CAS 将 obj 设置为 null 即完成解锁。</p>
+</li>
+<li>
+<p>如果 Lock Record 的 Displaced Mark Word 不为 null，则通过 CAS 将 Displaced Mark Word 复制到锁对象的对象头的 Mark Word。如果成功，则继续执行下一条命令，否则膨胀为重量级锁。</p>
+</li>
+</ol>
+<h4 id="问题1——为什么解锁的时候会替换失败呢？"><a class="header-anchor" href="#问题1——为什么解锁的时候会替换失败呢？">⚡</a>问题1——为什么解锁的时候会替换失败呢？</h4>
+<p>因为解锁的时候可能有另一个线程来到，此时另一个线程会获取不到锁，膨胀成为重量级锁，改变了对象头？</p>
+<h4 id="问题2——为什么将重入的-Lock-Record-保留呢？"><a class="header-anchor" href="#问题2——为什么将重入的-Lock-Record-保留呢？">⚡</a>问题2——为什么将重入的 Lock Record 保留呢？</h4>
+<h4 id="使用"><a class="header-anchor" href="#使用">⚡</a>使用</h4>
+<p>锁升级完成后，此时根据线程 B 的执行情况的后续处理会不同：</p>
+<ol>
+<li>
+<p>线程 A 退出同步区释放锁，此时 B 能够获取到锁，也就说明 B 处于轻量级锁自旋的时间没有太长，这说明并发程度不大，此后 JVM 会将锁状态置为无锁不可偏向状态(001)，如果还有线程出现，也会立马升级成为轻量级锁</p>
+</li>
+<li>
+<p>如果 B 经过一定时间的自旋没有获取到锁，此时会进行锁膨胀的过程，升级为重量级锁</p>
+</li>
+</ol>
+<h2 id="其他"><a class="header-anchor" href="#其他">⚡</a>其他</h2>
+<ul>
+<li>
+<p>重偏向：轻量级锁加锁时，如果 epoch 不等于 class 中的 epoch，会尝试重偏向，如果重偏向失败也会升级</p>
+</li>
+<li>
+<p>批量重偏向：如果一个类的大量对象被一个线程T1执行了同步操作，也就是大量对象先偏向了T1，T1同步结束后，另一个线程也将这些对象作为锁对象进行操作，会导偏向锁重偏向的操作。</p>
+</li>
+<li>
+<p>批量撤销：当一个偏向锁如果撤销次数到达40的时候就认为这个对象设计的有问题；那么JVM会把这个对象所对应的类所有的对象都撤销偏向锁；并且新实例化的对象也是不可偏向的。</p>
+</li>
+</ul>
+<p><a href="https://createchance.github.io/post/java-%E5%B9%B6%E5%8F%91%E4%B9%8B%E5%9F%BA%E7%9F%B3%E7%AF%87/#synchronized-%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6" target="_blank" rel="noopener">博客</a></p>
+<p><a href="https://my.oschina.net/u/4358874/blog/4561467" target="_blank" rel="noopener">博客</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JVM/">JVM</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Java/">Java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/concurrent/">concurrent</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/12/23/MySQL-%E7%9F%A5%E8%AF%86-%E4%BA%8B%E7%89%A9%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E4%BB%A5%E5%8F%8A%E4%BC%9A%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL 知识 -- 事物隔离级别以及会导致的问题</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/20/Redis-%E7%9F%A5%E8%AF%86-Redis-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E5%BF%AB/">
+                        <span class="hidden-mobile">Redis 知识 -- Redis 为什么这么快</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      本站由 <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a> 强力驱动
+    </div>
+    <div>
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script>
+        var now = new Date();
+
+        function createtime() {
+          var grt = new Date("08/5/2019 00:00:00"); //此处修改你的建站时间或者网站上线时间
+          now.setTime(now.getTime() + 250);
+          days = (now - grt) / 1000 / 60 / 60 / 24;
+          dnum = Math.floor(days);
+          hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+          hnum = Math.floor(hours);
+          if (String(hnum).length == 1) {
+            hnum = "0" + hnum;
+          }
+          minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+          mnum = Math.floor(minutes);
+          if (String(mnum).length == 1) {
+            mnum = "0" + mnum;
+          }
+          seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+          snum = Math.round(seconds);
+          if (String(snum).length == 1) {
+            snum = "0" + snum;
+          }
+          document.getElementById("timeDate").innerHTML = "本站已经存在&nbsp" + dnum + "&nbsp天";
+          document.getElementById("times").innerHTML = hnum + "&nbsp小时&nbsp" + mnum + "&nbsp分&nbsp" + snum +
+            "&nbsp秒";
+        }
+        setInterval("createtime()", 250);
+
+      </script>
+    </div>
+
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+  <!-- 备案信息 -->
+  <div class="beian">
+    <a href="http://beian.miit.gov.cn/" target="_blank"
+       rel="nofollow noopener">鄂ICP备2020018606号</a>
+    
+      <a
+        href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2020018606"
+        rel="nofollow noopener"
+        class="beian-police"
+        target="_blank"
+      >
+        <span class="beian-police-sep">&nbsp;|&nbsp;</span>
+        
+          <img src="/img/police_beian.png" srcset="/img/loading.gif" alt="police-icon" />
+        
+        <span>鄂ICP备2020018606号</span>
+      </a>
+     
+  </div>
+
+
+    
+
+    <p id="hitokoto">:D 获取中...</p>
+    <script>
+      fetch('https://v1.hitokoto.cn')
+        .then(response => response.json())
+        .then(data => {
+          const hitokoto = document.getElementById('hitokoto')
+          hitokoto.innerText = data.hitokoto
+        })
+        .catch(console.error)
+
+    </script>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 4,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Java 知识 -- synchronize 关键字原理&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+  
+  
+    <script>
+      !function (e, t, a) {
+        function r() {
+          for (var e = 0; e < s.length; e++) s[e].alpha <= 0 ? (t.body.removeChild(s[e].el), s.splice(e, 1)) : (s[e].y--, s[e].scale += .004, s[e].alpha -= .013, s[e].el.style.cssText = "left:" + s[e].x + "px;top:" + s[e].y + "px;opacity:" + s[e].alpha + ";transform:scale(" + s[e].scale + "," + s[e].scale + ") rotate(45deg);background:" + s[e].color + ";z-index:99999");
+          requestAnimationFrame(r)
+        }
+
+        function n() {
+          var t = "function" == typeof e.onclick && e.onclick;
+          e.onclick = function (e) {
+            t && t(), o(e)
+          }
+        }
+
+        function o(e) {
+          var a = t.createElement("div");
+          a.className = "heart", s.push({
+            el: a,
+            x: e.clientX - 5,
+            y: e.clientY - 5,
+            scale: 1,
+            alpha: 1,
+            color: c()
+          }), t.body.appendChild(a)
+        }
+
+        function i(e) {
+          var a = t.createElement("style");
+          a.type = "text/css";
+          try {
+            a.appendChild(t.createTextNode(e))
+          } catch (t) {
+            a.styleSheet.cssText = e
+          }
+          t.getElementsByTagName("head")[0].appendChild(a)
+        }
+
+        function c() {
+          return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+        }
+
+        var s = [];
+        e.requestAnimationFrame = e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) {
+          setTimeout(e, 1e3 / 60)
+        }, i(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), n(), r()
+      }(window, document);
+    </script>
+  
+
+
+
+  <script>(function (i, s, o, g, r, a, m) {
+      i['DaoVoiceObject'] = r;
+      i[r] = i[r] ||
+        function () {
+          (i[r].q = i[r].q || []).push(arguments);
+        };
+      i[r].l = 1 * new Date();
+      a = s.createElement(o);
+      m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      a.charset = 'utf-8';
+      m.parentNode.insertBefore(a, m);
+    })(window, document, 'script', ('https:' === document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/a54a5523.js", 'daovoice');
+    daovoice('init', {
+      app_id: "a54a5523",
+    });
+    daovoice('update');
+  </script>
+
+
+
+
+
+
+
+
+
+  
+    <!-- Baidu Analytics -->
+    <script defer>
+      var _hmt = _hmt || [];
+      (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?afbeef2fddcfd35eb7737c1d654959ad";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+</body>
+</html>

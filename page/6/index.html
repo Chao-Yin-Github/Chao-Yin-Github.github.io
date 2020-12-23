@@ -165,44 +165,17 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/10/11/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-RPC%20%E5%92%8C%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">分布式知识 -- RPC 和消息队列</a>
+        <a href="/2020/11/16/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">分布式知识 -- 布隆过滤器</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/10/11/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-RPC%20%E5%92%8C%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/">
+        <a href="/2020/11/16/%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/">
           
           
             
           
-          
+          https://juejin.im/post/6844904007790673933
 
-消息队列作用：
-
-
-应用服务解偶
-
-
-流量限制
-
-
-异步通信
-
-
-
-
-RPC 和消息队列的区别
-
-
-RPC是调用模式，MQ是实现模式。
-
-
-二者侧重点不一样，RPC侧重两端，MQ侧重中间（中间件）
-
-
-RPC 底层通常没有队列，而消息队列一定有
-
-
-RPC指的是远程调用，也就是说，调用的函数不在同一内存空间内，强调的是远程，具体怎么实现的远程，并不强求。MQ是网络中的通用队列，它不在乎存储的数
         </a>
       </p>
 
@@ -210,8 +183,8 @@ RPC指的是远程调用，也就是说，调用的函数不在同一内存空�
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-11 17:12" pubdate>
-              2020-10-11
+            <time datetime="2020-11-16 15:38" pubdate>
+              2020-11-16
             </time>
           </div>
         
@@ -233,30 +206,16 @@ RPC指的是远程调用，也就是说，调用的函数不在同一内存空�
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/9/21/Java-%E7%9F%A5%E8%AF%86-Java-%E4%B8%AD%E7%9A%84-String-%E7%9B%B8%E7%AD%89%EF%BC%9F/">Java 知识-- Java 中的 String 相等？</a>
+        <a href="/2020/11/13/JVM-%E7%9F%A5%E8%AF%86-%E7%B1%BB%E5%8A%A0%E8%BD%BD/">JVM 知识 -- 类加载</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/9/21/Java-%E7%9F%A5%E8%AF%86-Java-%E4%B8%AD%E7%9A%84-String-%E7%9B%B8%E7%AD%89%EF%BC%9F/">
+        <a href="/2020/11/13/JVM-%E7%9F%A5%E8%AF%86-%E7%B1%BB%E5%8A%A0%E8%BD%BD/">
           
           
             
           
-          (本文基于 JDK 1.7 及以上)
-
-
-test1
-  String str1 = “hello word";
-
-String str2 ="hello" +" word";
-
-System.out.println(str1==str2);
-// true
-这种情况下编译器会对 str2 进行优化，直接优化成 “hello word”,str1==st2
-
-
-test2
-  String s1 
+          JVM 类加载相关知识点，还有部分 SPI 的知识
         </a>
       </p>
 
@@ -264,8 +223,90 @@ test2
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-21 11:56" pubdate>
-              2020-09-21
+            <time datetime="2020-11-13 23:17" pubdate>
+              2020-11-13
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JVM/">JVM</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/1/Java-%E7%9F%A5%E8%AF%86-ThreadLocal/">Java 知识-- ThreadLocal</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/1/Java-%E7%9F%A5%E8%AF%86-ThreadLocal/">
+          
+          
+            
+          
+          ThreadLocal 原理及源码分析
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-01 15:48" pubdate>
+              2020-11-01
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Java/">Java</a>
+            
+              <a href="/tags/concurrent/">concurrent</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/1/JVM%E7%9F%A5%E8%AF%86-%E6%8C%87%E9%92%88%E3%80%81%E5%BC%95%E7%94%A8%E5%92%8C%E5%8F%A5%E6%9F%84/">JVM 知识-- 指针、引用和句柄</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/1/JVM%E7%9F%A5%E8%AF%86-%E6%8C%87%E9%92%88%E3%80%81%E5%BC%95%E7%94%A8%E5%92%8C%E5%8F%A5%E6%9F%84/">
+          
+          
+            
+          
+          JVM 中的指针和引用，引用和句柄之间的关系
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-01 12:26" pubdate>
+              2020-11-01
             </time>
           </div>
         
@@ -289,16 +330,16 @@ test2
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/9/8/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-Manjaro-%E5%8F%8C%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8/">安装记录 -- Manjaro 双显卡驱动</a>
+        <a href="/2020/11/1/Java-%E7%9F%A5%E8%AF%86-Java-%E4%B8%AD%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BC%95%E7%94%A8/">Java 知识-- Java 中的几种引用</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/9/8/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-Manjaro-%E5%8F%8C%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8/">
+        <a href="/2020/11/1/Java-%E7%9F%A5%E8%AF%86-Java-%E4%B8%AD%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BC%95%E7%94%A8/">
           
           
             
           
-          Manjaro Linux 独显配置
+          Java 中四种引用强软弱虚的理解
         </a>
       </p>
 
@@ -306,8 +347,8 @@ test2
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-08 15:31" pubdate>
-              2020-09-08
+            <time datetime="2020-11-01 11:13" pubdate>
+              2020-11-01
             </time>
           </div>
         
@@ -316,99 +357,7 @@ test2
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/configuration/">configuration</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/9/7/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-RocketMQ/">安装记录 -- RocketMQ</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/9/7/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95-RocketMQ/">
-          
-          
-            
-          
-          ⚡下载 RocketMQ 二进制包
-下载地址
-找到一个镜像的 bin 文件下载到 opt 路径下
-# 创建软链接
-ln -s /opt/rocketmq-all-4.7.1-bin-release rocketMQ
-⚡测试
-官方文档：快速开始
-
-
-开启 name server
- cd /opt/rocketMQ/bin
-sh mqnamesrv
-tail -f ~/logs/rocketmqlog
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-09-07 22:27" pubdate>
-              2020-09-07
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/configuration/">configuration</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/8/31/Spring-%E6%BA%90%E7%A0%81-Spring-%E5%88%9D%E5%A7%8B%E5%8C%96/">Spring 源码 -- Spring 初始化</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/8/31/Spring-%E6%BA%90%E7%A0%81-Spring-%E5%88%9D%E5%A7%8B%E5%8C%96/">
-          
-          
-            
-          
-          对 Spring 初始化时的源码分析
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-08-31 15:54" pubdate>
-              2020-08-31
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Spring/">Spring</a>
+              <a href="/tags/Java/">Java</a>
             
           </div>
         
@@ -420,7 +369,7 @@ tail -f ~/logs/rocketmqlog
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/5/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/7/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/5/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/7/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

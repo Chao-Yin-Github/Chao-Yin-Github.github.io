@@ -165,19 +165,16 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/4/11/MySQL-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/">MySQL 常用指令</a>
+        <a href="/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-ReentrantLock/">并发知识-- ReentrantLock</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/4/11/MySQL-%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/">
+        <a href="/2020/4/21/%E5%B9%B6%E5%8F%91%E7%9F%A5%E8%AF%86-ReentrantLock/">
           
           
             
           
-          
-
-修改字段 video 为 utf8mb4 编码
-  alter table slaughter_sheep_info change video video varchar(250) character set utf8mb4
+          如果并发度很大,那么就一定存在线程之前对锁的竞争,这时,如果是公平锁,那么先获取锁的线程先处理,后获取锁的排在一个等待队列,然后这个线程就 `park` 暂停,然后等待锁释放和通知,`unpark` 后,再去获取锁...
         </a>
       </p>
 
@@ -185,8 +182,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-04-11 22:31" pubdate>
-              2020-04-11
+            <time datetime="2020-04-21 16:51" pubdate>
+              2020-04-21
             </time>
           </div>
         
@@ -195,9 +192,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/shellCommand/">shellCommand</a>
+              <a href="/tags/Java/">Java</a>
             
-              <a href="/tags/SQL/">SQL</a>
+              <a href="/tags/concurrent/">concurrent</a>
             
           </div>
         
@@ -210,19 +207,19 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/4/11/MySQL-%E7%9F%A5%E8%AF%86-%E8%BF%9E%E6%8E%A5join/">MySQL 知识--连接join</a>
+        <a href="/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-ICP-%E4%BC%98%E5%8C%96/">MySQL 知识-- ICP 优化</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/4/11/MySQL-%E7%9F%A5%E8%AF%86-%E8%BF%9E%E6%8E%A5join/">
+        <a href="/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-ICP-%E4%BC%98%E5%8C%96/">
           
           
             
           
-          
+          Index Condition Pushdown (ICP)
 
-在 MySQL 中，只有一种 Join 算法，也就是 Nested Loop Join，没有其他很多数据库所提供的Hash Join，也没有Sort Merge Join
-Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数据，然后一条一条的通过该结果集中的数据作为过滤条件到下一个表中查询数据，然后合并结果。如果还有第三个参与Join，则再通过前两个表的Join 结果集
+
+目的: 在取出索引的同时,提前判断 where 条件,从而提前过滤一部分不符合条件的记录
         </a>
       </p>
 
@@ -230,8 +227,8 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-04-11 21:20" pubdate>
-              2020-04-11
+            <time datetime="2020-04-16 21:16" pubdate>
+              2020-04-16
             </time>
           </div>
         
@@ -253,16 +250,19 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/4/11/JVM-%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/">JVM 知识--内存溢出和内存泄漏</a>
+        <a href="/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-MRR%20%E4%BC%98%E5%8C%96/">MySQL 知识-- MRR 优化</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/4/11/JVM-%E7%9F%A5%E8%AF%86-%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/">
+        <a href="/2020/4/16/MySQL-%E7%9F%A5%E8%AF%86-MRR%20%E4%BC%98%E5%8C%96/">
           
           
             
           
-          内存溢出(MemoryOverflow)就是你要求分配的内存超出了系统给你的,导致系统无法再给你提供内存资源（内存资源耗尽）
+          Multi-Range Read (MRR)
+
+
+目的:通过将随机 IO 排序,优化为顺序 IO 减少磁盘随机访问
         </a>
       </p>
 
@@ -270,8 +270,8 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-04-11 00:22" pubdate>
-              2020-04-11
+            <time datetime="2020-04-16 20:47" pubdate>
+              2020-04-16
             </time>
           </div>
         
@@ -280,7 +280,7 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/JVM/">JVM</a>
+              <a href="/tags/MySQL/">MySQL</a>
             
           </div>
         
@@ -293,21 +293,16 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/3/31/JVM-%E7%9F%A5%E8%AF%86-OOM%E7%9A%84%E5%87%A0%E7%A7%8D%E6%83%85%E5%86%B5/">JVM 知识--OOM的几种情况</a>
+        <a href="/2020/4/15/MySQL-%E7%9F%A5%E8%AF%86-InnoDB-%E5%92%8C-MyISAM/">MySQL 知识-- InnoDB 和 MyISAM</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/3/31/JVM-%E7%9F%A5%E8%AF%86-OOM%E7%9A%84%E5%87%A0%E7%A7%8D%E6%83%85%E5%86%B5/">
+        <a href="/2020/4/15/MySQL-%E7%9F%A5%E8%AF%86-InnoDB-%E5%92%8C-MyISAM/">
           
           
             
           
-          
-
-堆
-
-
-内存溢出 (MemoryOverflow)
+          mysql InnoDB 和 MyISAM 的异同
         </a>
       </p>
 
@@ -315,8 +310,8 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-03-31 20:45" pubdate>
-              2020-03-31
+            <time datetime="2020-04-15 16:30" pubdate>
+              2020-04-15
             </time>
           </div>
         
@@ -325,7 +320,7 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/JVM/">JVM</a>
+              <a href="/tags/MySQL/">MySQL</a>
             
           </div>
         
@@ -338,16 +333,18 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
-        <a href="/2020/3/30/JVM-%E7%9F%A5%E8%AF%86-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">JVM 知识--垃圾收集器</a>
+        <a href="/2020/4/14/MySQL-%E7%9F%A5%E8%AF%86-%E7%B4%A2%E5%BC%95/">MySQL 知识--索引</a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2020/3/30/JVM-%E7%9F%A5%E8%AF%86-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/">
+        <a href="/2020/4/14/MySQL-%E7%9F%A5%E8%AF%86-%E7%B4%A2%E5%BC%95/">
           
           
             
           
-          基于分代收集理论
+          ⚡几种索引
+⚡聚集索引 (聚簇索引 cluster index)(主键索引)
+聚集索引数据行的物理顺序与列值(一般是主键列)的逻辑顺序相同
         </a>
       </p>
 
@@ -355,8 +352,8 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2020-03-30 15:23" pubdate>
-              2020-03-30
+            <time datetime="2020-04-14 18:35" pubdate>
+              2020-04-14
             </time>
           </div>
         
@@ -365,7 +362,7 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/JVM/">JVM</a>
+              <a href="/tags/MySQL/">MySQL</a>
             
           </div>
         
@@ -377,7 +374,7 @@ Nested Loop Join 实际上就是通过驱动表的结果集作为循环基础数
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/10/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/12/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/10/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/12/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   
